@@ -1,0 +1,8 @@
+
+@import 'https://nlz.io/github/necolas/normalize.css/*/normalize.css';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

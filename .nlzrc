@@ -1,0 +1,4 @@
+{
+  "proxy": "localhost:8888",
+  "rejectUnauthorized": "false"
+}

@@ -1,0 +1,22 @@
+
+#container {
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  min-width: 320px;
+  max-width: 1440px;
+}
+
+#top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  box-shadow: 1px 2px 4px 2px rgba(0, 0, 0, 0.15);
+}
+
+#top-bar a {
+  display: inline-block;
+  height: 50px;
+}
