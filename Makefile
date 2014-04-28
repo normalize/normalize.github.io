@@ -3,11 +3,8 @@ nlz = ./node_modules/.bin/nlz
 
 build: build/index.js build/index.css build/index.html build/docs.html
 
-build/index.js: $(find client/*.js)
-	$(nlz) build client/index.js
-
-build/index.css: $(find client/*.css)
-	$(nlz) build client/index.css
+build/index.js build/index.css: $(wildcard client/*)
+	$(nlz) build client/index.js client/index.css
 
 build/index.html: pages/home.jade pages/layout.jade
 	$(jade) --path pages/home.jade < pages/home.jade > build/index.html
