@@ -1,0 +1,254 @@
+<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">normalize.io</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="docs.html" class="top-bar-link">docs</a></div></div><header><div class="container"><h1>Documentation</h1></div></header><main><section><div class="container"><h2>Triage</h2><p>Normalize is split into multiple repositories.
+Most of these repositories can be found within the <a href="https://github.com/normalize">normalize GitHub organization</a>.
+When requesting features or reporting bugs,
+please try to open an issue in the correct repository.</p>
+<ul>
+<li><a href="https://github.com/normalize/discussions">discussions</a> - a repository for any general discussions.
+Don&#39;t know where to open an issue?
+Want to ask for support?
+Open an issue here.</li>
+<li><a href="https://github.com/normalize/normalize.github.io">normalize.github.io</a> - this static site!</li>
+<li><a href="https://github.com/normalize/proxy.js">proxy.js</a> - the normalization proxy</li>
+<li><a href="https://github.com/normalize/nlz">nlz</a> - the command line <code>nlz(1)</code> utility</li>
+<li><a href="https://github.com/normalize/transforms.js">transforms.js</a> - all the transforms supported by both the proxy and <code>nlz(1)</code></li>
+</ul>
+</div></section><section><div class="container"><h2>Normalization Proxy</h2><p>These are the specifications for <a href="https://nlz.io">https://nlz.io</a> as well as any <a href="https://github.com/normalize/proxy.js">normalize-proxy</a>.</p>
+<h3 id="url-structure">URL Structure</h3>
+<p>URLs generally have the form: <code>https://nlz.io/&lt;remote&gt;/&lt;user&gt;/&lt;project&gt;/&lt;version&gt;/&lt;file&gt;</code>.
+Obviously, different proxies will have different hostnames.</p>
+<h4 id="protocol">Protocol</h4>
+<p>Every proxy <strong>must</strong> serve via HTTPS and SPDY/HTTPv2,
+even with a self-signed certificate.</p>
+<h4 id="remote">Remote</h4>
+<p>A supported remote&#39;s name, for example <code>github/</code>.</p>
+<p>Aliases will also be supported and will simply redirect to the canonical short name.
+For example, <code>github.com</code> and <code>raw.githubusercontent.com</code> would redirect to <code>github</code>.</p>
+<h4 id="user">User</h4>
+<p>If the remote does not have a namespace, the user should simply be <code>-</code>.</p>
+<h4 id="project">Project</h4>
+<p>The name of the project or module.</p>
+<h4 id="version">Version</h4>
+<p>Any version as defined by <a href="http://semver.org">http://semver.org</a> v2.0.0.
+You should not include leading <code>v</code>s and <code>=</code> in single versions</p>
+<p>Eventually, commit SHAs for <code>git</code> remotes will be supported.
+However, branches will never be supported.</p>
+<h3 id="entry-points">Entry Points</h3>
+<p>The proxy will &quot;normalize&quot; various end points so that you can be assured that these files will always exist.
+You may still reference only the original files.</p>
+<ul>
+<li>[x] <code>index.js</code> - for JS modules</li>
+<li>[x] <code>index.css</code> - for CSS modules</li>
+<li>[ ] <code>(index.html)?</code> - for Web Components. Simply omitting <code>index.html</code> and leaving a trailing <code>/</code> in the URL will work as well. Do not use this for anything but Web Components.</li>
+<li>[ ] <code>test.js</code> - standalone test script. Only suitable for JS modules. If exists, so will <code>test.html</code>.</li>
+<li>[ ] <code>test.html</code> - standalone test page. Suitable for any type of web project.</li>
+<li>[ ] <code>node.js</code> - an entry point specifically for <code>node.js</code>.</li>
+<li>[ ] <code>README</code> - the readme formatted as an HTML document.</li>
+<li>[ ] <code>LICENSE</code> - the LICENSE file formatted as an HTML document.</li>
+</ul>
+<h4 id="get-file">GET File</h4>
+<p>You may still <code>GET</code> files directly, even with transforms.
+All of the files dependencies will be SPDY pushed to the client.</p>
+<p>Each file can have the following query strings.
+These are only valid when <strong>exact</strong>, so don&#39;t include a trailing <code>=</code>.
+Only one query string can be used at a time:</p>
+<ul>
+<li><code>?source</code> - return/redirect the source file and its dependencies all without any transformations applied. Useful for building server-side.</li>
+<li><code>?min</code> - minify the transformation. Only applies to JS, CSS, and HTML assets.</li>
+</ul>
+<p>If any of these query strings are included,
+then all the pushed dependencies will also include the same query string.</p>
+<p>Each file will have an <code>ETag</code> header which is the <code>sha256 sum</code> of the <strong>source</strong> file.
+Thus, the only real way to verify whether this header is correct is to check the <code>?source</code> file.
+The ETag will remain the same between query strings and differences in transforms</p>
+<p>Note that the ETag header is subject to change as this is obviously less than ideal.</p>
+<h4 id="get-pull">GET pull</h4>
+<pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/pull
+</code></pre><p>This will <code>pull</code> a specific version from the remote if it has not be installed already.
+If successful, a <code>204</code> status code will be returned.
+You may consider this the optional &quot;publish&quot; step of Normalize.IO.</p>
+<h4 id="get-versions-json">GET versions.json</h4>
+<pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/versions.json
+</code></pre><p>Will return an array of versions that are currently available on the proxy.
+If no versions are installed, then the latest version will automatically be installed.
+A <code>404</code> and an empty array will be returned only when the module can not be installed.</p>
+<p>If you pushed a new version of a package,
+but the proxy has not installed it yet,
+simply install it by hitting the <code>pull</code> entry point.</p>
+<p>The semantics of this endpoint is subject to change.
+In particular, it should return all available versions on the remote.</p>
+<h4 id="get-metadata-json">GET metadata.json</h4>
+<pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/metadata.json
+</code></pre><p>Per-repository metadata that is not version-specific.
+This is where you&#39;ll find metadata such as author, keywords, etc.</p>
+<h4 id="get-search-json">GET search.json</h4>
+<pre><code>GET https://nlz.io/search.json?<span class="hljs-keyword">...</span>
+</code></pre><p>Search the proxy&#39;s installed files and projects.
+All search parameters should be passed as query string parameters.
+These may include:</p>
+<ul>
+<li><code>remote</code></li>
+<li><code>user</code>/<code>owner</code>/<code>organization</code></li>
+<li><code>project</code>/<code>repository</code></li>
+<li><code>keywords</code></li>
+</ul>
+<h4 id="get-proxy-json">GET proxy.json</h4>
+<pre><code class="lang-js">GET https://nlz<span class="hljs-preprocessor">.io</span>/proxy<span class="hljs-preprocessor">.json</span>
+</code></pre>
+<p>Returns relevant information about the proxy including hostname, version, and supported remotes.</p>
+</div></section><section><div class="container"><h2>Transforms</h2><p>These are all the transforms available for both the normalization proxy and <code>nlz-build</code>.
+Unlike Component, Browserify, and other build systems,
+transforms are included automatically,
+and all transforms are stored in a single repository.
+There are a couple of reasons for this:</p>
+<ul>
+<li><p>This middleware system is a more complicated than other middleware systems:</p>
+<ul>
+<li>The use of Koa-based upstream/downstream is quite complex</li>
+<li>Order of middleware is very important, especially when handling upstreams/downstreams</li>
+<li>Transforms are not orthogonal to another, so we have to make sure each plugin interacts with each other well.
+This is more difficult than creating the transforms themselves.</li>
+</ul>
+</li>
+<li><p>The purpose of normalization is for everyone to be on the same page.
+It&#39;s counter productive to have different semantics for the same transform across applications.</p>
+</li>
+</ul>
+<p>PRs for additional transforms are welcomed as long as there&#39;s a valid use-case and people would actually use it.</p>
+<h3 id="how-transforms-work">How Transforms Work</h3>
+<p>Given a source file such as <code>template.html</code>,
+the walker transforms the file based on additional <code>.&lt;extensions&gt;</code>.
+For example, <code>template.html.js</code> will export the HTML string as a JS string.
+This is superior because:</p>
+<ul>
+<li>It&#39;s compatible with HTTP servers</li>
+<li>The transforms used are explicitly shown</li>
+<li>It allows you to use the same source file in multiple ways without configuration</li>
+</ul>
+<p>For example, <code>template.jade.js</code> would return a jade render function whereas <code>template.jade.html.js</code> will return the jade template as a compiled string.</p>
+<p>You can also compose multiple transforms together.
+For example, <code>.jade.html</code> is its own transform and so is <code>.html.js</code>.
+Together, <code>.jade.html.js</code> has a very specific meaning.
+In other words, <code>.jade.html.js</code> is a composition of transforms!</p>
+<p>Unlike other build systems and package managers,
+transforms have the ability to inject required dependencies into your application,
+making development easier in general.
+For example, to use <code>.jade.js</code>, you need to <a href="https://github.com/facebook/regenerator/blob/master/runtime/dev.js">jade runtime</a>.
+The Jade transform will automatically inject the runtime by compiling your jade template to something like this:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> jade = <span class="hljs-built_in">require</span>(<span class="hljs-string">'https://nlz.io/github/visionmedia/jade/1/lib/runtime.js'</span>)
+
+module.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">template</span><span class="hljs-params">(locals)</span> {</span>
+  <span class="hljs-comment">// compiled jade</span>
+}
+</code></pre>
+<h3 id="transforms">Transforms</h3>
+<h4 id="css">CSS</h4>
+<h5 id="autoprefixer">Autoprefixer</h5>
+<p>All CSS is automatically prefixed using <a href="https://github.com/ai/autoprefixer">autoprefixer</a>.
+No extensions are necessary.
+The default options are used.</p>
+<h5 id="rework">Rework</h5>
+<p>A subset of specification compliant <a href="https://github.com/reworkcss/rework">rework</a> plugins are included.
+These are essentially a subset of <a href="https://github.com/segmentio/myth">myth</a>.
+These are:</p>
+<ul>
+<li>Color manipulation via <a href="https://github.com/ianstormtaylor/rework-color-function">rework-color-function</a></li>
+<li>Math via <a href="http://www.w3.org/TR/css3-values/#calc-notation">rework-calc</a></li>
+<li>4/8-digit hex color support via <a href="https://github.com/ianstormtaylor/rework-hex-alpha">rework-hex-alpha</a></li>
+<li>Font-variant shorthands via <a href="https://github.com/ianstormtaylor/rework-font-variant">rework-font-variant</a></li>
+</ul>
+<h4 id="js">JS</h4>
+<h5 id="es6-modules">ES6 Modules</h5>
+<p>All ES6 modules are automatically transpiled to CommonJS modules using <a href="https://github.com/andreypopp/es6-module-jstransform">es6-module-jstransform</a>.
+This will be disabled by default once ES6 modules are widely supported by browsers.</p>
+<h5 id="regenerator">Regenerator</h5>
+<p>All code that uses generators are automatically transformed using <a href="https://github.com/facebook/regenerator">regenerator</a>.
+This will be disabled by default once generators are widely supported by browsers.</p>
+<h5 id="-mime-text-js-"><code>.&lt;mime:text/*&gt;.js</code></h5>
+<p>All extensions whose corresponding MIME type is <code>text/*</code> are automatically transformed to a JS string using <code>JSON.stringify()</code> unless superceded by another transform.</p>
+<p>This is included in <code>normalize-walker</code>.</p>
+<h5 id="-json-js-"><code>.json.js</code></h5>
+<p>Transforms JSON files to a JS object.</p>
+<p>This is included in <code>normalize-walker</code>.</p>
+<h4 id="templates">Templates</h4>
+<h5 id="-jade-html-"><code>.jade.html</code></h5>
+<p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to an HTML string.</p>
+<h5 id="-jade-js-"><code>.jade.js</code></h5>
+<p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to a function.</p>
+<h5 id="-md-markdown-html-"><code>.(md|markdown).html</code></h5>
+<p>Compile markdown templates to an HTML string using <a href="https://github.com/chjj/marked">marked</a>.</p>
+<h5 id="-jsx-js-"><code>.jsx.js</code></h5>
+<p>Compile <a href="http://facebook.github.io/react/">React</a> <code>.jsx</code> templates to JS.</p>
+<h5 id="-html-domify-js-"><code>.html.domify.js</code></h5>
+<p>Compile an HTML string to an element using <a href="https://github.com/component/domify">domify</a>.
+This is useful for web components and templates.</p>
+<pre><code class="lang-js"><span class="hljs-reserved">var</span> template = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./template.html.domify.js'</span>)
+
+<span class="hljs-built_in">document</span>.body.appendChild(template.cloneNode(<span class="hljs-literal">true</span>))
+</code></pre>
+</div></section><section><div class="container"><h2>Philosophy</h2><p>Normalize.IO was born out of frustration with the current web development workflow.
+It has a very specific philosophy,
+which will affect its development.</p>
+<p>Wondering if Normalize.IO should add a feature?
+If it complies with these tenets, then let us know!
+Otherwise, don&#39;t bother.</p>
+<h3 id="back-to-the-basics">Back to the Basics</h3>
+<p>The web development stack should be as short as possible.
+This means no unnecessary abstractions or opinions and just use what WC3, WHATWG, and ES has given us.
+Things like LESS, CoffeeScript, and Grunt are second-class citizens.
+Of course, this was impossible until recently as <code>&lt;link rel=&quot;import&quot;&gt;</code> and <code>import &quot;index.js&quot;</code> were only added recently.</p>
+<p>Let&#39;s not try to build the ideal stack of <code>npm + browserify + less + rework-npm + gulp + yeoman</code>, etc.
+We should strive towards <strong>no stack</strong> using only features browsers (will) support,
+and at most 1 tool, <code>nlz</code> or anything similar, as a stopgap until browsers get us there.</p>
+<h3 id="specification-compliant">Specification Compliant</h3>
+<p>Normalize.IO will strive to comply with specifications from the web authorities,
+particularly ECMAScript, WHATWG, and WC3.
+Specifications like CommonJS, AMD, and UMD are completely irrelevant and are only used as stopgaps for the true specifications.</p>
+<p>Thus, you may see features such as <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables">CSS Variables</a> and <a href="http://facebook.github.io/regenerator/">regenerator</a> automatically included, acting like polyfills.
+But you will not see features such as <a href="https://github.com/reworkcss/rework-inherit">@extend</a> make it unless they are added to the specifications, even as a draft.</p>
+<h3 id="opt-in-everything">Opt-In Everything</h3>
+<p>Many build systems such as <code>grunt</code>, <code>gulp</code>, <code>broccoli</code>, <code>browserify</code>, and <code>component</code> have a lot of possible plugins and configuration options.
+However, these have become a bane for web development as now users have to install tens of modules just to get their app running
+as well as figure out how to configure all these plugins to work with each other with giant configuration scripts.
+Developers would also have to write plugins for every time of platform,
+creating what I call &quot;module pollution&quot;.</p>
+<p>The Normalize.IO philosophy is the opposite - it should include all plugins that 99% of web developers use,
+allowing most to be able to just simply <code>nlz build --watch</code> their component or app and call it a day.
+Eventually, they should be able to skip <code>nlz</code> and simply <code>open webpage.html</code>.
+Bootstrapping apps and components should not be complicated.</p>
+<p>This means that Normalize.IO will push out those 1% of developers who want something very specific and most likely outside of specifications.
+If this 1% wishes to use Normalize.IO, they would have to essentially create their own proxy and client to do so.
+Otherwise, they could use the many other build tools at their disposal.</p>
+<h3 id="normalize-web-development">Normalize Web Development</h3>
+<p>Aside from the top three tenets,
+the idea behind Normalize.IO is to &quot;normalize&quot; or &quot;standardize&quot; web development.
+We want to keep features specification compliant and (cognitive) overhead minimal.</p>
+<p>But of course, this means normalizing and standardizing how apps and components are built and structured.
+This is the primary concept behind <code>entrypoints</code> such as <code>index.js</code>, <code>test.js</code>, <code>README</code>, etc.
+People should know what to expect from a &quot;normal&quot; app/module/component.</p>
+<h3 id="1-to-1-transformations">1-to-1 Transformations</h3>
+<p>One of the most complicated type of transform are many-to-1 transforms.
+For example, concatenating all your SCSS files, then converting it to a single CSS file.
+However there are many wrong with this philosophy.</p>
+<p>Normalize.IO will only support 1-to-1 transformations except for a few cases,
+with caveats, such as CSS Variables, since it is specification-compliant.</p>
+<h4 id="file-interdependence">File Interdependence</h4>
+<p>The only dependencies files should have upon each other are those defined by specifications such as <code>@import</code>.
+Anything else is too opinionated for Normalize.IO.
+With CSS preprocessors, this may be necessary when using mixins, variables, etc.,
+but you should instead strive towards specifications such as <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables">CSS Variables</a>.</p>
+<h4 id="no-incremental-builds">No Incremental Builds</h4>
+<p>Only supporting 1-to-1 transformations allow very fast build times through incremental builds.
+<code>nlz</code> uses <code>make</code>-like 1-to-1 transforms and only rebuilds what has changed.
+When you have many-to-one transforms, 1 line change would require a full rebuild.
+The difference is a <code>x * 100ms</code> vs. <code>&lt; 100ms</code> build times,
+especially with CSS preprocessors such as Stylus and SASS.</p>
+<h4 id="no-complicated-build-process">No Complicated Build Process</h4>
+<p>Many build tools such as <code>grunt</code>, <code>gulp</code>, and <code>broccoli</code> were created out of a need to support these types of transforms.
+In the end, you create very complex build processes and configuration options,
+all of which is unnecessary and not specification-compliant.</p>
+</div></section></main><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+e.src='https://www.google-analytics.com/analytics.js';
+r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+ga('create','UA-XXXXX-X');ga('send','pageview');</script><script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script><script src="index.js"></script></body></html>

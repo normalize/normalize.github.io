@@ -26,13 +26,11 @@ making migration just a little bit easier.</p>
 <p>For example, node-like modules are shimmed for the browser using the same libraries as browserify.
 This means you can use all browserify modules with Normalize!</p>
 <p>Browserify modules that look like this:</p>
-<pre><code class="lang-js">
-<span class="hljs-keyword">var</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">'url'</span>);
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">'url'</span>);
 <span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
 </code></pre>
 <p>Are rewritten to this:</p>
-<pre><code class="lang-js">
-<span class="hljs-keyword">var</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">'https://nlz.io/npm/-/url/*/index.js'</span>);
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">'https://nlz.io/npm/-/url/*/index.js'</span>);
 <span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'https://nlz.io/github/normalize/empty/1/index.js'</span>);
 </code></pre>
 <p>Types of packages that are normalized:</p>

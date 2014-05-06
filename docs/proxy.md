@@ -1,7 +1,7 @@
 
 These are the specifications for https://nlz.io as well as any [normalize-proxy](https://github.com/normalize/proxy.js).
 
-## URL Structure
+### URL Structure
 
 URLs generally have the form: `https://nlz.io/<remote>/<user>/<project>/<version>/<file>`.
 Obviously, different proxies will have different hostnames.
@@ -34,7 +34,7 @@ You should not include leading `v`s and `=` in single versions
 Eventually, commit SHAs for `git` remotes will be supported.
 However, branches will never be supported.
 
-## Entry Points
+### Entry Points
 
 The proxy will "normalize" various end points so that you can be assured that these files will always exist.
 You may still reference only the original files.

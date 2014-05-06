@@ -1,0 +1,23 @@
+
+extends ../layout
+
+block header
+  .container
+    h1 Documentation
+
+block main
+  section: .container
+    h2 Triage
+    include:markdown triage.md
+
+  section: .container
+    h2 Normalization Proxy
+    include:markdown proxy.md
+
+  section: .container
+    h2 Transforms
+    include:markdown transforms.md
+
+  section: .container
+    h2 Philosophy
+    include:markdown philosophy.md
