@@ -1,0 +1,29 @@
+
+
+header {
+  display: block;
+  padding: 20px;
+  background-color: #f8f8f8;
+}
+
+header h1,
+header p,
+header pre {
+  display: block;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+header h1 {
+  padding: 10px 0;
+  font-size: 24px;
+}
+
+header h1 small {
+  font-weight: 300;
+}
+
+header pre {
+  display: inline-block;
+}

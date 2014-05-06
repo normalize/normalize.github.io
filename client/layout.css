@@ -1,0 +1,26 @@
+
+.container {
+  display: block;
+  position: relative;
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+section h2 {
+  padding: 10px 0;
+}
+
+section pre {
+  margin: 0;
+  padding: 20px;
+}
+
+section pre + pre {
+  padding-top: 0;
+}

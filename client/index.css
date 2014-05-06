@@ -1,4 +1,8 @@
 
 @import 'reset.css';
 @import 'type.css';
+@import 'layout.css';
 @import 'top-bar.css';
+@import 'header.css';
+
+@import 'home.css';

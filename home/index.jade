@@ -1,0 +1,275 @@
+
+extends ../layout
+
+block header
+  .container
+    h1 normalize.io -
+      small  <code>@import</code> the future, <code>nlz build</code> the present, normalize the past.
+
+block main
+  section: .container
+    h2 Specifications Compliant and Future Proof
+    :markdown
+      Normalize advocates a subset WHATWG, W3C, and ECMAScript specifications,
+      all of which will eventually be supported natively by browsers.
+
+      ```js
+      module $ from "https://nlz.io/components/jquery/~2.1.0/jquery.js";
+      ```
+
+      ```css
+      @import "https://nlz.io/github/necolas/normalize.css/^3.0.0/normalize.css";
+      ```
+
+      ```html
+      <link rel="import" href="https://github.com/components/polymer/0.2.0/">
+      ```
+
+      Once you write all your code using these specifications,
+      you'll eventually no longer need a build system!
+
+  section: .container
+    h2 SPDY Push Dependencies
+    :markdown
+      All dependencies, whether JavaScript, CSS, HTML, or images,
+      are SPDY pushed to the client from any normalization proxy such as https://nlz.io,
+      making `nlz build(1)` eventually optional.
+      Downloading third party packages has never been faster.
+
+  section: .container
+    h2 Semantic Versioning
+    :markdown
+      Normalize pushes command-line package managers' responsibilities to a normalization proxy such as https://nlz.io.
+      You get most of the benefits of a package manager without any JSON files and eventually without any CLI tools.
+
+      ```css
+      @import 'https://nlz.io/github/necolas/normalize.css/3/normalize.css';
+      @import 'https://nlz.io/github/necolas/normalize.css/3.0.1/normalize.css';
+      @import 'https://nlz.io/github/necolas/normalize.css/*/normalize.css';
+      @import 'https://nlz.io/github/necolas/normalize.css/^3.0.1/normalize.css';
+      @import 'https://nlz.io/github/necolas/normalize.css/~3.0.1/normalize.css';
+      ```
+
+  section: .container
+    h2 Normalized Packages
+    :markdown
+      Various types of packages are normalized to be standards compliant.
+      This allows developers to use packages built using ancient package managers and module systems,
+      making migration just a little bit easier.
+
+      For example, node-like modules are shimmed for the browser using the same libraries as browserify.
+      This means you can use all browserify modules with Normalize!
+
+      Browserify modules that look like this:
+
+      ```js
+
+      var url = require('url');
+      var fs = require('fs');
+      ```
+
+      Are rewritten to this:
+
+      ```js
+
+      var url = require('https://nlz.io/npm/-/url/*/index.js');
+      var fs = require('https://nlz.io/github/normalize/empty/1/index.js');
+      ```
+
+      Types of packages that are normalized:
+
+      - ☑ - <code>component.json</code>
+      - ☑ - <code>package.json</code>
+      - ☐ - <code>bower.json</code>
+
+  section: .container
+    h2 Normalize URL End Points
+    :markdown
+      URLs are rewritten to their "normalized" form:
+
+      ```js
+      import 'https://nlz.io/<remote>/<user>/<repo>/<version>/<file>'
+      import 'https://nlz.io/github/jonathanong/horizontal-grid-packing/0.1.1/index.js'
+      ```
+
+      Remotes use their shorthand names such as `github` instead of `github.com` for brevity.
+      `nlz build(1)` will internally normalize unnormalized URLs.
+
+      ```js
+      import 'https://github.com/jonathanong/horizontal-grid-packing/0.1.1/index.js'
+      import 'https://cdn.rawgit.com/jonathanong/horizontal-grid-packing/0.1.1/index.js'
+      import 'https://raw.githubusercontent.com/jonathanong/horizontal-grid-packing/0.1.1/index.js'
+      import 'https://nlz.io/github.com/jonathanong/horizontal-grid-packing/0.1.1/index.js'
+      // will all be normalized to:
+      import 'https://nlz.io/github/jonathanong/horizontal-grid-packing/0.1.1/index.js'
+      ```
+
+  section: .container
+    h2 Normalized Entry Points
+    :markdown
+      Every repository tends to have a different entry point.
+      For example, `necolas/normalize.css` has `normalize.css` as its entry point.
+      Normalize creates `index.:format` files so you don't have to look up every package's entry point.
+
+      ```js
+      import 'https://nlz.io/github/component/emitter/1/index.js'
+      ```
+
+      ```css
+      @import "https://nlz.io/github/necolas/normalize.css/3/normalize.css";
+      @import "https://nlz.io/github/necolas/normalize.css/3/index.css";
+      ```
+
+  section: .container
+    h2 Normalized Metadata
+    :markdown
+      Metadata will be normalized from all respective JSON files, falling back to the remote's API if available.
+
+      - ☐ - <code>component.json</code>
+      - ☐ - <code>package.json</code>
+      - ☐ - <code>bower.json</code>
+
+  section: .container
+    h2 Multiple Remotes
+    :markdown
+      Normalize not only normalizes web packages from GitHub, but npm as well! Our goal is to eventually support all sources, private or public!
+
+      - ☑ - GitHub
+      - ☑ - npm
+      - ☐ - BitBucket
+      - ☐ - Bower
+
+      Want Normalize to support a specific remote? Let us know!
+
+  section: .container
+    h2 URL-based Transformations
+    :markdown
+      Instead of fiddling with complicated build steps and plugin systems,
+      Normalize uses URLs to specify transformations in an HTTP-compliant manner.
+      For example, suppose you have `template.jade` that you want to use in multiple ways.
+
+      ```js
+      // use the template as a function
+      module template from 'template.jade.js'
+
+      var html = template({
+        name: 'jong'
+      })
+
+      // use the template as an HTML string
+      module html from 'template.jade.html.js'
+
+      document.body.insertAdjacentHTML('beforeend', html)
+
+      // use the template as a DOM element via domify
+      // https://github.com/component/domify
+      module element from 'template.jade.html.dom.js'
+
+      document.body.appendChild(element.cloneNode(true))
+      ```
+
+      No plugins or configuration required!
+      And all transformations are explicitly shown and not hidden behind a complex build system.
+
+  section: .container
+    h2 File-based Dependencies
+    :markdown
+      - npm - per module dependencies
+      - Component - per (local) component dependencies
+      - Normalize - per file dependencies
+
+      Now you can upgrade your app one file at a time!
+      There's no more "module" abstractions to work around. Think of remotes, users, and projects as folders, and versions as magical folders!
+      Yes, Normalize can handle multiple dependencies!
+
+  section: .container
+    h2 Easily Create Custom Proxies
+    :markdown
+      Creating your own (private) proxies with custom (private) remotes is easy thanks to Docker!
+
+
+      ```bash
+      git clone git://github.com/normalize/proxy.js
+      cd proxy.js
+      vim Dockerfile # Edit options
+      docker build -t jong/normalize-proxy .
+      docker run -p 8888:8888 -d jong/normalize-proxy
+      ```
+
+      So should setting remotes with `nlz(1)` via `.nlzrc`:
+
+      ```json
+      {
+        "proxy": "localhost:8888",
+        "self-signed": true,
+        "auth": "user:pass"
+      }
+      ```
+
+  section: .container
+    h2 Use https://nlz.io as a CDN
+    :markdown
+      https://nlz.io is essentially a CDN, but no CDN supports SPDY Push yet! Unlike http://cdnjs.com, http://wzrd.in, http://jspm.io, http://www.jsdelivr.com, normalization proxies:
+
+      - SPDY pushes dependencies
+      - Support CSS, Web Components, and well as any arbitrary file
+      - Allow serving individual files, not just packages and modules
+      - Do not require pull requests to add and update libraries
+      - Do not require any client-side JS to work
+
+      If https://nlz.io is ever down or begins tracking your clients,
+      just point to your own proxy!
+
+  section: .container
+    h2 nlz-build(1)
+    :markdown
+      The spiritual successor to [component(1)](https://github.com/component/component).
+      Think [browserify(1)](https://github.com/substack/node-browserify) with:
+
+      - No installation step as modules are downloaded automatically
+      - Arbitrary remotes so you do not have to rely on npm
+      - Native ES6 module support
+      - Native CSS, Web Component, and file support
+
+      All without requiring any transformations or plugins
+
+      ```bash
+      nlz build index.js index.css --out build/ --watch
+      ```
+
+  section: .container
+    h2 Flat Dependency Tree
+    :markdown
+      Unlike npm which stores modules in a nested tree,
+      or Bower which doesn't allow multiple versions of the same module,
+      `nlz` installs modules in the normalized `<remote>/<user>/<project>/<version>/<file>` format,
+      mimicking the proxy's URL structure.
+
+      - No de-duping is ever necessary
+      - No duplicate installations
+      - Support multiple versions of the same dependency
+      - No issues with long Windows paths
+      - Easier to find modules locally
+
+  section: .container
+    h2 No Caching Layer
+    :markdown
+      All remote dependencies are stored in a directory you can specify via `.nlzrc`:
+
+      ```json
+      {
+        "directory": "/User/jong/.repositories"
+      }
+      ```
+
+      Unlike npm, there's no additional caching layer.
+      If you'd like, you can have all your local apps and modules share the same directory.
+
+      - No global `cache clean` issues
+      - Easier sym`link`ing
+      - Faster installations
+
+  section: .container
+    h2 No More JSON Files!
+    :markdown
+      Creating web components with all the different JSON files is no longer necessary! Just use `index.:format` as your entry points and you're good to go!

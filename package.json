@@ -1,7 +1,7 @@
 {
   "name": "normalize-www",
   "description": "Normalize webpage",
-  "version": "0.0.0",
+  "private": true,
   "author": {
     "name": "Jonathan Ong",
     "email": "me@jongleberry.com",
@@ -9,8 +9,10 @@
     "twitter": "https://twitter.com/jongleberry"
   },
   "license": "MIT",
-  "repository": "normalize/www",
+  "repository": "normalize/normalize.github.io",
   "devDependencies": {
-    "jade": "1"
+    "jade": "1",
+    "marked": "0",
+    "highlight.js": "*"
   }
 }

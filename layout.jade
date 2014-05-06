@@ -4,19 +4,23 @@ html
     title normalize.io - the end of package management for the web
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='index.css')
+    link(rel='stylesheet', href='http://yandex.st/highlightjs/8.0/styles/default.min.css')
   body
-    #container
-      #top-bar
-        a#top-bar-logo normalize.io
-        a.top-bar-link source
-        a.top-bar-link docs
-      main
-        block main
+    #top-bar
+      .container
+        a#top-bar-logo(href="./") normalize.io
+        a.top-bar-link(href="https://github.com/normalize") source
+        a.top-bar-link(href="docs.html") docs
+    header
+      block header
+    main
+      block main
     script.
       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
       function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
       e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-      e.src='//www.google-analytics.com/analytics.js';
+      e.src='https://www.google-analytics.com/analytics.js';
       r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
       ga('create','UA-XXXXX-X');ga('send','pageview');
+    script(src='http://yandex.st/highlightjs/8.0/highlight.min.js')
     script(src='index.js')
