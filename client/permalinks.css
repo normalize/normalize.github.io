@@ -1,0 +1,13 @@
+
+.header-permalink {
+  margin-left: 10px;
+  font-size: 80%;
+  color: #999;
+  text-decoration: none;
+  opacity: 0;
+  transition: all 0.1s linear;
+}
+
+:hover > .header-permalink {
+  opacity: 1;
+}

@@ -5,3 +5,6 @@
 @import 'top-bar.css';
 @import 'header.css';
 @import 'footer.css';
+
+@import 'toc.css';
+@import 'permalinks.css';

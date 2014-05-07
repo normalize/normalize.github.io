@@ -455,6 +455,8 @@ th {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  /* otherwise stuff flashes during transitions */
+  -webkit-font-smoothing: antialiased;
 }
 /* end: "./client/reset.css" */
 
@@ -537,6 +539,10 @@ section h3 {
   margin-top: 20px;
   margin-bottom: 10px;
   border-bottom: 1px solid #f0f0f0;
+}
+
+main {
+  position: relative;
 }
 /* end: "./client/layout.css" */
 
@@ -630,6 +636,144 @@ footer {
 }
 /* end: "./client/footer.css" */
 
+/* begin: "./repositories/github/jonathanong/delegated-dropdown/0.0.7/lib/index.css" */
+/**
+ * .Dropdown(.open)(.up)(.down)(.left)(.right)
+ *   .Dropdown-toggle
+ *   .Dropdown-menu
+ *     .Dropdown-item
+ */
+
+.Dropdown {
+  position: relative;
+}
+
+.Dropdown-menu {
+  position: absolute;
+  /* hidden by default */
+  display: none;
+}
+
+/* .no-hover .Dropdown:hover .Dropdown-menu */
+
+.Dropdown.open .Dropdown-menu {
+  /* no longer hidden! */
+  display: block;
+}
+
+/*
+ * These are all pretty opinionated,
+ * but feel free to overwrite these styles.
+ */
+
+.Dropdown.up .Dropdown-menu {
+  bottom: 100%;
+}
+
+.Dropdown.down .Dropdown-menu {
+  top: 100%;
+}
+
+/* left-justified */
+
+.Dropdown.left .Dropdown-menu {
+  left: 0;
+}
+
+/* right-justified */
+
+.Dropdown.right .Dropdown-menu {
+  right: 0;
+}
+/* end: "./repositories/github/jonathanong/delegated-dropdown/0.0.7/lib/index.css" */
+
+/* begin: "https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/index.css" */
+/* normalized component.json styles */
+
+/* @import "lib/index.css"; */
+
+/* end normalized component.json styles */
+/* end: "https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/index.css" */
+
+/* begin: "./client/toc.css" */
+/* @import 'https://nlz.io/github/jonathanong/delegated-dropdown/0/index.css'; */
+
+#toc {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-align: right;
+  z-index: 500;
+}
+
+html.toc-fixed #toc {
+  position: fixed;
+}
+
+html.suck-it-ios #toc {
+  display: none;
+}
+
+#toc:hover .Dropdown-menu {
+  display: block;
+}
+
+#toc .Dropdown-toggle,
+#toc .Dropdown-item {
+  color: #333;
+  text-decoration: none;
+  -webkit-transition: color 0.1s linear;
+  transition: color 0.1s linear;
+}
+
+#toc.open .Dropdown-toggle,
+#toc .Dropdown-toggle:hover,
+#toc .Dropdown-item:hover {
+  color: #999;
+}
+
+#toc .Dropdown-toggle {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 40px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+}
+
+#toc .Dropdown-toggle,
+#toc .Dropdown-menu {
+  position: relative;
+  background-color: #fff;
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+#toc .Dropdown-item {
+  display: block;
+  padding: 10px;
+  white-space: nowrap;
+  border-bottom: 1px solid #eee;
+}
+/* end: "./client/toc.css" */
+
+/* begin: "./client/permalinks.css" */
+.header-permalink {
+  margin-left: 10px;
+  font-size: 80%;
+  color: #999;
+  text-decoration: none;
+  opacity: 0;
+  -webkit-transition: all 0.1s linear;
+  transition: all 0.1s linear;
+}
+
+:hover > .header-permalink {
+  opacity: 1;
+}
+/* end: "./client/permalinks.css" */
+
 /* begin: "./client/index.css" */
 /* @import 'reset.css'; */
 
@@ -642,4 +786,8 @@ footer {
 /* @import 'header.css'; */
 
 /* @import 'footer.css'; */
+
+/* @import 'toc.css'; */
+
+/* @import 'permalinks.css'; */
 /* end: "./client/index.css" */

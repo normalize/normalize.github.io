@@ -1,0 +1,59 @@
+
+@import 'https://nlz.io/github/jonathanong/delegated-dropdown/0/index.css';
+
+#toc {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-align: right;
+  z-index: 500;
+}
+
+html.toc-fixed #toc {
+  position: fixed;
+}
+
+html.suck-it-ios #toc {
+  display: none;
+}
+
+#toc:hover .Dropdown-menu {
+  display: block;
+}
+
+#toc .Dropdown-toggle,
+#toc .Dropdown-item {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.1s linear;
+}
+
+#toc.open .Dropdown-toggle,
+#toc .Dropdown-toggle:hover,
+#toc .Dropdown-item:hover {
+  color: #999;
+}
+
+#toc .Dropdown-toggle {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 40px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+}
+
+#toc .Dropdown-toggle,
+#toc .Dropdown-menu {
+  position: relative;
+  background-color: #fff;
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+#toc .Dropdown-item {
+  display: block;
+  padding: 10px;
+  white-space: nowrap;
+  border-bottom: 1px solid #eee;
+}

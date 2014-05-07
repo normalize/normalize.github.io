@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">normalize.io</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="docs.html" class="top-bar-link">docs</a></div></div><header><div class="container"><h1>Documentation</h1></div></header><main><section><div class="container"><h2>Triage</h2><p>Normalize is split into multiple repositories.
+<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">normalize.io</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="docs.html" class="top-bar-link">docs</a></div></div><header><div class="container"><h1>Documentation</h1></div></header><main><div id="toc" class="Dropdown right down"><a href="#" class="Dropdown-toggle">#</a><div class="Dropdown-menu"></div></div><section><div class="container"><h2 id="triage">Triage</h2><p>Normalize is split into multiple repositories.
 Most of these repositories can be found within the <a href="https://github.com/normalize">normalize GitHub organization</a>.
 When requesting features or reporting bugs,
 please try to open an issue in the correct repository.</p>
@@ -12,7 +12,7 @@ Open an issue here.</li>
 <li><a href="https://github.com/normalize/nlz">nlz</a> - the command line <code>nlz(1)</code> utility</li>
 <li><a href="https://github.com/normalize/transforms.js">transforms.js</a> - all the transforms supported by both the proxy and <code>nlz(1)</code></li>
 </ul>
-</div></section><section><div class="container"><h2>Normalization Proxy</h2><p>These are the specifications for <a href="https://nlz.io">https://nlz.io</a> as well as any <a href="https://github.com/normalize/proxy.js">normalize-proxy</a>.</p>
+</div></section><section><div class="container"><h2 id="proxy">Normalization Proxy</h2><p>These are the specifications for <a href="https://nlz.io">https://nlz.io</a> as well as any <a href="https://github.com/normalize/proxy.js">normalize-proxy</a>.</p>
 <h3 id="url-structure">URL Structure</h3>
 <p>URLs generally have the form: <code>https://nlz.io/&lt;remote&gt;/&lt;user&gt;/&lt;project&gt;/&lt;version&gt;/&lt;file&gt;</code>.
 Obviously, different proxies will have different hostnames.</p>
@@ -118,7 +118,7 @@ Currently, classification is defined by the following criteria:</p>
 </ul>
 </li>
 </ul>
-</div></section><section><div class="container"><h2>Transforms</h2><p>These are all the transforms available for both the normalization proxy and <code>nlz-build</code>.
+</div></section><section><div class="container"><h2 id="transforms">Transforms</h2><p>These are all the transforms available for both the normalization proxy and <code>nlz-build</code>.
 Unlike Component, Browserify, and other build systems,
 transforms are included automatically,
 and all transforms are stored in a single repository.
@@ -207,7 +207,7 @@ This is useful for web components and templates.</p>
 
 <span class="hljs-built_in">document</span>.body.appendChild(template.cloneNode(<span class="hljs-literal">true</span>))
 </code></pre>
-</div></section><section><div class="container"><h2>Authoring JavaScript</h2><h3 id="supported-module-systems">Supported Module Systems</h3>
+</div></section><section><div class="container"><h2 id="authoring-javascript">Authoring JavaScript</h2><h3 id="supported-module-systems">Supported Module Systems</h3>
 <p>Normalize currently compiles ES6 modules to CommonJS and will do so until all modern browsers support ES6 modules natively.
 Thus, Normalize is also able to use CommonJS dependencies.</p>
 <p>Normalize does not currently support AMD modules.</p>
@@ -241,15 +241,15 @@ and specify <code>.main = &#39;node.js&#39;</code> in your <code>package.json</c
 These two methods are the most compatible with CommonJS modules.
 ES6 modules are not finalized yet,
 so many of these features are subject to change.</p>
-</div></section><section><div class="container"><h2>Authoring CSS</h2><h3 id="don-ts">Don&#39;ts</h3>
+</div></section><section><div class="container"><h2 id="authoring-css">Authoring CSS</h2><h3 id="don-ts">Don&#39;ts</h3>
 <h4 id="don-t-do-crazy-imports">Don&#39;t do crazy @imports</h4>
 <p>Stick with simple <code>@import</code> statements.
 <code>@import</code> statements using <code>url()</code>s and media queries are not supported.</p>
-</div></section><section><div class="container"><h2>Best Practices</h2><h3 id="keep-your-license-file-separate">Keep your LICENSE file separate</h3>
+</div></section><section><div class="container"><h2 id="best-practices">Best Practices</h2><h3 id="keep-your-license-file-separate">Keep your LICENSE file separate</h3>
 <p>This will make it easier for the proxy to normalize licenses.
 Otherwise, it would have to parse the readme or the JSON files for the correct license.
 Plus, it declutters your readme!</p>
-</div></section><section><div class="container"><h2>Production Checklist</h2><p><a href="https://nlz.io">https://nlz.io</a> is <strong>NOT</strong> ready to be used as a CDN in production.
+</div></section><section><div class="container"><h2 id="production-checklist">Production Checklist</h2><p><a href="https://nlz.io">https://nlz.io</a> is <strong>NOT</strong> ready to be used as a CDN in production.
 You may still use it as a registry and proxy for <code>nlz(1)</code>,
 but serving files from <a href="https://nlz.io">https://nlz.io</a> is not recommended.</p>
 <p>The following criteria must be met before it is ready for production usage:</p>
@@ -259,7 +259,7 @@ but serving files from <a href="https://nlz.io">https://nlz.io</a> is not recomm
 <li>Browsers must support URLs in ES6 module <code>import</code> statements</li>
 <li>Browsers must support <code>&lt;link rel=&quot;import&quot; href=&quot;&quot;&gt;</code> tags</li>
 </ul>
-</div></section><section><div class="container"><h2>Philosophy</h2><p>Normalize.IO was born out of frustration with the current web development workflow.
+</div></section><section><div class="container"><h2 id="philosophy">Philosophy</h2><p>Normalize.IO was born out of frustration with the current web development workflow.
 It has a very specific philosophy,
 which will affect its development.</p>
 <p>Wondering if Normalize.IO should add a feature?
