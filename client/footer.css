@@ -1,0 +1,16 @@
+
+footer {
+  padding: 20px;
+  background-color: #eee;
+  border-top: 1px solid #f8f8f8;
+}
+
+#footer-badges {
+  float: right;
+}
+
+#footer-links {
+  display: inline-block;
+  list-style: none;
+  padding: 0;
+}

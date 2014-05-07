@@ -512,6 +512,7 @@ pre {
   max-width: 920px;
   margin-left: auto;
   margin-right: auto;
+  overflow: hidden;
 }
 
 section {
@@ -588,6 +589,24 @@ header pre {
 }
 /* end: "./client/header.css" */
 
+/* begin: "./client/footer.css" */
+footer {
+  padding: 20px;
+  background-color: #eee;
+  border-top: 1px solid #f8f8f8;
+}
+
+#footer-badges {
+  float: right;
+}
+
+#footer-links {
+  display: inline-block;
+  list-style: none;
+  padding: 0;
+}
+/* end: "./client/footer.css" */
+
 /* begin: "./client/index.css" */
 /* @import 'reset.css'; */
 
@@ -599,5 +618,5 @@ header pre {
 
 /* @import 'header.css'; */
 
-/* @import 'home.css'; */
+/* @import 'footer.css'; */
 /* end: "./client/index.css" */

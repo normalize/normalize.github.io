@@ -15,6 +15,24 @@ html
       block header
     main
       block main
+    footer
+      .container
+        #footer-badges
+          script(
+            data-gittip-username='jonathanong',
+            src='https://gttp.co/v1.js',
+            async=true)
+
+        ul#footer-links
+          li Jonathan Ong &copy; 2014
+          li
+            a(href='http://jongleberry.com') jongleberry.com
+          li
+            a(href='https://github.com/jonathanong') @jonathanong
+          li
+            a(href='https://twitter.com/jongleberry') @jongleberry
+          li
+            a(href='mailto:me@jongleberry.com') me@jongleberry.com
     script.
       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
       function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
