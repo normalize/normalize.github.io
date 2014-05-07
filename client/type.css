@@ -1,9 +1,9 @@
 
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 300;
-  line-height: 16px;
+  line-height: 18px;
   color: #333;
   background-color: #fff;
 }
@@ -16,18 +16,31 @@ h5,
 h6 {
   margin: 0;
   padding-bottom: 10px;
+  line-height: 1.2;
 }
 
-h1,
-h2,
+h1 {
+  font-size: 36px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
 h3 {
-  line-height: 24px;
+  font-size: 24px;
 }
 
-h4,
-h5,
+h4 {
+  font-size: 20px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
 h6 {
-  line-height: 20px;
+  font-size: 16px;
 }
 
 p {

@@ -461,9 +461,9 @@ th {
 /* begin: "./client/type.css" */
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 300;
-  line-height: 16px;
+  line-height: 18px;
   color: #333;
   background-color: #fff;
 }
@@ -476,18 +476,31 @@ h5,
 h6 {
   margin: 0;
   padding-bottom: 10px;
+  line-height: 1.2;
 }
 
-h1,
-h2,
+h1 {
+  font-size: 36px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
 h3 {
-  line-height: 24px;
+  font-size: 24px;
 }
 
-h4,
-h5,
+h4 {
+  font-size: 20px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
 h6 {
-  line-height: 20px;
+  font-size: 16px;
 }
 
 p {
@@ -518,6 +531,12 @@ pre {
 section {
   padding: 20px;
   border-bottom: 1px solid #eee;
+}
+
+section h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f0f0f0;
 }
 /* end: "./client/layout.css" */
 
@@ -564,24 +583,17 @@ header {
   display: block;
   padding: 20px;
   background-color: #f8f8f8;
+  border-bottom: 1px solid #eee;
 }
 
-header h1,
-header p,
-header pre {
-  display: block;
-  width: auto;
-  margin-left: auto;
-  margin-right: auto;
+header h1:only-child {
+  padding: 0;
 }
 
-header h1 {
-  padding: 10px 0;
+header small {
   font-size: 24px;
-}
-
-header h1 small {
   font-weight: 300;
+  line-height: 1.2;
 }
 
 header pre {
@@ -604,6 +616,17 @@ footer {
   display: inline-block;
   list-style: none;
   padding: 0;
+}
+
+#footer-links a {
+  color: #666;
+  text-decoration: none;
+}
+
+#footer-links a:hover {
+  color: #999;
+  -webkit-transition: color 0.1s linear;
+  transition: color 0.1s linear;
 }
 /* end: "./client/footer.css" */
 

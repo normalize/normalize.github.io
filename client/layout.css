@@ -12,3 +12,9 @@ section {
   padding: 20px;
   border-bottom: 1px solid #eee;
 }
+
+section h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f0f0f0;
+}
