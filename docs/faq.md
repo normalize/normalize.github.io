@@ -23,3 +23,6 @@ particularly the first CDN that could provide SPDY Push support.
 Hopefully, node.js will eventually support https://nlz.io without a client with ES6 modules.
 But supporting node.js with a command line interface is difficult as there are many obstacles to overcome.
 Basically, forking node would be required to make it work gracefully, which is in the realm of possibility.
+
+To keep yourself up to date with node.js support,
+follow the [node-normalize](https://github.com/normalize/node-normalize) repository.

@@ -10,13 +10,34 @@ block header
 
 block main
   section: .container
+    h2(id='what-is-this') What is this? Another package manager?
+    :markdown
+      ### https://nlz.io - an ephemeral normalizing and caching proxy
+
+      A proxy that caches packages from various sources such as GitHub and npm,
+      normalizes various aspects to create standards-compliant packages,
+      and serves its individual files as browser-compatible assets.
+
+      This is not a CDN (yet) and should not be used in production.
+      Instead, you should just setup your own proxy(s).
+
+      ### `nlz(1)` - a stopgap CLI package manager and builder
+
+      Since browsers have not yet implemented ES6 modules and Web Components,
+      a server-side build tool is necessary.
+      It installs, caches, and builds files just like a browser,
+      making migration to a buildless development workflow seamless.
+      Once browsers support ES6 modules and Web Components,
+      `nlz(1)` will be completely optional.
+
+  section: .container
     h2(id='specification-compliant') Specifications Compliant and Future Proof
     :markdown
       Normalize advocates a subset WHATWG, W3C, and ECMAScript specifications,
       all of which will eventually be supported natively by browsers.
 
       ```js
-      module $ from "https://nlz.io/components/jquery/~2.1.0/jquery.js";
+      module $ from "https://nlz.io/npm/-/jquery/~2.1.0/jquery.js";
       ```
 
       ```css
@@ -27,20 +48,18 @@ block main
       <link rel="import" href="https://nlz.io/github/components/polymer/0.2.0/">
       ```
 
-      When authoring using this syntax, a build process will eventually be optional!
-
   section: .container
     h2(id='spdy-push') SPDY Push Dependencies
     :markdown
       All dependencies, whether JavaScript, CSS, HTML, or images,
-      are SPDY pushed to the client from any normalization proxy such as https://nlz.io,
-      making `nlz build(1)` eventually optional even in production.
-      Downloading third party packages has never been faster.
+      are SPDY pushed to the client from any normalization proxy.
+      Installing dependencies with any client, whether `nlz build(1)` or a browser, has never been faster.
+      Concatenating all your assets is no longer necessary.
 
   section: .container
     h2(id='semantic-versioning') Semantic Versioning
     :markdown
-      Normalize pushes command-line package managers' responsibilities to a normalization proxy such as https://nlz.io.
+      Normalize pushes command-line package managers' responsibilities to the normalization proxy.
       You get most of the benefits of a package manager without any JSON files and eventually without any CLI tools.
 
       ```css
@@ -54,21 +73,21 @@ block main
   section: .container
     h2(id='normalized-packages') Normalized Packages
     :markdown
-      Various types of packages are normalized to be standards compliant.
+      Various types of packages are normalized at the proxy to be standards compliant.
       This allows developers to use packages built using ancient package managers and module systems,
       making migration just a little bit easier.
 
-      For example, node.js modules are shimmed for the browser using the same libraries as browserify.
-      This means you can use all browserify modules with Normalize!
+      For example, node.js modules are shimmed for the browser using the same libraries as [browserify][browserify].
+      This means you can use all [browserify][browserify] modules with Normalize!
 
-      Browserify modules that look like this:
+      [Browserify][browserify] modules that look like this:
 
       ```js
       var url = require('url');
       var fs = require('fs');
       ```
 
-      Are rewritten to look like this:
+      Are rewritten to this:
 
       ```js
       var url = require('https://nlz.io/npm/-/url/*/index.js');
@@ -86,8 +105,10 @@ block main
 
       - ☐ `bower.json`
 
+      [browserify]: http://browserify.org
+
   section: .container
-    h2(id='normalized-urls') Normalize URL End Points
+    h2(id='normalized-urls') Normalized URL End Points
     :markdown
       URLs are rewritten to their "normalized" form:
 
@@ -112,7 +133,7 @@ block main
   section: .container
     h2(id='normalized-entry-points') Normalized Entry Points
     :markdown
-      Every repository tends to have a different entry point.
+      Every repository tends to have different entry points.
       For example, `necolas/normalize.css` has `normalize.css` as its entry point.
       Normalize creates `index.:format` files so you don't have to know every package's entry point.
 
@@ -141,7 +162,7 @@ block main
   section: .container
     h2(id='normalized-metadata') Normalized Metadata
     :markdown
-      Metadata will be normalized from all respective JSON files, falling back to the remote's API if available.
+      Metadata will be normalized from all respective JSON files, falling back to the remote's API, if available.
 
       - ☐ `component.json`
       - ☐ `package.json`
@@ -172,9 +193,9 @@ block main
 
       ```js
       // use the template as a function
-      module template from 'template.jade.js'
+      module render from 'template.jade.js'
 
-      var html = template({
+      var html = render({
         name: 'jong'
       })
 
@@ -185,13 +206,17 @@ block main
 
       // use the template as a DOM element via domify
       // https://github.com/component/domify
-      module element from 'template.jade.html.domify.js'
+      module el from 'template.jade.html.domify.js'
 
-      document.body.appendChild(element.cloneNode(true))
+      document.body.appendChild(el.cloneNode(true))
       ```
 
       No plugins or configuration required!
       And all transformations are explicitly shown and not hidden behind a complex build system.
+
+      Note: if you use transformations on local files,
+      you will always need some sort of build system.
+      Push these transformations to separate modules.
 
   section: .container
     h2(id='file-based-dependencies') File-based Dependencies
@@ -201,14 +226,14 @@ block main
       - `Normalize` - per file dependencies
 
       Now you can upgrade your app one file at a time!
-      There's no more "module" abstractions to work around. Think of remotes, users, projects, and versions as folders, with versions being magical!
+      There's no more "module" abstractions to work around.
+      Think of remotes, users, projects, and versions as folders, with versions being magical!
       Yes, Normalize can handle multiple versions of the same dependency!
 
   section: .container
     h2(id='custom-proxies') Easily Create Custom Proxies
     :markdown
       Creating your own (private) proxies with custom (private) remotes is easy thanks to Docker!
-
 
       ```bash
       git clone git://github.com/normalize/proxy.js
@@ -218,7 +243,7 @@ block main
       docker run -p 8888:8888 -d jong/normalize-proxy
       ```
 
-      So should setting remotes with `nlz(1)` via `.nlzrc`:
+      So should setting custom remotes with `nlz(1)` via `.nlzrc`:
 
       ```json
       {
@@ -234,14 +259,14 @@ block main
       https://nlz.io is essentially a CDN, but no CDN supports SPDY Push yet!
       Unlike other CDNs such as http://cdnjs.com, http://wzrd.in, http://jspm.io, http://www.jsdelivr.com, normalization proxies:
 
-      - SPDY pushes dependencies
+      - SPDY push dependencies
       - Support CSS, Web Components, and well as any arbitrary file
       - Allow serving individual files, not just packages and modules
       - Do not require pull requests to add and update libraries
-      - Do not require any client-side JS to work
+      - Do not require any client-side runtime JS to work
 
       If https://nlz.io is ever down or begins tracking your clients,
-      just point to your own proxy!
+      just create your own proxy and point your URLs to it!
 
   section: .container
     h2(id='nlz-build') nlz-build(1)
@@ -263,7 +288,7 @@ block main
   section: .container
     h2(id='flat-dependency-tree') Flat Dependency Tree
     :markdown
-      Unlike npm which stores modules in a nested tree,
+      Unlike npm which stores modules in a nested tree
       or Bower which doesn't allow multiple versions of the same module,
       `nlz` installs modules in the normalized `<remote>/<user>/<project>/<version>/<file>` format,
       mimicking the proxy's URL structure.
@@ -277,7 +302,7 @@ block main
   section: .container
     h2(id='no-caching-layer') No Caching Layer
     :markdown
-      All remote dependencies are stored in a directory you can specify via `.nlzrc`:
+      All remote dependencies are stored in a directory you may specify via `.nlzrc`:
 
       ```json
       {
@@ -302,7 +327,7 @@ block main
       - [detects](https://github.com/detects) - feature detection as tiny ES6 modules
       - [polyfills](https://github.com/polyfills) - polyfills as tiny ES6 modules
 
-      You may also be interested in other organizations:
+      You may also be interested in these other organizations:
 
       - [components](https://github.com/components) - shim organization for popular packages
       - [suitcss](https://github.com/suitcss) - CSS UI components
