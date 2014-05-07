@@ -125,6 +125,88 @@ Currently, classification is defined by the following criteria:</p>
 </ul>
 </li>
 </ul>
+</div></section><section><div class="container"><h2 id="nlz-cli">nlz(1)</h2><p><code>nlz(1)</code> is the stopgap CLI tool for normalization proxies.
+Eventually, <code>nlz build(1)</code> will be completely optional,
+and <code>nlz(1)</code> will primarily be a CLI tool for inspecting your app/component&#39;s dependency tree.</p>
+<h3 id="installation">Installation</h3>
+<p>Currently, you must install <code>nlz(1)</code> with <code>npm(1)</code>:</p>
+<pre><code class="lang-bash">npm <span class="hljs-keyword">install</span> -g nlz
+</code></pre>
+<p><code>nlz(1)</code> only supports node v0.10,
+but you should use node v0.11+ for better performance as generators are extensively used in the source code.</p>
+<h3 id="nlz-build">nlz build</h3>
+<p>This is the primary build command.
+You may think of it as <a href="http://browserify.org">browserify</a>&#39;s build command,
+but multiple entry points are supported,
+as well as CSS and (eventually) HTML files.</p>
+<p>Most of these parameters and options can be set via <code>.nlzrc</code>,
+allowing developers to simply run <code>nlz build --watch</code>.</p>
+<h4 id="entry-points">Entry Points</h4>
+<pre><code class="lang-bash">nlz build [entrypoints...]
+
+<span class="hljs-comment">// will build to build/index.js and build/index.css, respectively</span>
+nlz build <span class="hljs-keyword">client</span>/<span class="hljs-keyword">index</span>.js <span class="hljs-keyword">client</span>/<span class="hljs-keyword">index</span>.css
+</code></pre>
+<h4 id="-out">--out</h4>
+<p>The destination folder, defaulting to <code>build/</code>.
+The destination file will be the same name as the entry point&#39;s file name.</p>
+<h4 id="-watch">--watch</h4>
+<p>Watch the source files for changes and rebuild automatically.
+You <strong>should</strong> use this as rebuilds are fast and incremental.
+Simply loading <code>nlz(1)</code> takes a considerable amount of time,
+especially if you use a lot of transformations.</p>
+</div></section><section><div class="container"><h2 id="nlzrc">.nlzrc</h2><p><code>.nlzrc</code> is an optional JSON configuration file for local environments.
+It&#39;s completely optional.
+You may have a global, <code>.nlzrc</code> configuration for your computer as well as local <code>.nlzrc</code> configuration for each app.
+For example, you might want to point all your requests to a proxy on your network instead of <a href="https://nlz.io">https://nlz.io</a>.</p>
+<h3 id="-proxy-and-self-signed">.proxy and .self-signed</h3>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">proxy</span>": <span class="hljs-value"><span class="hljs-string">"localhost:8888"</span></span>,
+  "<span class="hljs-attribute">self-signed</span>": <span class="hljs-value"><span class="hljs-literal">true</span>
+</span>}
+</code></pre>
+<p>This is to set a custom proxy other than <a href="https://nlz.io">https://nlz.io</a>.
+<code>proxy</code> should be the full host, including the port.
+Set <code>self-signed</code> to <code>true</code> if the proxy is using a self-signed certification,
+otherwise an error will be thrown.
+Remember, proxies must always use SSL.</p>
+<h3 id="-directory">.directory</h3>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">directory</span>": <span class="hljs-value"><span class="hljs-string">"/User/jong/.repositories"</span>
+</span>}
+</code></pre>
+<p>By default, all files are stored to <code>process.cwd() + &#39;/repositories&#39;</code>.
+Thus, every app or component you work on will have its own <code>directory</code> folder.
+This may be less than ideal for you as you&#39;ll have multiple copies.</p>
+<p>You may optionally set this directory to a global directory like <code>~/.repositories</code>
+so that every app or component you work on share the same files.
+It will also make installations a little faster.</p>
+<h3 id="-transforms">.transforms</h3>
+<p>Options for transforms.
+<strong>All</strong> transforms are enabled by default.
+If you set any <code>.transforms</code> options,
+all transforms will now be opt-in.</p>
+<p>You shouldn&#39;t need to touch this as transforms&#39; libraries are lazily loaded.
+You won&#39;t get much performance benefit from disabling transforms.</p>
+<h3 id="-entrypoints">.entrypoints</h3>
+<p>The entry points for the build.
+This allows you to not specify the entry points every time you run <code>nlz build(1)</code>.</p>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">entrypoints</span>": <span class="hljs-value">[<span class="hljs-string">"client/index.js"</span>, <span class="hljs-string">"client/index.css"</span>]
+</span>}
+</code></pre>
+<p>You may also use objects if you want to set custom options on each entry point:</p>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">entrypoints</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">client/index.js</span>": <span class="hljs-value">{
+
+    }</span>,
+    "<span class="hljs-attribute">client/index.css</span>": <span class="hljs-value">{
+
+    }
+  </span>}
+</span>}
+</code></pre>
 </div></section><section><div class="container"><h2 id="transforms">Transforms</h2><p>These are all the transforms available for both the normalization proxy and <code>nlz-build(1)</code>.
 Unlike Component, Browserify, and other build systems,
 transforms are included automatically and stored in a single repository.
