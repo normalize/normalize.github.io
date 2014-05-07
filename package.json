@@ -11,6 +11,7 @@
   "license": "MIT",
   "repository": "normalize/normalize.github.io",
   "devDependencies": {
+    "sane": "0",
     "jade": "1",
     "marked": "0",
     "highlight.js": "*"

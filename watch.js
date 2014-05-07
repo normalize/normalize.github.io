@@ -1,6 +1,6 @@
-#!/usr/bin/env node
 
 var fs = require('fs')
+var sane = require('sane')
 var jade = require('jade')
 var marked = require('marked')
 var highlight = require('highlight.js')
@@ -29,3 +29,13 @@ function docs() {
 
 home()
 docs()
+
+sane(process.cwd(), [
+  'docs/*',
+  'home/*',
+])
+.on('change', function (filepath) {
+  console.log('%s changed, rebuilding', filepath)
+  home()
+  docs()
+})

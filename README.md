@@ -34,4 +34,10 @@ nlz build --watch
 
 Notice how the entry points are defined within `.nlzrc`.
 
-Then to build the pages, run `make`.
+Then to build the pages,
+install the `npm` dependencies and run `node watch.js`.
+
+```bash
+npm i
+node watch.js
+```
