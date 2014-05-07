@@ -3,8 +3,14 @@ These are the specifications for https://nlz.io as well as any [normalize-proxy]
 
 ### URL Structure
 
-URLs generally have the form: `https://nlz.io/<remote>/<user>/<project>/<version>/<file>`.
+URLs generally have the form:
+
+```
+https://nlz.io/<remote>/<user>/<project>/<version>/<file>
+```
+
 Obviously, different proxies will have different hostnames.
+The `version` and `file` may not be included in some end points.
 
 #### Protocol
 
@@ -20,7 +26,12 @@ For example, `github.com` and `raw.githubusercontent.com` would redirect to `git
 
 #### User
 
+The owner of a repository.
 If the remote does not have a namespace, the user should simply be `-`.
+
+```bash
+https://nlz.io/npm/-/escape-regexp/*/index.js
+```
 
 #### Project
 
@@ -39,7 +50,9 @@ However, branches will never be supported.
 #### GET File
 
 You may still `GET` files directly, even with transforms.
-All of the files dependencies will be SPDY pushed to the client.
+All of the files' dependencies will be SPDY pushed to the client.
+A redirect may be returned as a response.
+If this is the case, the redirect location will be SPDY pushed as well.
 
 Each file can have the following query strings.
 These are only valid when __exact__, so don't include a trailing `=`.
@@ -51,7 +64,7 @@ Only one query string can be used at a time:
 If any of these query strings are included,
 then all the pushed dependencies will also include the same query string.
 
-Each file will have an `ETag` header which is the `sha256 sum` of the __source__ file.
+Each file will have an `ETag` header which is the `sha256` sum of the __source__ file.
 Thus, the only real way to verify whether this header is correct is to check the `?source` file.
 The ETag will remain the same between query strings and differences in transforms
 
@@ -74,12 +87,12 @@ GET https://nlz.io/<remote>/<user>/<project>/versions.json
 ```
 
 Will return an array of versions that are currently available on the proxy.
-If no versions are installed, then the latest version will automatically be installed.
-A `404` and an empty array will be returned only when the module can not be installed.
+If no versions are installed,
+a `404` and an empty array will be returned.
 
 If you pushed a new version of a package,
 but the proxy has not installed it yet,
-simply install it by hitting the `pull` entry point.
+simply install it by hitting the `pull` entry point or `GET` any file.
 
 The semantics of this endpoint is subject to change.
 In particular, it should return all available versions on the remote.

@@ -8,7 +8,7 @@ please try to open an issue in the correct repository.
   Don't know where to open an issue?
   Want to ask for support?
   Open an issue here.
-- [normalize.github.io](https://github.com/normalize/normalize.github.io) - this static site!
+- [normalize.github.io](https://github.com/normalize/normalize.github.io) - this Normalize.IO homepage and documentation
 - [proxy.js](https://github.com/normalize/proxy.js) - the normalization proxy
 - [nlz](https://github.com/normalize/nlz) - the command line `nlz(1)` utility
 - [transforms.js](https://github.com/normalize/transforms.js) - all the transforms supported by both the proxy and `nlz(1)`

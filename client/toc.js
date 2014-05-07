@@ -1,6 +1,6 @@
 
 import 'https://nlz.io/github/jonathanong/delegated-dropdown/0/index.js'
-import 'https://nlz.io/github/polyfills/polyfills/1/classList.js'
+import 'https://nlz.io/github/components/classList.js/*/classList.js'
 
 import 'permalinks.js'
 
@@ -22,11 +22,8 @@ if (toc) {
   toc.querySelector('.Dropdown-menu').appendChild(frag)
 }
 
-var html = document.documentElement
-// ios is broken
-if (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
-  html.className = ' suck-it-ios'
-} else { // sticky #toc
+{
+  var html = document.documentElement
   document.addEventListener('scroll', function () {
     html.classList[window.scrollY > 134 ? 'add' : 'remove']('toc-fixed')
   })

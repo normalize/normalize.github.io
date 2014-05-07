@@ -10,9 +10,8 @@ Otherwise, don't bother.
 ### Back to the Basics
 
 The web development stack should be as short as possible.
-This means no unnecessary abstractions or opinions and just use what WC3, WHATWG, and ES has given us.
-Things like LESS, CoffeeScript, and Grunt are second-class citizens.
-Of course, this was impossible until recently as `<link rel="import">` and `import "index.js"` were only added recently.
+This means no unnecessary abstractions or opinions and just use what W3C, WHATWG, and ES has given us.
+Build tools like LESS, CoffeeScript, and Grunt are second-class citizens.
 
 Let's not try to build the ideal stack of `npm + browserify + less + rework-npm + gulp + yeoman`, etc.
 We should strive towards __no stack__ using only features browsers (will) support,
@@ -21,11 +20,11 @@ and at most 1 tool, `nlz` or anything similar, as a stopgap until browsers get u
 ### Specification Compliant
 
 Normalize.IO will strive to comply with specifications from the web authorities,
-particularly ECMAScript, WHATWG, and WC3.
+particularly ECMAScript, WHATWG, and W3C.
 Specifications like CommonJS, AMD, and UMD are completely irrelevant and are only used as stopgaps for the true specifications.
 
 Thus, you may see features such as [CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables) and [regenerator](http://facebook.github.io/regenerator/) automatically included, acting like polyfills.
-But you will not see features such as [@extend](https://github.com/reworkcss/rework-inherit) make it unless they are added to the specifications, even as a draft.
+But you will not see features such as [@extend](https://github.com/reworkcss/rework-inherit) included unless they are added to the specifications, even as a draft.
 
 ### Opt-In Everything
 
@@ -40,8 +39,8 @@ allowing most to be able to just simply `nlz build --watch` their component or a
 Eventually, they should be able to skip `nlz` and simply `open webpage.html`.
 Bootstrapping apps and components should not be complicated.
 
-This means that Normalize.IO will push out those 1% of developers who want something very specific and most likely outside of specifications.
-If this 1% wishes to use Normalize.IO, they would have to essentially create their own proxy and client to do so.
+This means that Normalize.IO will marginalize those 1% of developers who want something very specific and most likely outside of specifications.
+If the 1% wishes to use Normalize.IO, they would have to essentially create their own custom proxy and client to do so.
 Otherwise, they could use the many other build tools at their disposal.
 
 ### Normalize Web Development
@@ -61,7 +60,7 @@ For example, concatenating all your SCSS files, then converting it to a single C
 However there are many wrong with this philosophy.
 
 Normalize.IO will only support 1-to-1 transformations except for a few cases,
-with caveats, such as CSS Variables, since it is specification-compliant.
+but most likely with caveats.
 
 #### File Interdependence
 
@@ -73,7 +72,7 @@ but you should instead strive towards specifications such as [CSS Variables](htt
 #### No Incremental Builds
 
 Only supporting 1-to-1 transformations allow very fast build times through incremental builds.
-`nlz` uses `make`-like 1-to-1 transforms and only rebuilds what has changed.
+`nlz` uses `make`-like 1-to-1 transforms and only rebuilds source files that have changed.
 When you have many-to-one transforms, 1 line change would require a full rebuild.
 The difference is a `x * 100ms` vs. `< 100ms` build times,
 especially with CSS preprocessors such as Stylus and SASS.

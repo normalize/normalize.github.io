@@ -13,10 +13,6 @@ html.toc-fixed #toc {
   position: fixed;
 }
 
-html.suck-it-ios #toc {
-  display: none;
-}
-
 #toc:hover .Dropdown-menu {
   display: block;
 }

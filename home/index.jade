@@ -185,7 +185,7 @@ block main
 
       // use the template as a DOM element via domify
       // https://github.com/component/domify
-      module element from 'template.jade.html.dom.js'
+      module element from 'template.jade.html.domify.js'
 
       document.body.appendChild(element.cloneNode(true))
       ```
@@ -296,3 +296,17 @@ block main
     h2(id='no-json-files') No More JSON Files!
     :markdown
       Creating web components with all the different JSON files is no longer necessary! Just use `index.:format` as your entry points and you're good to go!
+
+  section: .container
+    h2(id='ecosystem') The Normalized Ecosystem
+    :markdown
+      With Normalize.IO also comes an ecosystem of small, reusable web components.
+      Repositories within these GitHub organizations are all maintained by the same team and are completely compatible:
+
+      - [component](https://github.com/component) - tiny web components
+      - [detects](https://github.com/detects) - feature detection as tiny ES6 modules
+      - [polyfills](https://github.com/polyfills) - polyfills as tiny ES6 modules
+
+      You may also be interested in other organizations:
+
+      - [components](https://github.com/components) - shim organization for popular packages

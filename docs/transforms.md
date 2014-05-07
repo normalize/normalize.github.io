@@ -1,21 +1,21 @@
 
-These are all the transforms available for both the normalization proxy and `nlz-build`.
+These are all the transforms available for both the normalization proxy and `nlz-build(1)`.
 Unlike Component, Browserify, and other build systems,
-transforms are included automatically,
-and all transforms are stored in a single repository.
+transforms are included automatically and stored in a single repository.
 There are a couple of reasons for this:
 
 - This middleware system is a more complicated than other middleware systems:
 
     - The use of Koa-based upstream/downstream is quite complex
-    - Order of middleware is very important, especially when handling upstreams/downstreams
-    - Transforms are not orthogonal to another, so we have to make sure each plugin interacts with each other well.
-      This is more difficult than creating the transforms themselves.
+    - Order of middleware is very important
+    - Transforms are not orthogonal to another,
+      so we have to make sure each plugin interacts with each other well.
 
 - The purpose of normalization is for everyone to be on the same page.
   It's counter productive to have different semantics for the same transform across applications.
 
 PRs for additional transforms are welcomed as long as there's a valid use-case and people would actually use it.
+Feel free to create feature requests and pull requests in the [transform.js](https://github.com/normalize/transforms.js) repository.
 
 ### How Transforms Work
 
@@ -32,19 +32,18 @@ For example, `template.jade.js` would return a jade render function whereas `tem
 
 You can also compose multiple transforms together.
 For example, `.jade.html` is its own transform and so is `.html.js`.
-Together, `.jade.html.js` has a very specific meaning.
 In other words, `.jade.html.js` is a composition of transforms!
 
 Unlike other build systems and package managers,
-transforms have the ability to inject required dependencies into your application,
+transforms have the ability to inject dependencies into your application and automatically install them,
 making development easier in general.
 For example, to use `.jade.js`, you need to [jade runtime](https://github.com/facebook/regenerator/blob/master/runtime/dev.js).
 The Jade transform will automatically inject the runtime by compiling your jade template to something like this:
 
 ```js
-var jade = require('https://nlz.io/github/visionmedia/jade/1/lib/runtime.js')
+module jade from 'https://nlz.io/github/visionmedia/jade/1/lib/runtime.js'
 
-module.exports = function template(locals) {
+export default function template(locals) {
   // compiled jade
 }
 ```
@@ -84,13 +83,9 @@ This will be disabled by default once generators are widely supported by browser
 
 All extensions whose corresponding MIME type is `text/*` are automatically transformed to a JS string using `JSON.stringify()` unless superceded by another transform.
 
-This is included in `normalize-walker`.
-
 #### `.json.js`
 
 Transforms JSON files to a JS object.
-
-This is included in `normalize-walker`.
 
 ### Template Transforms
 
