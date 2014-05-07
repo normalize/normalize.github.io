@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">normalize.io</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="docs.html" class="top-bar-link">docs</a></div></div><header><div class="container"><h1>normalize.io</h1><p><small><code>@import</code> the future, <code>nlz build</code> the present, normalize the past.</small></p></div></header><main><section><div class="container"><h2>Specifications Compliant and Future Proof</h2><p>Normalize advocates a subset WHATWG, W3C, and ECMAScript specifications,
+<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">normalize.io</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="docs.html" class="top-bar-link">docs</a></div></div><header><div class="container"><h1>normalize.io</h1><p><small><code>@import</code> the future, <code>nlz build</code> the present, normalize the past.</small></p></div></header><main><section><div class="container"><h2 id="specification-compliant">Specifications Compliant and Future Proof</h2><p>Normalize advocates a subset WHATWG, W3C, and ECMAScript specifications,
 all of which will eventually be supported natively by browsers.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">module</span> $ <span class="hljs-keyword">from</span> <span class="hljs-string">"https://nlz.io/components/jquery/~2.1.0/jquery.js"</span>;
 </code></pre>
@@ -8,11 +8,11 @@ all of which will eventually be supported natively by browsers.</p>
 </code></pre>
 <p>Once you write all your code using these specifications,
 you&#39;ll eventually no longer need a build system!</p>
-</div></section><section><div class="container"><h2>SPDY Push Dependencies</h2><p>All dependencies, whether JavaScript, CSS, HTML, or images,
+</div></section><section><div class="container"><h2 id="spdy-push">SPDY Push Dependencies</h2><p>All dependencies, whether JavaScript, CSS, HTML, or images,
 are SPDY pushed to the client from any normalization proxy such as <a href="https://nlz.io">https://nlz.io</a>,
 making <code>nlz build(1)</code> eventually optional.
 Downloading third party packages has never been faster.</p>
-</div></section><section><div class="container"><h2>Semantic Versioning</h2><p>Normalize pushes command-line package managers&#39; responsibilities to a normalization proxy such as <a href="https://nlz.io">https://nlz.io</a>.
+</div></section><section><div class="container"><h2 id="semantic-versioning">Semantic Versioning</h2><p>Normalize pushes command-line package managers&#39; responsibilities to a normalization proxy such as <a href="https://nlz.io">https://nlz.io</a>.
 You get most of the benefits of a package manager without any JSON files and eventually without any CLI tools.</p>
 <pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github/necolas/normalize.css/3/normalize.css'</span></span>;
 <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github/necolas/normalize.css/3.0.1/normalize.css'</span></span>;
@@ -20,7 +20,7 @@ You get most of the benefits of a package manager without any JSON files and eve
 <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github/necolas/normalize.css/^3.0.1/normalize.css'</span></span>;
 <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github/necolas/normalize.css/~3.0.1/normalize.css'</span></span>;
 </code></pre>
-</div></section><section><div class="container"><h2>Normalized Packages</h2><p>Various types of packages are normalized to be standards compliant.
+</div></section><section><div class="container"><h2 id="normalized-packages">Normalized Packages</h2><p>Various types of packages are normalized to be standards compliant.
 This allows developers to use packages built using ancient package managers and module systems,
 making migration just a little bit easier.</p>
 <p>For example, node-like modules are shimmed for the browser using the same libraries as browserify.
@@ -46,20 +46,20 @@ This means you can use all browserify modules with Normalize!</p>
 <li><p>☐ - <code>bower.json</code></p>
 </li>
 </ul>
-</div></section><section><div class="container"><h2>Normalize URL End Points</h2><p>URLs are rewritten to their &quot;normalized&quot; form:</p>
+</div></section><section><div class="container"><h2 id="normalized-urls">Normalize URL End Points</h2><p>URLs are rewritten to their &quot;normalized&quot; form:</p>
 <pre><code class="lang-js">import <span class="hljs-comment">'https://nlz.io/<span class="hljs-xmlDocTag">&lt;remote&gt;</span>/<span class="hljs-xmlDocTag">&lt;user&gt;</span>/<span class="hljs-xmlDocTag">&lt;repo&gt;</span>/<span class="hljs-xmlDocTag">&lt;version&gt;</span>/<span class="hljs-xmlDocTag">&lt;file&gt;</span>'</span>
-import <span class="hljs-comment">'https://nlz.io/github/jonathanong/horizontal-grid-packing/0.1.1/index.js'</span>
+import <span class="hljs-comment">'https://nlz.io/github/jonathanong/autocomplete/0.1.5/index.js'</span>
 </code></pre>
 <p>Remotes use their shorthand names such as <code>github</code> instead of <code>github.com</code> for brevity.
 <code>nlz build(1)</code> will internally normalize unnormalized URLs.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> <span class="hljs-string">'https://github.com/jonathanong/horizontal-grid-packing/0.1.1/index.js'</span>
-<span class="hljs-keyword">import</span> <span class="hljs-string">'https://cdn.rawgit.com/jonathanong/horizontal-grid-packing/0.1.1/index.js'</span>
-<span class="hljs-keyword">import</span> <span class="hljs-string">'https://raw.githubusercontent.com/jonathanong/horizontal-grid-packing/0.1.1/index.js'</span>
-<span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github.com/jonathanong/horizontal-grid-packing/0.1.1/index.js'</span>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> <span class="hljs-string">'https://github.com/jonathanong/autocomplete/0.1.5/index.js'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'https://cdn.rawgit.com/jonathanong/autocomplete/0.1.5/index.js'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'https://raw.githubusercontent.com/jonathanong/autocomplete/0.1.5/index.js'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github.com/jonathanong/autocomplete/0.1.5/index.js'</span>
 <span class="hljs-comment">// will all be normalized to:</span>
-<span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github/jonathanong/horizontal-grid-packing/0.1.1/index.js'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github/jonathanong/autocomplete/0.1.5/index.js'</span>
 </code></pre>
-</div></section><section><div class="container"><h2>Normalized Entry Points</h2><p>Every repository tends to have a different entry point.
+</div></section><section><div class="container"><h2 id="normalized-entry-points">Normalized Entry Points</h2><p>Every repository tends to have a different entry point.
 For example, <code>necolas/normalize.css</code> has <code>normalize.css</code> as its entry point.
 Normalize creates <code>index.:format</code> files so you don&#39;t have to look up every package&#39;s entry point.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github/component/emitter/1/index.js'</span>
@@ -79,7 +79,7 @@ Simply omitting <code>index.html</code> and leaving a trailing <code>/</code> in
 <li>☐ <code>README</code></li>
 <li>☐ <code>LICENSE</code></li>
 </ul>
-</div></section><section><div class="container"><h2>Normalized Metadata</h2><p>Metadata will be normalized from all respective JSON files, falling back to the remote&#39;s API if available.</p>
+</div></section><section><div class="container"><h2 id="normalized-metadata">Normalized Metadata</h2><p>Metadata will be normalized from all respective JSON files, falling back to the remote&#39;s API if available.</p>
 <ul>
 <li>☐ - <code>component.json</code></li>
 <li>☐ - <code>package.json</code></li>
@@ -87,7 +87,7 @@ Simply omitting <code>index.html</code> and leaving a trailing <code>/</code> in
 <li>☐ - GitHub API</li>
 <li>☐ - npm</li>
 </ul>
-</div></section><section><div class="container"><h2>Multiple Remotes</h2><p>Normalize not only normalizes web packages from GitHub, but npm as well! Our goal is to eventually support all sources, private or public!</p>
+</div></section><section><div class="container"><h2 id="multiple-remotes">Multiple Remotes</h2><p>Normalize not only normalizes web packages from GitHub, but npm as well! Our goal is to eventually support all sources, private or public!</p>
 <ul>
 <li>☑ - GitHub</li>
 <li>☑ - npm</li>
@@ -97,7 +97,7 @@ Simply omitting <code>index.html</code> and leaving a trailing <code>/</code> in
 <li>☐ - GitHub Enterprise</li>
 </ul>
 <p>Want Normalize to support a specific remote? Let us know!</p>
-</div></section><section><div class="container"><h2>URL-based Transformations</h2><p>Instead of fiddling with complicated build steps and plugin systems,
+</div></section><section><div class="container"><h2 id="transformations">URL-based Transformations</h2><p>Instead of fiddling with complicated build steps and plugin systems,
 Normalize uses URLs to specify transformations in an HTTP-compliant manner.
 For example, suppose you have <code>template.jade</code> that you want to use in multiple ways.</p>
 <pre><code class="lang-js">// use <span class="hljs-operator">the</span> template <span class="hljs-keyword">as</span> <span class="hljs-operator">a</span> <span class="hljs-function"><span class="hljs-keyword">function</span></span>
@@ -120,7 +120,7 @@ document.body.appendChild(<span class="hljs-keyword">element</span>.cloneNode(<s
 </code></pre>
 <p>No plugins or configuration required!
 And all transformations are explicitly shown and not hidden behind a complex build system.</p>
-</div></section><section><div class="container"><h2>File-based Dependencies</h2><ul>
+</div></section><section><div class="container"><h2 id="file-based-dependencies">File-based Dependencies</h2><ul>
 <li>npm - per module dependencies</li>
 <li>Component - per (local) component dependencies</li>
 <li>Normalize - per file dependencies</li>
@@ -152,7 +152,7 @@ docker run -p <span class="hljs-number">8888</span>:<span class="hljs-number">88
 </ul>
 <p>If <a href="https://nlz.io">https://nlz.io</a> is ever down or begins tracking your clients,
 just point to your own proxy!</p>
-</div></section><section><div class="container"><h2>nlz-build(1)</h2><p>The spiritual successor to <a href="https://github.com/component/component">component(1)</a>.
+</div></section><section><div class="container"><h2 id="nlz-build">nlz-build(1)</h2><p>The spiritual successor to <a href="https://github.com/component/component">component(1)</a>.
 Think <a href="https://github.com/substack/node-browserify">browserify(1)</a> with:</p>
 <ul>
 <li>No installation step as modules are downloaded automatically</li>
@@ -163,7 +163,7 @@ Think <a href="https://github.com/substack/node-browserify">browserify(1)</a> wi
 <p>All without requiring any transformations or plugins</p>
 <pre><code class="lang-bash">nlz build index<span class="hljs-preprocessor">.js</span> index<span class="hljs-preprocessor">.css</span> --<span class="hljs-keyword">out</span> build/ --watch
 </code></pre>
-</div></section><section><div class="container"><h2>Flat Dependency Tree</h2><p>Unlike npm which stores modules in a nested tree,
+</div></section><section><div class="container"><h2 id="flat-dependency-tree">Flat Dependency Tree</h2><p>Unlike npm which stores modules in a nested tree,
 or Bower which doesn&#39;t allow multiple versions of the same module,
 <code>nlz</code> installs modules in the normalized <code>&lt;remote&gt;/&lt;user&gt;/&lt;project&gt;/&lt;version&gt;/&lt;file&gt;</code> format,
 mimicking the proxy&#39;s URL structure.</p>
@@ -174,7 +174,7 @@ mimicking the proxy&#39;s URL structure.</p>
 <li>No issues with long Windows paths</li>
 <li>Easier to find modules locally</li>
 </ul>
-</div></section><section><div class="container"><h2>No Caching Layer</h2><p>All remote dependencies are stored in a directory you can specify via <code>.nlzrc</code>:</p>
+</div></section><section><div class="container"><h2 id="no-caching-layer">No Caching Layer</h2><p>All remote dependencies are stored in a directory you can specify via <code>.nlzrc</code>:</p>
 <pre><code class="lang-json">{
   "<span class="hljs-attribute">directory</span>": <span class="hljs-value"><span class="hljs-string">"/User/jong/.repositories"</span>
 </span>}
@@ -186,7 +186,7 @@ If you&#39;d like, you can have all your local apps and modules share the same d
 <li>Easier sym<code>link</code>ing</li>
 <li>Faster installations</li>
 </ul>
-</div></section><section><div class="container"><h2>No More JSON Files!</h2><p>Creating web components with all the different JSON files is no longer necessary! Just use <code>index.:format</code> as your entry points and you&#39;re good to go!</p>
+</div></section><section><div class="container"><h2 id="no-json-files">No More JSON Files!</h2><p>Creating web components with all the different JSON files is no longer necessary! Just use <code>index.:format</code> as your entry points and you&#39;re good to go!</p>
 </div></section></main><footer><div class="container"><div id="footer-badges"><script data-gittip-username="jonathanong" src="https://gttp.co/v1.js" async></script></div><ul id="footer-links"><li>Jonathan Ong &copy; 2014</li><li><a href="http://jongleberry.com">jongleberry.com</a></li><li><a href="https://github.com/jonathanong">@jonathanong</a></li><li><a href="https://twitter.com/jongleberry">@jongleberry</a></li><li><a href="mailto:me@jongleberry.com">me@jongleberry.com</a></li></ul></div></footer><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
 function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
 e=o.createElement(i);r=o.getElementsByTagName(i)[0];

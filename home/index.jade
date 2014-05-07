@@ -9,7 +9,7 @@ block header
 
 block main
   section: .container
-    h2 Specifications Compliant and Future Proof
+    h2(id='specification-compliant') Specifications Compliant and Future Proof
     :markdown
       Normalize advocates a subset WHATWG, W3C, and ECMAScript specifications,
       all of which will eventually be supported natively by browsers.
@@ -30,7 +30,7 @@ block main
       you'll eventually no longer need a build system!
 
   section: .container
-    h2 SPDY Push Dependencies
+    h2(id='spdy-push') SPDY Push Dependencies
     :markdown
       All dependencies, whether JavaScript, CSS, HTML, or images,
       are SPDY pushed to the client from any normalization proxy such as https://nlz.io,
@@ -38,7 +38,7 @@ block main
       Downloading third party packages has never been faster.
 
   section: .container
-    h2 Semantic Versioning
+    h2(id='semantic-versioning') Semantic Versioning
     :markdown
       Normalize pushes command-line package managers' responsibilities to a normalization proxy such as https://nlz.io.
       You get most of the benefits of a package manager without any JSON files and eventually without any CLI tools.
@@ -52,7 +52,7 @@ block main
       ```
 
   section: .container
-    h2 Normalized Packages
+    h2(id='normalized-packages') Normalized Packages
     :markdown
       Various types of packages are normalized to be standards compliant.
       This allows developers to use packages built using ancient package managers and module systems,
@@ -87,29 +87,29 @@ block main
       - ☐ - `bower.json`
 
   section: .container
-    h2 Normalize URL End Points
+    h2(id='normalized-urls') Normalize URL End Points
     :markdown
       URLs are rewritten to their "normalized" form:
 
       ```js
       import 'https://nlz.io/<remote>/<user>/<repo>/<version>/<file>'
-      import 'https://nlz.io/github/jonathanong/horizontal-grid-packing/0.1.1/index.js'
+      import 'https://nlz.io/github/jonathanong/autocomplete/0.1.5/index.js'
       ```
 
       Remotes use their shorthand names such as `github` instead of `github.com` for brevity.
       `nlz build(1)` will internally normalize unnormalized URLs.
 
       ```js
-      import 'https://github.com/jonathanong/horizontal-grid-packing/0.1.1/index.js'
-      import 'https://cdn.rawgit.com/jonathanong/horizontal-grid-packing/0.1.1/index.js'
-      import 'https://raw.githubusercontent.com/jonathanong/horizontal-grid-packing/0.1.1/index.js'
-      import 'https://nlz.io/github.com/jonathanong/horizontal-grid-packing/0.1.1/index.js'
+      import 'https://github.com/jonathanong/autocomplete/0.1.5/index.js'
+      import 'https://cdn.rawgit.com/jonathanong/autocomplete/0.1.5/index.js'
+      import 'https://raw.githubusercontent.com/jonathanong/autocomplete/0.1.5/index.js'
+      import 'https://nlz.io/github.com/jonathanong/autocomplete/0.1.5/index.js'
       // will all be normalized to:
-      import 'https://nlz.io/github/jonathanong/horizontal-grid-packing/0.1.1/index.js'
+      import 'https://nlz.io/github/jonathanong/autocomplete/0.1.5/index.js'
       ```
 
   section: .container
-    h2 Normalized Entry Points
+    h2(id='normalized-entry-points') Normalized Entry Points
     :markdown
       Every repository tends to have a different entry point.
       For example, `necolas/normalize.css` has `normalize.css` as its entry point.
@@ -137,7 +137,7 @@ block main
       - ☐ `LICENSE`
 
   section: .container
-    h2 Normalized Metadata
+    h2(id='normalized-metadata') Normalized Metadata
     :markdown
       Metadata will be normalized from all respective JSON files, falling back to the remote's API if available.
 
@@ -148,7 +148,7 @@ block main
       - ☐ - npm
 
   section: .container
-    h2 Multiple Remotes
+    h2(id='multiple-remotes') Multiple Remotes
     :markdown
       Normalize not only normalizes web packages from GitHub, but npm as well! Our goal is to eventually support all sources, private or public!
 
@@ -162,7 +162,7 @@ block main
       Want Normalize to support a specific remote? Let us know!
 
   section: .container
-    h2 URL-based Transformations
+    h2(id='transformations') URL-based Transformations
     :markdown
       Instead of fiddling with complicated build steps and plugin systems,
       Normalize uses URLs to specify transformations in an HTTP-compliant manner.
@@ -192,7 +192,7 @@ block main
       And all transformations are explicitly shown and not hidden behind a complex build system.
 
   section: .container
-    h2 File-based Dependencies
+    h2(id='file-based-dependencies') File-based Dependencies
     :markdown
       - npm - per module dependencies
       - Component - per (local) component dependencies
@@ -241,7 +241,7 @@ block main
       just point to your own proxy!
 
   section: .container
-    h2 nlz-build(1)
+    h2(id='nlz-build') nlz-build(1)
     :markdown
       The spiritual successor to [component(1)](https://github.com/component/component).
       Think [browserify(1)](https://github.com/substack/node-browserify) with:
@@ -258,7 +258,7 @@ block main
       ```
 
   section: .container
-    h2 Flat Dependency Tree
+    h2(id='flat-dependency-tree') Flat Dependency Tree
     :markdown
       Unlike npm which stores modules in a nested tree,
       or Bower which doesn't allow multiple versions of the same module,
@@ -272,7 +272,7 @@ block main
       - Easier to find modules locally
 
   section: .container
-    h2 No Caching Layer
+    h2(id='no-caching-layer') No Caching Layer
     :markdown
       All remote dependencies are stored in a directory you can specify via `.nlzrc`:
 
@@ -290,6 +290,6 @@ block main
       - Faster installations
 
   section: .container
-    h2 No More JSON Files!
+    h2(id='no-json-files') No More JSON Files!
     :markdown
       Creating web components with all the different JSON files is no longer necessary! Just use `index.:format` as your entry points and you're good to go!
