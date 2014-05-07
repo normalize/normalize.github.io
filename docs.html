@@ -83,7 +83,7 @@ These may include:</p>
 <pre><code class="lang-js">GET https://nlz<span class="hljs-preprocessor">.io</span>/proxy<span class="hljs-preprocessor">.json</span>
 </code></pre>
 <p>Returns relevant information about the proxy including hostname, version, and supported remotes.</p>
-<h3 id="normalization-preference">Normalization Preference</h3>
+<h3 id="normalization">Normalization</h3>
 <p>Packages are &quot;normalized&quot; based on these JSON files in descending priority.</p>
 <ol>
 <li><code>component.json</code></li>
@@ -93,6 +93,15 @@ These may include:</p>
 <p>This is particularly important if you compile your module for one package manager but not the others.
 Thus, if you have to compile your module for a package manager,
 compile it for <code>bower</code>.</p>
+<h4 id="package-json">package.json</h4>
+<p>Only <code>npm</code> and <code>github</code>-style dependencies are supported.
+Only semantic versions are supported - versions that have weird suffixes will be ignored.
+Other types of dependencies such as tarballs will be ignored.</p>
+<h4 id="circular-dependencies">Circular Dependencies</h4>
+<p>Modules that must be normalized and have circular dependencies are not supported.
+In fact, these modules may actually mess up the proxy.
+Please don&#39;t create circular dependencies!
+Use <code>devDependencies</code> or something instead.</p>
 <h3 id="module-classification">Module Classification</h3>
 <p>The normalization proxy is currently designed primarily for web components and modules.
 Thus, it needs a way to classify whether a module is web-compatible.
@@ -202,10 +211,44 @@ This is useful for web components and templates.</p>
 <p>Normalize currently compiles ES6 modules to CommonJS and will do so until all modern browsers support ES6 modules natively.
 Thus, Normalize is also able to use CommonJS dependencies.</p>
 <p>Normalize does not currently support AMD modules.</p>
+<h3 id="differences-with-node-s-commonjs">Differences with Node&#39;s CommonJS</h3>
+<p><code>nlz-build</code>&#39;s compiled CommonJS format is a little different than other CommonJS formats such as node, browserify, and component.</p>
+<h4 id="you-must-always-specify-the-extension">You must always specify the extension</h4>
+<p>In particular, all <code>js</code> files must end with a <code>.js</code> extension.
+There are no more magical <code>/index.js</code> or <code>.json</code> look ups.
+Imagine, how would this work in the browser?
+Multiple HTTP requests would be required, and CSS <code>@import</code>s don&#39;t work this way.</p>
+<p>Note that Node, etc. is compatible with <code>.js</code> files,
+but it&#39;s a little different with <code>.json</code> files and transforms.</p>
+<h4 id="dependencies-use-absolute-urls">Dependencies use absolute URLs</h4>
+<p>The purpose of <code>nlz</code> is to use absolute URLs to avoid using <code>.json</code> files and a package manager.
+Thus, something like <code>require(&#39;events&#39;)</code> will be rewritten during normalization to <code>require(&#39;https://npmjs.org/-/events/*/index.js&#39;)</code>.
+If this is annoying for you, just use browserify.</p>
+<h4 id="dependencies-match-html-semantics">Dependencies match HTML semantics</h4>
+<p>In Node, <code>require(&#39;file&#39;)</code> means a dependency.
+In <code>nlz</code>, if you do <code>require(&#39;file&#39;)</code>,
+<code>nlz</code> will actually look for <code>./file</code>,
+which is probably nonexistent.
+This matches <code>@import</code>, <code>href</code>, and <code>src</code> semantics, so extensions must be included.</p>
+<p>However, <code>nlz</code> will simply ignore these as they could be custom modules defined outside the build
+(though at this point it&#39;s easier to use globals).</p>
+<h3 id="best-practices">Best Practices</h3>
+<h4 id="use-index-js-for-browsers-node-js-for-node-js">Use index.js for browsers, node.js for node.js</h4>
+<p>Give browsers filename priority,
+and specify <code>.main = &#39;node.js&#39;</code> in your <code>package.json</code>s.</p>
+<h4 id="don-t-use-import-or-import-">Don&#39;t use <code>import *</code> or <code>import {}</code></h4>
+<p>Stick with <code>module X from &#39;name&#39;</code> and <code>import &#39;name&#39;</code>.
+These two methods are the most compatible with CommonJS modules.
+ES6 modules are not finalized yet,
+so many of these features are subject to change.</p>
 </div></section><section><div class="container"><h2>Authoring CSS</h2><h3 id="don-ts">Don&#39;ts</h3>
 <h4 id="don-t-do-crazy-imports">Don&#39;t do crazy @imports</h4>
 <p>Stick with simple <code>@import</code> statements.
 <code>@import</code> statements using <code>url()</code>s and media queries are not supported.</p>
+</div></section><section><div class="container"><h2>Best Practices</h2><h3 id="keep-your-license-file-separate">Keep your LICENSE file separate</h3>
+<p>This will make it easier for the proxy to normalize licenses.
+Otherwise, it would have to parse the readme or the JSON files for the correct license.
+Plus, it declutters your readme!</p>
 </div></section><section><div class="container"><h2>Production Checklist</h2><p><a href="https://nlz.io">https://nlz.io</a> is <strong>NOT</strong> ready to be used as a CDN in production.
 You may still use it as a registry and proxy for <code>nlz(1)</code>,
 but serving files from <a href="https://nlz.io">https://nlz.io</a> is not recommended.</p>
