@@ -32,19 +32,7 @@ For example, <code>github.com</code> and <code>raw.githubusercontent.com</code> 
 You should not include leading <code>v</code>s and <code>=</code> in single versions</p>
 <p>Eventually, commit SHAs for <code>git</code> remotes will be supported.
 However, branches will never be supported.</p>
-<h3 id="entry-points">Entry Points</h3>
-<p>The proxy will &quot;normalize&quot; various end points so that you can be assured that these files will always exist.
-You may still reference only the original files.</p>
-<ul>
-<li>[x] <code>index.js</code> - for JS modules</li>
-<li>[x] <code>index.css</code> - for CSS modules</li>
-<li>[ ] <code>(index.html)?</code> - for Web Components. Simply omitting <code>index.html</code> and leaving a trailing <code>/</code> in the URL will work as well. Do not use this for anything but Web Components.</li>
-<li>[ ] <code>test.js</code> - standalone test script. Only suitable for JS modules. If exists, so will <code>test.html</code>.</li>
-<li>[ ] <code>test.html</code> - standalone test page. Suitable for any type of web project.</li>
-<li>[ ] <code>node.js</code> - an entry point specifically for <code>node.js</code>.</li>
-<li>[ ] <code>README</code> - the readme formatted as an HTML document.</li>
-<li>[ ] <code>LICENSE</code> - the LICENSE file formatted as an HTML document.</li>
-</ul>
+<h3 id="api-end-points">API End Points</h3>
 <h4 id="get-file">GET File</h4>
 <p>You may still <code>GET</code> files directly, even with transforms.
 All of the files dependencies will be SPDY pushed to the client.</p>
@@ -95,6 +83,32 @@ These may include:</p>
 <pre><code class="lang-js">GET https://nlz<span class="hljs-preprocessor">.io</span>/proxy<span class="hljs-preprocessor">.json</span>
 </code></pre>
 <p>Returns relevant information about the proxy including hostname, version, and supported remotes.</p>
+<h3 id="normalization-preference">Normalization Preference</h3>
+<p>Packages are &quot;normalized&quot; based on these JSON files in descending priority.</p>
+<ol>
+<li><code>component.json</code></li>
+<li><code>package.json</code></li>
+<li><code>bower.json</code></li>
+</ol>
+<p>This is particularly important if you compile your module for one package manager but not the others.
+Thus, if you have to compile your module for a package manager,
+compile it for <code>bower</code>.</p>
+<h3 id="module-classification">Module Classification</h3>
+<p>The normalization proxy is currently designed primarily for web components and modules.
+Thus, it needs a way to classify whether a module is web-compatible.
+Currently, classification is defined by the following criteria:</p>
+<ul>
+<li><code>index.html</code> exists</li>
+<li><code>index.css</code> exists</li>
+<li><code>component.json</code> exists</li>
+<li><code>bower.json</code> exists</li>
+<li><p><code>package.json</code>:</p>
+<ul>
+<li><code>.browser</code> exists</li>
+<li><code>.style</code> exists</li>
+</ul>
+</li>
+</ul>
 </div></section><section><div class="container"><h2>Transforms</h2><p>These are all the transforms available for both the normalization proxy and <code>nlz-build</code>.
 Unlike Component, Browserify, and other build systems,
 transforms are included automatically,
@@ -140,13 +154,12 @@ module.exports = <span class="hljs-function"><span class="hljs-keyword">function
   <span class="hljs-comment">// compiled jade</span>
 }
 </code></pre>
-<h3 id="transforms">Transforms</h3>
-<h4 id="css">CSS</h4>
-<h5 id="autoprefixer">Autoprefixer</h5>
+<h3 id="css-transforms">CSS Transforms</h3>
+<h4 id="autoprefixer">Autoprefixer</h4>
 <p>All CSS is automatically prefixed using <a href="https://github.com/ai/autoprefixer">autoprefixer</a>.
 No extensions are necessary.
 The default options are used.</p>
-<h5 id="rework">Rework</h5>
+<h4 id="rework">Rework</h4>
 <p>A subset of specification compliant <a href="https://github.com/reworkcss/rework">rework</a> plugins are included.
 These are essentially a subset of <a href="https://github.com/segmentio/myth">myth</a>.
 These are:</p>
@@ -156,35 +169,53 @@ These are:</p>
 <li>4/8-digit hex color support via <a href="https://github.com/ianstormtaylor/rework-hex-alpha">rework-hex-alpha</a></li>
 <li>Font-variant shorthands via <a href="https://github.com/ianstormtaylor/rework-font-variant">rework-font-variant</a></li>
 </ul>
-<h4 id="js">JS</h4>
-<h5 id="es6-modules">ES6 Modules</h5>
+<h3 id="js-transforms">JS Transforms</h3>
+<h4 id="es6-modules">ES6 Modules</h4>
 <p>All ES6 modules are automatically transpiled to CommonJS modules using <a href="https://github.com/andreypopp/es6-module-jstransform">es6-module-jstransform</a>.
 This will be disabled by default once ES6 modules are widely supported by browsers.</p>
-<h5 id="regenerator">Regenerator</h5>
+<h4 id="regenerator">Regenerator</h4>
 <p>All code that uses generators are automatically transformed using <a href="https://github.com/facebook/regenerator">regenerator</a>.
 This will be disabled by default once generators are widely supported by browsers.</p>
-<h5 id="-mime-text-js-"><code>.&lt;mime:text/*&gt;.js</code></h5>
+<h4 id="-mime-text-js-"><code>.&lt;mime:text/*&gt;.js</code></h4>
 <p>All extensions whose corresponding MIME type is <code>text/*</code> are automatically transformed to a JS string using <code>JSON.stringify()</code> unless superceded by another transform.</p>
 <p>This is included in <code>normalize-walker</code>.</p>
-<h5 id="-json-js-"><code>.json.js</code></h5>
+<h4 id="-json-js-"><code>.json.js</code></h4>
 <p>Transforms JSON files to a JS object.</p>
 <p>This is included in <code>normalize-walker</code>.</p>
-<h4 id="templates">Templates</h4>
-<h5 id="-jade-html-"><code>.jade.html</code></h5>
+<h3 id="template-transforms">Template Transforms</h3>
+<h4 id="-jade-html-"><code>.jade.html</code></h4>
 <p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to an HTML string.</p>
-<h5 id="-jade-js-"><code>.jade.js</code></h5>
+<h4 id="-jade-js-"><code>.jade.js</code></h4>
 <p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to a function.</p>
-<h5 id="-md-markdown-html-"><code>.(md|markdown).html</code></h5>
+<h4 id="-md-markdown-html-"><code>.(md|markdown).html</code></h4>
 <p>Compile markdown templates to an HTML string using <a href="https://github.com/chjj/marked">marked</a>.</p>
-<h5 id="-jsx-js-"><code>.jsx.js</code></h5>
+<h4 id="-jsx-js-"><code>.jsx.js</code></h4>
 <p>Compile <a href="http://facebook.github.io/react/">React</a> <code>.jsx</code> templates to JS.</p>
-<h5 id="-html-domify-js-"><code>.html.domify.js</code></h5>
+<h4 id="-html-domify-js-"><code>.html.domify.js</code></h4>
 <p>Compile an HTML string to an element using <a href="https://github.com/component/domify">domify</a>.
 This is useful for web components and templates.</p>
 <pre><code class="lang-js"><span class="hljs-reserved">var</span> template = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./template.html.domify.js'</span>)
 
 <span class="hljs-built_in">document</span>.body.appendChild(template.cloneNode(<span class="hljs-literal">true</span>))
 </code></pre>
+</div></section><section><div class="container"><h2>Authoring JavaScript</h2><h3 id="supported-module-systems">Supported Module Systems</h3>
+<p>Normalize currently compiles ES6 modules to CommonJS and will do so until all modern browsers support ES6 modules natively.
+Thus, Normalize is also able to use CommonJS dependencies.</p>
+<p>Normalize does not currently support AMD modules.</p>
+</div></section><section><div class="container"><h2>Authoring CSS</h2><h3 id="don-ts">Don&#39;ts</h3>
+<h4 id="don-t-do-crazy-imports">Don&#39;t do crazy @imports</h4>
+<p>Stick with simple <code>@import</code> statements.
+<code>@import</code> statements using <code>url()</code>s and media queries are not supported.</p>
+</div></section><section><div class="container"><h2>Production Checklist</h2><p><a href="https://nlz.io">https://nlz.io</a> is <strong>NOT</strong> ready to be used as a CDN in production.
+You may still use it as a registry and proxy for <code>nlz(1)</code>,
+but serving files from <a href="https://nlz.io">https://nlz.io</a> is not recommended.</p>
+<p>The following criteria must be met before it is ready for production usage:</p>
+<ul>
+<li>A CDN that supports SPDY Push must be used. We&#39;re not going to setup a complex infrastructure to make this work (like npm).</li>
+<li>Browsers must support SPDY</li>
+<li>Browsers must support URLs in ES6 module <code>import</code> statements</li>
+<li>Browsers must support <code>&lt;link rel=&quot;import&quot; href=&quot;&quot;&gt;</code> tags</li>
+</ul>
 </div></section><section><div class="container"><h2>Philosophy</h2><p>Normalize.IO was born out of frustration with the current web development workflow.
 It has a very specific philosophy,
 which will affect its development.</p>

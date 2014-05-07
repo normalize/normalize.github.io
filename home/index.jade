@@ -76,9 +76,14 @@ block main
 
       Types of packages that are normalized:
 
-      - ☑ - <code>component.json</code>
-      - ☑ - <code>package.json</code>
-      - ☐ - <code>bower.json</code>
+      - ☑ - `component.json`
+      - ☐ - `package.json`
+
+        - ☑ - `browserify`
+        - ☑ - `.style` field
+        - ☐ - `node.js`
+
+      - ☐ - `bower.json`
 
   section: .container
     h2 Normalize URL End Points
@@ -118,14 +123,28 @@ block main
       @import "https://nlz.io/github/necolas/normalize.css/3/index.css";
       ```
 
+      Normalized entry points:
+
+      - ☑ `index.js` - JS modules
+      - ☑ `index.css` - CSS modules
+      - ☐ `index.html` - Web Components.
+        Simply omitting `index.html` and leaving a trailing `/` in the URL will work as well.
+      - ☐ `node.js` - node.js JavaScript
+      - ☐ `test.js` - standalone test script for JS modules. If it exists, so will `test.html`.
+      - ☐ `test.html` - standalone test page. Suitable for any type of web project.
+      - ☐ `README`
+      - ☐ `LICENSE`
+
   section: .container
     h2 Normalized Metadata
     :markdown
       Metadata will be normalized from all respective JSON files, falling back to the remote's API if available.
 
-      - ☐ - <code>component.json</code>
-      - ☐ - <code>package.json</code>
-      - ☐ - <code>bower.json</code>
+      - ☐ - `component.json`
+      - ☐ - `package.json`
+      - ☐ - `bower.json`
+      - ☐ - GitHub API
+      - ☐ - npm
 
   section: .container
     h2 Multiple Remotes
@@ -136,6 +155,8 @@ block main
       - ☑ - npm
       - ☐ - BitBucket
       - ☐ - Bower
+      - ☐ - GitLab
+      - ☐ - GitHub Enterprise
 
       Want Normalize to support a specific remote? Let us know!
 

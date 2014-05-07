@@ -34,7 +34,8 @@ p {
   padding-bottom: 10px;
 }
 
-ul {
+ul,
+ol {
   padding: 0 10px 10px 20px;
 }
 

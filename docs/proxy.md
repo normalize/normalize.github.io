@@ -34,19 +34,7 @@ You should not include leading `v`s and `=` in single versions
 Eventually, commit SHAs for `git` remotes will be supported.
 However, branches will never be supported.
 
-### Entry Points
-
-The proxy will "normalize" various end points so that you can be assured that these files will always exist.
-You may still reference only the original files.
-
-- [x] `index.js` - for JS modules
-- [x] `index.css` - for CSS modules
-- [ ] `(index.html)?` - for Web Components. Simply omitting `index.html` and leaving a trailing `/` in the URL will work as well. Do not use this for anything but Web Components.
-- [ ] `test.js` - standalone test script. Only suitable for JS modules. If exists, so will `test.html`.
-- [ ] `test.html` - standalone test page. Suitable for any type of web project.
-- [ ] `node.js` - an entry point specifically for `node.js`.
-- [ ] `README` - the readme formatted as an HTML document.
-- [ ] `LICENSE` - the LICENSE file formatted as an HTML document.
+### API End Points
 
 #### GET File
 
@@ -127,3 +115,43 @@ GET https://nlz.io/proxy.json
 ```
 
 Returns relevant information about the proxy including hostname, version, and supported remotes.
+
+### Normalization
+
+Packages are "normalized" based on these JSON files in descending priority.
+
+1. `component.json`
+2. `package.json`
+3. `bower.json`
+
+This is particularly important if you compile your module for one package manager but not the others.
+Thus, if you have to compile your module for a package manager,
+compile it for `bower`.
+
+#### package.json
+
+Only `npm` and `github`-style dependencies are supported.
+Only semantic versions are supported - versions that have weird suffixes will be ignored.
+Other types of dependencies such as tarballs will be ignored.
+
+#### Circular Dependencies
+
+Modules that must be normalized and have circular dependencies are not supported.
+In fact, these modules may actually mess up the proxy.
+Please don't create circular dependencies!
+Use `devDependencies` or something instead.
+
+### Module Classification
+
+The normalization proxy is currently designed primarily for web components and modules.
+Thus, it needs a way to classify whether a module is web-compatible.
+Currently, classification is defined by the following criteria:
+
+- `index.html` exists
+- `index.css` exists
+- `component.json` exists
+- `bower.json` exists
+- `package.json`:
+
+  - `.browser` exists
+  - `.style` exists

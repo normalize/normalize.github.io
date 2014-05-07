@@ -36,8 +36,15 @@ This means you can use all browserify modules with Normalize!</p>
 <p>Types of packages that are normalized:</p>
 <ul>
 <li>☑ - <code>component.json</code></li>
-<li>☑ - <code>package.json</code></li>
-<li>☐ - <code>bower.json</code></li>
+<li><p>☐ - <code>package.json</code></p>
+<ul>
+<li>☑ - <code>browserify</code></li>
+<li>☑ - <code>.style</code> field</li>
+<li>☐ - <code>node.js</code></li>
+</ul>
+</li>
+<li><p>☐ - <code>bower.json</code></p>
+</li>
 </ul>
 </div></section><section><div class="container"><h2>Normalize URL End Points</h2><p>URLs are rewritten to their &quot;normalized&quot; form:</p>
 <pre><code class="lang-js">import <span class="hljs-comment">'https://nlz.io/<span class="hljs-xmlDocTag">&lt;remote&gt;</span>/<span class="hljs-xmlDocTag">&lt;user&gt;</span>/<span class="hljs-xmlDocTag">&lt;repo&gt;</span>/<span class="hljs-xmlDocTag">&lt;version&gt;</span>/<span class="hljs-xmlDocTag">&lt;file&gt;</span>'</span>
@@ -60,11 +67,25 @@ Normalize creates <code>index.:format</code> files so you don&#39;t have to look
 <pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"https://nlz.io/github/necolas/normalize.css/3/normalize.css"</span></span>;
 <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"https://nlz.io/github/necolas/normalize.css/3/index.css"</span></span>;
 </code></pre>
+<p>Normalized entry points:</p>
+<ul>
+<li>☑ <code>index.js</code> - JS modules</li>
+<li>☑ <code>index.css</code> - CSS modules</li>
+<li>☐ <code>index.html</code> - Web Components.
+Simply omitting <code>index.html</code> and leaving a trailing <code>/</code> in the URL will work as well.</li>
+<li>☐ <code>node.js</code> - node.js JavaScript</li>
+<li>☐ <code>test.js</code> - standalone test script for JS modules. If it exists, so will <code>test.html</code>.</li>
+<li>☐ <code>test.html</code> - standalone test page. Suitable for any type of web project.</li>
+<li>☐ <code>README</code></li>
+<li>☐ <code>LICENSE</code></li>
+</ul>
 </div></section><section><div class="container"><h2>Normalized Metadata</h2><p>Metadata will be normalized from all respective JSON files, falling back to the remote&#39;s API if available.</p>
 <ul>
 <li>☐ - <code>component.json</code></li>
 <li>☐ - <code>package.json</code></li>
 <li>☐ - <code>bower.json</code></li>
+<li>☐ - GitHub API</li>
+<li>☐ - npm</li>
 </ul>
 </div></section><section><div class="container"><h2>Multiple Remotes</h2><p>Normalize not only normalizes web packages from GitHub, but npm as well! Our goal is to eventually support all sources, private or public!</p>
 <ul>
@@ -72,6 +93,8 @@ Normalize creates <code>index.:format</code> files so you don&#39;t have to look
 <li>☑ - npm</li>
 <li>☐ - BitBucket</li>
 <li>☐ - Bower</li>
+<li>☐ - GitLab</li>
+<li>☐ - GitHub Enterprise</li>
 </ul>
 <p>Want Normalize to support a specific remote? Let us know!</p>
 </div></section><section><div class="container"><h2>URL-based Transformations</h2><p>Instead of fiddling with complicated build steps and plugin systems,

@@ -49,17 +49,15 @@ module.exports = function template(locals) {
 }
 ```
 
-### Transforms
+### CSS Transforms
 
-#### CSS
-
-##### Autoprefixer
+#### Autoprefixer
 
 All CSS is automatically prefixed using [autoprefixer](https://github.com/ai/autoprefixer).
 No extensions are necessary.
 The default options are used.
 
-##### Rework
+#### Rework
 
 A subset of specification compliant [rework](https://github.com/reworkcss/rework) plugins are included.
 These are essentially a subset of [myth](https://github.com/segmentio/myth).
@@ -70,49 +68,49 @@ These are:
 - 4/8-digit hex color support via [rework-hex-alpha](https://github.com/ianstormtaylor/rework-hex-alpha)
 - Font-variant shorthands via [rework-font-variant](https://github.com/ianstormtaylor/rework-font-variant)
 
-#### JS
+### JS Transforms
 
-##### ES6 Modules
+#### ES6 Modules
 
 All ES6 modules are automatically transpiled to CommonJS modules using [es6-module-jstransform](https://github.com/andreypopp/es6-module-jstransform).
 This will be disabled by default once ES6 modules are widely supported by browsers.
 
-##### Regenerator
+#### Regenerator
 
 All code that uses generators are automatically transformed using [regenerator](https://github.com/facebook/regenerator).
 This will be disabled by default once generators are widely supported by browsers.
 
-##### `.<mime:text/*>.js`
+#### `.<mime:text/*>.js`
 
 All extensions whose corresponding MIME type is `text/*` are automatically transformed to a JS string using `JSON.stringify()` unless superceded by another transform.
 
 This is included in `normalize-walker`.
 
-##### `.json.js`
+#### `.json.js`
 
 Transforms JSON files to a JS object.
 
 This is included in `normalize-walker`.
 
-#### Templates
+### Template Transforms
 
-##### `.jade.html`
+#### `.jade.html`
 
 Compile [jade](https://github.com/visionmedia/jade) templates to an HTML string.
 
-##### `.jade.js`
+#### `.jade.js`
 
 Compile [jade](https://github.com/visionmedia/jade) templates to a function.
 
-##### `.(md|markdown).html`
+#### `.(md|markdown).html`
 
 Compile markdown templates to an HTML string using [marked](https://github.com/chjj/marked).
 
-##### `.jsx.js`
+#### `.jsx.js`
 
 Compile [React](http://facebook.github.io/react/) `.jsx` templates to JS.
 
-##### `.html.domify.js`
+#### `.html.domify.js`
 
 Compile an HTML string to an element using [domify](https://github.com/component/domify).
 This is useful for web components and templates.
