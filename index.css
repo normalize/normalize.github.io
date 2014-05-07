@@ -470,6 +470,17 @@ body {
   background-color: #fff;
 }
 
+a,
+a:visited,
+a:active {
+  color: #08c;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 h1,
 h2,
 h3,
@@ -515,8 +526,9 @@ ol {
 }
 
 pre {
-  margin: 0;
-  padding: 0 20px 10px;
+  margin: 0 0 10px 0;
+  padding: 10px;
+  background-color: #f8f8f8;
 }
 /* end: "./client/type.css" */
 
@@ -550,6 +562,7 @@ main {
 #top-bar {
   position: relative;
   height: 50px;
+  padding: 0 20px;
   background-color: #fffff;
   -webkit-box-shadow: 1px 0px 2px 1px rgba(0, 0, 0, 0.15);
   box-shadow: 1px 0px 2px 1px rgba(0, 0, 0, 0.15);
@@ -560,7 +573,6 @@ main {
   height: 50px;
   line-height: 50px;
   font-size: 20px;
-  padding: 0 10px;
   text-decoration: none;
 }
 
@@ -581,6 +593,7 @@ main {
 
 .top-bar-link {
   float: right;
+  padding-left: 10px;
 }
 /* end: "./client/top-bar.css" */
 
@@ -762,11 +775,11 @@ html.suck-it-ios #toc {
 .header-permalink {
   margin-left: 10px;
   font-size: 80%;
-  color: #999;
+  color: #999 !important;
   text-decoration: none;
   opacity: 0;
-  -webkit-transition: all 0.1s linear;
-  transition: all 0.1s linear;
+  -webkit-transition: opacity 0.1s linear;
+  transition: opacity 0.1s linear;
 }
 
 :hover > .header-permalink {

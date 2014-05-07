@@ -2,10 +2,10 @@
 .header-permalink {
   margin-left: 10px;
   font-size: 80%;
-  color: #999;
+  color: #999 !important;
   text-decoration: none;
   opacity: 0;
-  transition: all 0.1s linear;
+  transition: opacity 0.1s linear;
 }
 
 :hover > .header-permalink {

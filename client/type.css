@@ -8,6 +8,17 @@ body {
   background-color: #fff;
 }
 
+a,
+a:visited,
+a:active {
+  color: #08c;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 h1,
 h2,
 h3,
@@ -53,6 +64,7 @@ ol {
 }
 
 pre {
-  margin: 0;
-  padding: 0 20px 10px;
+  margin: 0 0 10px 0;
+  padding: 10px;
+  background-color: #f8f8f8;
 }

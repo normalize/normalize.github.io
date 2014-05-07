@@ -2,6 +2,7 @@
 #top-bar {
   position: relative;
   height: 50px;
+  padding: 0 20px;
   background-color: #fffff;
   box-shadow: 1px 0px 2px 1px rgba(0, 0, 0, 0.15);
   z-index: 1000;
@@ -11,7 +12,6 @@
   height: 50px;
   line-height: 50px;
   font-size: 20px;
-  padding: 0 10px;
   text-decoration: none;
 }
 
@@ -32,4 +32,5 @@
 
 .top-bar-link {
   float: right;
+  padding-left: 10px;
 }
