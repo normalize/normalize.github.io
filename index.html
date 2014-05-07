@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">normalize.io</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="docs.html" class="top-bar-link">docs</a></div></div><header><div class="container"><h1>normalize.io</h1><p><small><code>@import</code> the future, <code>nlz build</code> the present, normalize the past.</small></p></div></header><main><section><div class="container"><h2 id="specification-compliant">Specifications Compliant and Future Proof</h2><p>Normalize advocates a subset WHATWG, W3C, and ECMAScript specifications,
+<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">normalize.io</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="docs.html" class="top-bar-link">docs</a></div></div><header><div class="container"><h1>normalize.io<small> &alpha;lpha</small></h1><p><small><code>@import</code> the future, <code>nlz build</code> the present, normalize the past.</small></p></div></header><main><section><div class="container"><h2 id="specification-compliant">Specifications Compliant and Future Proof</h2><p>Normalize advocates a subset WHATWG, W3C, and ECMAScript specifications,
 all of which will eventually be supported natively by browsers.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">module</span> $ <span class="hljs-keyword">from</span> <span class="hljs-string">"https://nlz.io/components/jquery/~2.1.0/jquery.js"</span>;
 </code></pre>
@@ -6,11 +6,10 @@ all of which will eventually be supported natively by browsers.</p>
 </code></pre>
 <pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"import"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"https://github.com/components/polymer/0.2.0/"</span>&gt;</span>
 </code></pre>
-<p>Once you write all your code using these specifications,
-you&#39;ll eventually no longer need a build system!</p>
+<p>When authoring using this syntax, a build process will eventually be optional!</p>
 </div></section><section><div class="container"><h2 id="spdy-push">SPDY Push Dependencies</h2><p>All dependencies, whether JavaScript, CSS, HTML, or images,
 are SPDY pushed to the client from any normalization proxy such as <a href="https://nlz.io">https://nlz.io</a>,
-making <code>nlz build(1)</code> eventually optional.
+making <code>nlz build(1)</code> eventually optional even in production.
 Downloading third party packages has never been faster.</p>
 </div></section><section><div class="container"><h2 id="semantic-versioning">Semantic Versioning</h2><p>Normalize pushes command-line package managers&#39; responsibilities to a normalization proxy such as <a href="https://nlz.io">https://nlz.io</a>.
 You get most of the benefits of a package manager without any JSON files and eventually without any CLI tools.</p>
@@ -23,27 +22,27 @@ You get most of the benefits of a package manager without any JSON files and eve
 </div></section><section><div class="container"><h2 id="normalized-packages">Normalized Packages</h2><p>Various types of packages are normalized to be standards compliant.
 This allows developers to use packages built using ancient package managers and module systems,
 making migration just a little bit easier.</p>
-<p>For example, node-like modules are shimmed for the browser using the same libraries as browserify.
+<p>For example, node.js modules are shimmed for the browser using the same libraries as browserify.
 This means you can use all browserify modules with Normalize!</p>
 <p>Browserify modules that look like this:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">'url'</span>);
 <span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
 </code></pre>
-<p>Are rewritten to this:</p>
+<p>Are rewritten to look like this:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">'https://nlz.io/npm/-/url/*/index.js'</span>);
 <span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'https://nlz.io/github/normalize/empty/1/index.js'</span>);
 </code></pre>
 <p>Types of packages that are normalized:</p>
 <ul>
-<li>☑ - <code>component.json</code></li>
-<li><p>☐ - <code>package.json</code></p>
+<li>☑ <code>component.json</code></li>
+<li><p>☐ <code>package.json</code></p>
 <ul>
-<li>☑ - <code>browserify</code></li>
-<li>☑ - <code>.style</code> field</li>
-<li>☐ - <code>node.js</code></li>
+<li>☑ <code>browserify</code></li>
+<li>☑ <code>.style</code> field</li>
+<li>☐ <code>node.js</code></li>
 </ul>
 </li>
-<li><p>☐ - <code>bower.json</code></p>
+<li><p>☐ <code>bower.json</code></p>
 </li>
 </ul>
 </div></section><section><div class="container"><h2 id="normalized-urls">Normalize URL End Points</h2><p>URLs are rewritten to their &quot;normalized&quot; form:</p>
@@ -56,12 +55,13 @@ import <span class="hljs-comment">'https://nlz.io/github/jonathanong/autocomplet
 <span class="hljs-keyword">import</span> <span class="hljs-string">'https://cdn.rawgit.com/jonathanong/autocomplete/0.1.5/index.js'</span>
 <span class="hljs-keyword">import</span> <span class="hljs-string">'https://raw.githubusercontent.com/jonathanong/autocomplete/0.1.5/index.js'</span>
 <span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github.com/jonathanong/autocomplete/0.1.5/index.js'</span>
+
 <span class="hljs-comment">// will all be normalized to:</span>
 <span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github/jonathanong/autocomplete/0.1.5/index.js'</span>
 </code></pre>
 </div></section><section><div class="container"><h2 id="normalized-entry-points">Normalized Entry Points</h2><p>Every repository tends to have a different entry point.
 For example, <code>necolas/normalize.css</code> has <code>normalize.css</code> as its entry point.
-Normalize creates <code>index.:format</code> files so you don&#39;t have to look up every package&#39;s entry point.</p>
+Normalize creates <code>index.:format</code> files so you don&#39;t have to know every package&#39;s entry point.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github/component/emitter/1/index.js'</span>
 </code></pre>
 <pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"https://nlz.io/github/necolas/normalize.css/3/normalize.css"</span></span>;
@@ -73,6 +73,7 @@ Normalize creates <code>index.:format</code> files so you don&#39;t have to look
 <li>☑ <code>index.css</code> - CSS modules</li>
 <li>☐ <code>index.html</code> - Web Components.
 Simply omitting <code>index.html</code> and leaving a trailing <code>/</code> in the URL will work as well.</li>
+<li>☐ <code>umd.js</code> - standalone build</li>
 <li>☐ <code>node.js</code> - node.js JavaScript</li>
 <li>☐ <code>test.js</code> - standalone test script for JS modules. If it exists, so will <code>test.html</code>.</li>
 <li>☐ <code>test.html</code> - standalone test page. Suitable for any type of web project.</li>
@@ -81,20 +82,20 @@ Simply omitting <code>index.html</code> and leaving a trailing <code>/</code> in
 </ul>
 </div></section><section><div class="container"><h2 id="normalized-metadata">Normalized Metadata</h2><p>Metadata will be normalized from all respective JSON files, falling back to the remote&#39;s API if available.</p>
 <ul>
-<li>☐ - <code>component.json</code></li>
-<li>☐ - <code>package.json</code></li>
-<li>☐ - <code>bower.json</code></li>
-<li>☐ - GitHub API</li>
-<li>☐ - npm</li>
+<li>☐ <code>component.json</code></li>
+<li>☐ <code>package.json</code></li>
+<li>☐ <code>bower.json</code></li>
+<li>☐ GitHub API</li>
+<li>☐ npm</li>
 </ul>
-</div></section><section><div class="container"><h2 id="multiple-remotes">Multiple Remotes</h2><p>Normalize not only normalizes web packages from GitHub, but npm as well! Our goal is to eventually support all sources, private or public!</p>
+</div></section><section><div class="container"><h2 id="multiple-remotes">Multiple Remotes</h2><p>Our goal is to eventually support all sources, private or public!</p>
 <ul>
-<li>☑ - GitHub</li>
-<li>☑ - npm</li>
-<li>☐ - BitBucket</li>
-<li>☐ - Bower</li>
-<li>☐ - GitLab</li>
-<li>☐ - GitHub Enterprise</li>
+<li>☑ GitHub</li>
+<li>☑ npm</li>
+<li>☐ BitBucket</li>
+<li>☐ Bower</li>
+<li>☐ GitLab</li>
+<li>☐ GitHub Enterprise</li>
 </ul>
 <p>Want Normalize to support a specific remote? Let us know!</p>
 </div></section><section><div class="container"><h2 id="transformations">URL-based Transformations</h2><p>Instead of fiddling with complicated build steps and plugin systems,
@@ -121,14 +122,14 @@ document.body.appendChild(<span class="hljs-keyword">element</span>.cloneNode(<s
 <p>No plugins or configuration required!
 And all transformations are explicitly shown and not hidden behind a complex build system.</p>
 </div></section><section><div class="container"><h2 id="file-based-dependencies">File-based Dependencies</h2><ul>
-<li>npm - per module dependencies</li>
-<li>Component - per (local) component dependencies</li>
-<li>Normalize - per file dependencies</li>
+<li><code>npm</code> - per module dependencies</li>
+<li><code>Component</code> - per (local) component dependencies</li>
+<li><code>Normalize</code> - per file dependencies</li>
 </ul>
 <p>Now you can upgrade your app one file at a time!
-There&#39;s no more &quot;module&quot; abstractions to work around. Think of remotes, users, and projects as folders, and versions as magical folders!
-Yes, Normalize can handle multiple dependencies!</p>
-</div></section><section><div class="container"><h2>Easily Create Custom Proxies</h2><p>Creating your own (private) proxies with custom (private) remotes is easy thanks to Docker!</p>
+There&#39;s no more &quot;module&quot; abstractions to work around. Think of remotes, users, projects, and versions as folders, with versions being magical!
+Yes, Normalize can handle multiple versions of the same dependency!</p>
+</div></section><section><div class="container"><h2 id="custom-proxies">Easily Create Custom Proxies</h2><p>Creating your own (private) proxies with custom (private) remotes is easy thanks to Docker!</p>
 <pre><code class="lang-bash">git clone git:<span class="hljs-comment">//github.com/normalize/proxy.js</span>
 cd proxy.js
 vim Dockerfile <span class="hljs-preprocessor"># Edit options</span>
@@ -142,7 +143,8 @@ docker run -p <span class="hljs-number">8888</span>:<span class="hljs-number">88
   "<span class="hljs-attribute">auth</span>": <span class="hljs-value"><span class="hljs-string">"user:pass"</span>
 </span>}
 </code></pre>
-</div></section><section><div class="container"><h2>Use https://nlz.io as a CDN</h2><p><a href="https://nlz.io">https://nlz.io</a> is essentially a CDN, but no CDN supports SPDY Push yet! Unlike <a href="http://cdnjs.com">http://cdnjs.com</a>, <a href="http://wzrd.in">http://wzrd.in</a>, <a href="http://jspm.io">http://jspm.io</a>, <a href="http://www.jsdelivr.com">http://www.jsdelivr.com</a>, normalization proxies:</p>
+</div></section><section><div class="container"><h2 id="cdn">Use https://nlz.io as a CDN</h2><p><a href="https://nlz.io">https://nlz.io</a> is essentially a CDN, but no CDN supports SPDY Push yet!
+Unlike other CDNs such as <a href="http://cdnjs.com">http://cdnjs.com</a>, <a href="http://wzrd.in">http://wzrd.in</a>, <a href="http://jspm.io">http://jspm.io</a>, <a href="http://www.jsdelivr.com">http://www.jsdelivr.com</a>, normalization proxies:</p>
 <ul>
 <li>SPDY pushes dependencies</li>
 <li>Support CSS, Web Components, and well as any arbitrary file</li>
@@ -156,7 +158,7 @@ just point to your own proxy!</p>
 Think <a href="https://github.com/substack/node-browserify">browserify(1)</a> with:</p>
 <ul>
 <li>No installation step as modules are downloaded automatically</li>
-<li>Arbitrary remotes so you do not have to rely on npm</li>
+<li>Arbitrary remotes so you do not have to rely on any single registry</li>
 <li>Native ES6 module support</li>
 <li>Native CSS, Web Component, and file support</li>
 </ul>
@@ -187,9 +189,11 @@ If you&#39;d like, you can have all your local apps and modules share the same d
 <li>Faster installations</li>
 </ul>
 </div></section><section><div class="container"><h2 id="no-json-files">No More JSON Files!</h2><p>Creating web components with all the different JSON files is no longer necessary! Just use <code>index.:format</code> as your entry points and you&#39;re good to go!</p>
-</div></section></main><footer><div class="container"><div id="footer-badges"><script data-gittip-username="jonathanong" src="https://gttp.co/v1.js" async></script></div><ul id="footer-links"><li>Jonathan Ong &copy; 2014</li><li><a href="http://jongleberry.com">jongleberry.com</a></li><li><a href="https://github.com/jonathanong">@jonathanong</a></li><li><a href="https://twitter.com/jongleberry">@jongleberry</a></li><li><a href="mailto:me@jongleberry.com">me@jongleberry.com</a></li></ul></div></footer><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-e.src='https://www.google-analytics.com/analytics.js';
-r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-ga('create','UA-XXXXX-X');ga('send','pageview');</script><script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script><script src="index.js"></script></body></html>
+</div></section></main><footer><div class="container"><div id="footer-badges"><script data-gittip-username="jonathanong" src="https://gttp.co/v1.js" async></script></div><ul id="footer-links"><li>Jonathan Ong &copy; 2014</li><li><a href="http://jongleberry.com">jongleberry.com</a></li><li><a href="https://github.com/jonathanong">@jonathanong</a></li><li><a href="https://twitter.com/jongleberry">@jongleberry</a></li><li><a href="mailto:me@jongleberry.com">me@jongleberry.com</a></li></ul></div></footer><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-7367759-13', 'normalize.github.io');
+ga('send', 'pageview');
+</script><script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script><script src="index.js"></script></body></html>

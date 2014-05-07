@@ -4,6 +4,7 @@ extends ../layout
 block header
   .container
     h1 normalize.io
+      small  &alpha;lpha
     p
       small <code>@import</code> the future, <code>nlz build</code> the present, normalize the past.
 
@@ -26,15 +27,14 @@ block main
       <link rel="import" href="https://github.com/components/polymer/0.2.0/">
       ```
 
-      Once you write all your code using these specifications,
-      you'll eventually no longer need a build system!
+      When authoring using this syntax, a build process will eventually be optional!
 
   section: .container
     h2(id='spdy-push') SPDY Push Dependencies
     :markdown
       All dependencies, whether JavaScript, CSS, HTML, or images,
       are SPDY pushed to the client from any normalization proxy such as https://nlz.io,
-      making `nlz build(1)` eventually optional.
+      making `nlz build(1)` eventually optional even in production.
       Downloading third party packages has never been faster.
 
   section: .container
@@ -58,7 +58,7 @@ block main
       This allows developers to use packages built using ancient package managers and module systems,
       making migration just a little bit easier.
 
-      For example, node-like modules are shimmed for the browser using the same libraries as browserify.
+      For example, node.js modules are shimmed for the browser using the same libraries as browserify.
       This means you can use all browserify modules with Normalize!
 
       Browserify modules that look like this:
@@ -68,7 +68,7 @@ block main
       var fs = require('fs');
       ```
 
-      Are rewritten to this:
+      Are rewritten to look like this:
 
       ```js
       var url = require('https://nlz.io/npm/-/url/*/index.js');
@@ -77,14 +77,14 @@ block main
 
       Types of packages that are normalized:
 
-      - ☑ - `component.json`
-      - ☐ - `package.json`
+      - ☑ `component.json`
+      - ☐ `package.json`
 
-        - ☑ - `browserify`
-        - ☑ - `.style` field
-        - ☐ - `node.js`
+        - ☑ `browserify`
+        - ☑ `.style` field
+        - ☐ `node.js`
 
-      - ☐ - `bower.json`
+      - ☐ `bower.json`
 
   section: .container
     h2(id='normalized-urls') Normalize URL End Points
@@ -104,6 +104,7 @@ block main
       import 'https://cdn.rawgit.com/jonathanong/autocomplete/0.1.5/index.js'
       import 'https://raw.githubusercontent.com/jonathanong/autocomplete/0.1.5/index.js'
       import 'https://nlz.io/github.com/jonathanong/autocomplete/0.1.5/index.js'
+
       // will all be normalized to:
       import 'https://nlz.io/github/jonathanong/autocomplete/0.1.5/index.js'
       ```
@@ -113,7 +114,7 @@ block main
     :markdown
       Every repository tends to have a different entry point.
       For example, `necolas/normalize.css` has `normalize.css` as its entry point.
-      Normalize creates `index.:format` files so you don't have to look up every package's entry point.
+      Normalize creates `index.:format` files so you don't have to know every package's entry point.
 
       ```js
       import 'https://nlz.io/github/component/emitter/1/index.js'
@@ -130,6 +131,7 @@ block main
       - ☑ `index.css` - CSS modules
       - ☐ `index.html` - Web Components.
         Simply omitting `index.html` and leaving a trailing `/` in the URL will work as well.
+      - ☐ `umd.js` - standalone build
       - ☐ `node.js` - node.js JavaScript
       - ☐ `test.js` - standalone test script for JS modules. If it exists, so will `test.html`.
       - ☐ `test.html` - standalone test page. Suitable for any type of web project.
@@ -141,23 +143,23 @@ block main
     :markdown
       Metadata will be normalized from all respective JSON files, falling back to the remote's API if available.
 
-      - ☐ - `component.json`
-      - ☐ - `package.json`
-      - ☐ - `bower.json`
-      - ☐ - GitHub API
-      - ☐ - npm
+      - ☐ `component.json`
+      - ☐ `package.json`
+      - ☐ `bower.json`
+      - ☐ GitHub API
+      - ☐ npm
 
   section: .container
     h2(id='multiple-remotes') Multiple Remotes
     :markdown
-      Normalize not only normalizes web packages from GitHub, but npm as well! Our goal is to eventually support all sources, private or public!
+      Our goal is to eventually support all sources, private or public!
 
-      - ☑ - GitHub
-      - ☑ - npm
-      - ☐ - BitBucket
-      - ☐ - Bower
-      - ☐ - GitLab
-      - ☐ - GitHub Enterprise
+      - ☑ GitHub
+      - ☑ npm
+      - ☐ BitBucket
+      - ☐ Bower
+      - ☐ GitLab
+      - ☐ GitHub Enterprise
 
       Want Normalize to support a specific remote? Let us know!
 
@@ -194,16 +196,16 @@ block main
   section: .container
     h2(id='file-based-dependencies') File-based Dependencies
     :markdown
-      - npm - per module dependencies
-      - Component - per (local) component dependencies
-      - Normalize - per file dependencies
+      - `npm` - per module dependencies
+      - `Component` - per (local) component dependencies
+      - `Normalize` - per file dependencies
 
       Now you can upgrade your app one file at a time!
-      There's no more "module" abstractions to work around. Think of remotes, users, and projects as folders, and versions as magical folders!
-      Yes, Normalize can handle multiple dependencies!
+      There's no more "module" abstractions to work around. Think of remotes, users, projects, and versions as folders, with versions being magical!
+      Yes, Normalize can handle multiple versions of the same dependency!
 
   section: .container
-    h2 Easily Create Custom Proxies
+    h2(id='custom-proxies') Easily Create Custom Proxies
     :markdown
       Creating your own (private) proxies with custom (private) remotes is easy thanks to Docker!
 
@@ -227,9 +229,10 @@ block main
       ```
 
   section: .container
-    h2 Use https://nlz.io as a CDN
+    h2(id='cdn') Use https://nlz.io as a CDN
     :markdown
-      https://nlz.io is essentially a CDN, but no CDN supports SPDY Push yet! Unlike http://cdnjs.com, http://wzrd.in, http://jspm.io, http://www.jsdelivr.com, normalization proxies:
+      https://nlz.io is essentially a CDN, but no CDN supports SPDY Push yet!
+      Unlike other CDNs such as http://cdnjs.com, http://wzrd.in, http://jspm.io, http://www.jsdelivr.com, normalization proxies:
 
       - SPDY pushes dependencies
       - Support CSS, Web Components, and well as any arbitrary file
@@ -247,7 +250,7 @@ block main
       Think [browserify(1)](https://github.com/substack/node-browserify) with:
 
       - No installation step as modules are downloaded automatically
-      - Arbitrary remotes so you do not have to rely on npm
+      - Arbitrary remotes so you do not have to rely on any single registry
       - Native ES6 module support
       - Native CSS, Web Component, and file support
 
