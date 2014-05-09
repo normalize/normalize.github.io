@@ -56,7 +56,7 @@ block main
       All dependencies, whether JavaScript, CSS, HTML, or images,
       are SPDY pushed to the client from any normalization proxy.
       Installing dependencies with any client, whether `nlz build(1)` or a browser, has never been faster.
-      Concatenating all your assets is no longer necessary.
+      Concatenating all your assets will become completely optional.
 
   section: .container
     h2(id='semantic-versioning') Semantic Versioning
@@ -79,7 +79,7 @@ block main
       This allows developers to use packages built using ancient package managers and module systems,
       making migration just a little bit easier.
 
-      For example, node.js modules are shimmed for the browser using the same libraries as [browserify][browserify].
+      For example, node.js modules are shimmed for the browser using the same node.js shims [browserify][browserify] uses.
       This means you can use all [browserify][browserify] modules with Normalize!
 
       [Browserify][browserify] modules that look like this:
@@ -89,7 +89,7 @@ block main
       var fs = require('fs');
       ```
 
-      Are rewritten to this:
+      Are rewritten to this with CommonJS used as a stop gap:
 
       ```js
       var url = require('https://nlz.io/npm/-/url/*/index.js');
@@ -161,6 +161,12 @@ block main
       - ☐ `README`
       - ☐ `LICENSE`
 
+      Entry points are derived from the following `.json` files:
+
+      - ☑ `component.json`
+      - ☑ `package.json`
+      - ☐ `bower.json`
+
   section: .container
     h2(id='normalized-metadata') Normalized Metadata
     :markdown
@@ -214,23 +220,12 @@ block main
       ```
 
       No plugins or configuration required!
-      And all transformations are explicitly shown and not hidden behind a complex build system.
+      And all transformations are explicitly shown and used instead of being hidden behind a complex build system.
+      For more details on transformations, read the [docs on transforms](docs.html#transforms).
 
-      Note: if you use transformations on local files,
-      you will always need some sort of build system.
-      Push these transformations to separate modules.
-
-  section: .container
-    h2(id='file-based-dependencies') File-based Dependencies
-    :markdown
-      - `npm` - per module dependencies
-      - `Component` - per (local) component dependencies
-      - `Normalize` - per file dependencies
-
-      Now you can upgrade your app one file at a time!
-      There's no more "module" abstractions to work around.
-      Think of remotes, users, projects, and versions as folders, with versions being magical!
-      Yes, Normalize can handle multiple versions of the same dependency!
+      > Note: if you use transformations on local files,
+      > you will always need some sort of build system.
+      > Push these transformations to separate modules.
 
   section: .container
     h2(id='custom-proxies') Easily Create Custom Proxies
@@ -264,11 +259,13 @@ block main
       - SPDY push dependencies
       - Support CSS, Web Components, and well as any arbitrary file
       - Allow serving individual files, not just packages and modules
-      - Do not require pull requests to add and update libraries
-      - Do not require any client-side runtime JS to work
+      - Do not [require pull requests](https://github.com/cdnjs/cdnjs/pulls) to add and update libraries
+      - Do not require any [client-side runtime JS](https://github.com/ModuleLoader/es6-module-loader)
 
       If https://nlz.io is ever down or begins tracking your clients,
       just create your own proxy and point your URLs to it!
+
+      > Note: https://nlz.io is __not__ ready for production usage.
 
   section: .container
     h2(id='nlz-build') nlz-build(1)
@@ -276,12 +273,12 @@ block main
       The spiritual successor to [component(1)](https://github.com/component/component).
       Think [browserify(1)](https://github.com/substack/node-browserify) with:
 
-      - No installation step as modules are downloaded automatically
+      - Dependencies are automatically installed 
       - Arbitrary remotes so you do not have to rely on any single registry
       - Native ES6 module support
       - Native CSS, Web Component, and file support
 
-      All without requiring any transformations or plugins
+      All without requiring any transformations or plugins.
 
       ```bash
       nlz build index.js index.css --out build/ --watch
@@ -302,7 +299,7 @@ block main
       - Easier to find modules locally
 
   section: .container
-    h2(id='no-caching-layer') No Caching Layer
+    h2(id='no-local-caching-layer') No Local Caching Layer
     :markdown
       All remote dependencies are stored in a directory you may specify via `.nlzrc`:
 

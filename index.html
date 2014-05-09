@@ -22,7 +22,7 @@ all of which will eventually be supported natively by browsers.</p>
 </div></section><section><div class="container"><h2 id="spdy-push">SPDY Push Dependencies</h2><p>All dependencies, whether JavaScript, CSS, HTML, or images,
 are SPDY pushed to the client from any normalization proxy.
 Installing dependencies with any client, whether <code>nlz build(1)</code> or a browser, has never been faster.
-Concatenating all your assets is no longer necessary.</p>
+Concatenating all your assets will become completely optional.</p>
 </div></section><section><div class="container"><h2 id="semantic-versioning">Semantic Versioning</h2><p>Normalize pushes command-line package managers&#39; responsibilities to the normalization proxy.
 You get most of the benefits of a package manager without any JSON files and eventually without any CLI tools.</p>
 <pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github/necolas/normalize.css/3/normalize.css'</span></span>;
@@ -34,13 +34,13 @@ You get most of the benefits of a package manager without any JSON files and eve
 </div></section><section><div class="container"><h2 id="normalized-packages">Normalized Packages</h2><p>Various types of packages are normalized at the proxy to be standards compliant.
 This allows developers to use packages built using ancient package managers and module systems,
 making migration just a little bit easier.</p>
-<p>For example, node.js modules are shimmed for the browser using the same libraries as <a href="http://browserify.org">browserify</a>.
+<p>For example, node.js modules are shimmed for the browser using the same node.js shims <a href="http://browserify.org">browserify</a> uses.
 This means you can use all <a href="http://browserify.org">browserify</a> modules with Normalize!</p>
 <p><a href="http://browserify.org">Browserify</a> modules that look like this:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">'url'</span>);
 <span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
 </code></pre>
-<p>Are rewritten to this:</p>
+<p>Are rewritten to this with CommonJS used as a stop gap:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">var</span> url = <span class="hljs-built_in">require</span>(<span class="hljs-string">'https://nlz.io/npm/-/url/*/index.js'</span>);
 <span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'https://nlz.io/github/normalize/empty/1/index.js'</span>);
 </code></pre>
@@ -92,6 +92,12 @@ Simply omitting <code>index.html</code> and leaving a trailing <code>/</code> in
 <li>☐ <code>README</code></li>
 <li>☐ <code>LICENSE</code></li>
 </ul>
+<p>Entry points are derived from the following <code>.json</code> files:</p>
+<ul>
+<li>☑ <code>component.json</code></li>
+<li>☑ <code>package.json</code></li>
+<li>☐ <code>bower.json</code></li>
+</ul>
 </div></section><section><div class="container"><h2 id="normalized-metadata">Normalized Metadata</h2><p>Metadata will be normalized from all respective JSON files, falling back to the remote&#39;s API, if available.</p>
 <ul>
 <li>☐ <code>component.json</code></li>
@@ -132,19 +138,13 @@ module el <span class="hljs-built_in">from</span> <span class="hljs-string">'tem
 document.body.appendChild(el.cloneNode(<span class="hljs-constant">true</span>))
 </code></pre>
 <p>No plugins or configuration required!
-And all transformations are explicitly shown and not hidden behind a complex build system.</p>
+And all transformations are explicitly shown and used instead of being hidden behind a complex build system.
+For more details on transformations, read the <a href="docs.html#transforms">docs on transforms</a>.</p>
+<blockquote>
 <p>Note: if you use transformations on local files,
 you will always need some sort of build system.
 Push these transformations to separate modules.</p>
-</div></section><section><div class="container"><h2 id="file-based-dependencies">File-based Dependencies</h2><ul>
-<li><code>npm</code> - per module dependencies</li>
-<li><code>Component</code> - per (local) component dependencies</li>
-<li><code>Normalize</code> - per file dependencies</li>
-</ul>
-<p>Now you can upgrade your app one file at a time!
-There&#39;s no more &quot;module&quot; abstractions to work around.
-Think of remotes, users, projects, and versions as folders, with versions being magical!
-Yes, Normalize can handle multiple versions of the same dependency!</p>
+</blockquote>
 </div></section><section><div class="container"><h2 id="custom-proxies">Easily Create Custom Proxies</h2><p>Creating your own (private) proxies with custom (private) remotes is easy thanks to Docker!</p>
 <pre><code class="lang-bash">git clone git:<span class="hljs-comment">//github.com/normalize/proxy.js</span>
 cd proxy.js
@@ -165,20 +165,23 @@ Unlike other CDNs such as <a href="http://cdnjs.com">http://cdnjs.com</a>, <a hr
 <li>SPDY push dependencies</li>
 <li>Support CSS, Web Components, and well as any arbitrary file</li>
 <li>Allow serving individual files, not just packages and modules</li>
-<li>Do not require pull requests to add and update libraries</li>
-<li>Do not require any client-side runtime JS to work</li>
+<li>Do not <a href="https://github.com/cdnjs/cdnjs/pulls">require pull requests</a> to add and update libraries</li>
+<li>Do not require any <a href="https://github.com/ModuleLoader/es6-module-loader">client-side runtime JS</a></li>
 </ul>
 <p>If <a href="https://nlz.io">https://nlz.io</a> is ever down or begins tracking your clients,
 just create your own proxy and point your URLs to it!</p>
+<blockquote>
+<p>Note: <a href="https://nlz.io">https://nlz.io</a> is <strong>not</strong> ready for production usage.</p>
+</blockquote>
 </div></section><section><div class="container"><h2 id="nlz-build">nlz-build(1)</h2><p>The spiritual successor to <a href="https://github.com/component/component">component(1)</a>.
 Think <a href="https://github.com/substack/node-browserify">browserify(1)</a> with:</p>
 <ul>
-<li>No installation step as modules are downloaded automatically</li>
+<li>Dependencies are automatically installed </li>
 <li>Arbitrary remotes so you do not have to rely on any single registry</li>
 <li>Native ES6 module support</li>
 <li>Native CSS, Web Component, and file support</li>
 </ul>
-<p>All without requiring any transformations or plugins</p>
+<p>All without requiring any transformations or plugins.</p>
 <pre><code class="lang-bash">nlz build index<span class="hljs-preprocessor">.js</span> index<span class="hljs-preprocessor">.css</span> --<span class="hljs-keyword">out</span> build/ --watch
 </code></pre>
 </div></section><section><div class="container"><h2 id="flat-dependency-tree">Flat Dependency Tree</h2><p>Unlike npm which stores modules in a nested tree
@@ -192,7 +195,7 @@ mimicking the proxy&#39;s URL structure.</p>
 <li>No issues with long Windows paths</li>
 <li>Easier to find modules locally</li>
 </ul>
-</div></section><section><div class="container"><h2 id="no-caching-layer">No Caching Layer</h2><p>All remote dependencies are stored in a directory you may specify via <code>.nlzrc</code>:</p>
+</div></section><section><div class="container"><h2 id="no-local-caching-layer">No Local Caching Layer</h2><p>All remote dependencies are stored in a directory you may specify via <code>.nlzrc</code>:</p>
 <pre><code class="lang-json">{
   "<span class="hljs-attribute">directory</span>": <span class="hljs-value"><span class="hljs-string">"/User/jong/.repositories"</span>
 </span>}

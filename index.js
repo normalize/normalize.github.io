@@ -1156,7 +1156,7 @@ require.register("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/ind
 module.exports = require("./repositories/github/jonathanong/delegated-dropdown/0.0.7/lib/index.js")
 })
 
-require.register("https://nlz.io/github/components/classList.js/2013.5.14/classList.js", function (exports, module) {
+require.register("https://nlz.io/github/components/classlist.js/2013.5.14/classList.js", function (exports, module) {
 /*
  * classList.js: Cross-browser full element.classList implementation.
  * 2012-11-15
@@ -1339,7 +1339,7 @@ if (objCtr.defineProperty) {
 require.register("./client/toc.js", function (exports, module) {
 
 require("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/index.js");
-require("https://nlz.io/github/components/classList.js/2013.5.14/classList.js");
+require("https://nlz.io/github/components/classlist.js/2013.5.14/classList.js");
 
 require("./client/permalinks.js");
 

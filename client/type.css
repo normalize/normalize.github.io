@@ -68,3 +68,9 @@ pre {
   padding: 10px;
   background-color: #f8f8f8;
 }
+
+blockquote {
+  color: #999;
+  padding: 10px 0 0 15px;
+  border-left: 5px solid #eee;
+}
