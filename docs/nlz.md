@@ -33,14 +33,22 @@ nlz build [entrypoints...]
 nlz build client/index.js client/index.css
 ```
 
-#### --out
+#### --out, -o
 
 The destination folder, defaulting to `build/`.
 The destination file will be the same name as the entry point's file name.
 
-#### --watch
+```bash
+nlz build client/index.js --out public
+```
+
+#### --watch, -w
 
 Watch the source files for changes and rebuild automatically.
 You __should__ use this as rebuilds are fast and incremental.
 Simply loading `nlz(1)` takes a considerable amount of time,
 especially if you use a lot of transformations.
+
+```bash
+nlz build client/index.js --watch
+```

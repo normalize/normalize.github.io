@@ -12,7 +12,9 @@ Open an issue here.</li>
 <li><a href="https://github.com/normalize/nlz">nlz</a> - the command line <code>nlz(1)</code> utility</li>
 <li><a href="https://github.com/normalize/transforms.js">transforms.js</a> - all the transforms supported by both the proxy and <code>nlz(1)</code></li>
 </ul>
-</div></section><section><div class="container"><h2 id="proxy">Normalization Proxy</h2><p>These are the specifications for <a href="https://nlz.io">https://nlz.io</a> as well as any <a href="https://github.com/normalize/proxy.js">normalize-proxy</a>.</p>
+</div></section><section><div class="container"><h2 id="proxy">Normalization Proxy</h2><p>This is the public HTTP API for <a href="https://nlz.io">https://nlz.io</a> as well as any <a href="https://github.com/normalize/proxy.js">normalize-proxy</a>.
+If you&#39;re interested in setting up your own proxy,
+consult the <a href="https://github.com/normalize/proxy.js">normalize-proxy repository</a>.</p>
 <h3 id="url-structure">URL Structure</h3>
 <p>URLs generally have the form:</p>
 <pre><code>https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">version</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">file</span>&gt;</span>
@@ -75,6 +77,9 @@ In particular, it should return all available versions on the remote.</p>
 <pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/metadata.json
 </code></pre><p>Per-repository metadata that is not version-specific.
 This is where you&#39;ll find metadata such as author, keywords, etc.</p>
+<blockquote>
+<p>Note: not yet implemented.</p>
+</blockquote>
 <h4 id="get-search-json">GET search.json</h4>
 <pre><code>GET https://nlz.io/search.json?<span class="hljs-keyword">...</span>
 </code></pre><p>Search the proxy&#39;s installed files and projects.
@@ -86,6 +91,9 @@ These may include:</p>
 <li><code>project</code>/<code>repository</code></li>
 <li><code>keywords</code></li>
 </ul>
+<blockquote>
+<p>Note: not yet implemented.</p>
+</blockquote>
 <h4 id="get-proxy-json">GET proxy.json</h4>
 <pre><code class="lang-js">GET https://nlz<span class="hljs-preprocessor">.io</span>/proxy<span class="hljs-preprocessor">.json</span>
 </code></pre>
@@ -147,14 +155,18 @@ allowing developers to simply run <code>nlz build --watch</code>.</p>
 <span class="hljs-comment">// will build to build/index.js and build/index.css, respectively</span>
 nlz build <span class="hljs-keyword">client</span>/<span class="hljs-keyword">index</span>.js <span class="hljs-keyword">client</span>/<span class="hljs-keyword">index</span>.css
 </code></pre>
-<h4 id="-out">--out</h4>
+<h4 id="-out-o">--out, -o</h4>
 <p>The destination folder, defaulting to <code>build/</code>.
 The destination file will be the same name as the entry point&#39;s file name.</p>
-<h4 id="-watch">--watch</h4>
+<pre><code class="lang-bash">nlz build <span class="hljs-keyword">client</span>/<span class="hljs-keyword">index</span>.js --out <span class="hljs-keyword">public</span>
+</code></pre>
+<h4 id="-watch-w">--watch, -w</h4>
 <p>Watch the source files for changes and rebuild automatically.
 You <strong>should</strong> use this as rebuilds are fast and incremental.
 Simply loading <code>nlz(1)</code> takes a considerable amount of time,
 especially if you use a lot of transformations.</p>
+<pre><code class="lang-bash">nlz build <span class="hljs-keyword">client</span>/<span class="hljs-keyword">index</span>.js --watch
+</code></pre>
 </div></section><section><div class="container"><h2 id="nlzrc">.nlzrc</h2><p><code>.nlzrc</code> is an optional JSON configuration file for local environments.
 It&#39;s completely optional.
 You may have a global, <code>.nlzrc</code> configuration for your computer as well as local <code>.nlzrc</code> configuration for each app.
@@ -275,15 +287,39 @@ This will be disabled by default once ES6 modules are widely supported by browse
 This will be disabled by default once generators are widely supported by browsers.</p>
 <h4 id="-mime-text-js-"><code>.&lt;mime:text/*&gt;.js</code></h4>
 <p>All extensions whose corresponding MIME type is <code>text/*</code> are automatically transformed to a JS string using <code>JSON.stringify()</code> unless superceded by another transform.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">module</span> <span class="hljs-keyword">text</span> <span class="hljs-keyword">from</span> <span class="hljs-comment">'something.txt'</span>
+
+var el = document.createTextNode()
+el.textContent = <span class="hljs-keyword">text</span>
+</code></pre>
 <h4 id="-json-js-"><code>.json.js</code></h4>
 <p>Transforms JSON files to a JS object.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">module</span> data <span class="hljs-keyword">from</span> <span class="hljs-string">'data.json'</span>
+
+<span class="hljs-keyword">var</span> name = data.name
+</code></pre>
 <h3 id="template-transforms">Template Transforms</h3>
 <h4 id="-jade-html-"><code>.jade.html</code></h4>
-<p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to an HTML string.</p>
+<p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to an HTML string.
+For example, combined with the <code>.&lt;mime:text/*&gt;.js</code> transform:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">module</span> html <span class="hljs-keyword">from</span> <span class="hljs-comment">'template.html.js'</span>
+
+el.innerHTML = html
+</code></pre>
 <h4 id="-jade-js-"><code>.jade.js</code></h4>
 <p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to a function.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">module</span> render <span class="hljs-keyword">from</span> <span class="hljs-comment">'template.jade.js'</span>
+<span class="hljs-keyword">module</span> data <span class="hljs-keyword">from</span> <span class="hljs-comment">'data.json'</span>
+
+el.innerHTML = render(data)
+</code></pre>
 <h4 id="-md-markdown-html-"><code>.(md|markdown).html</code></h4>
-<p>Compile markdown templates to an HTML string using <a href="https://github.com/chjj/marked">marked</a>.</p>
+<p>Compile markdown templates to an HTML string using <a href="https://github.com/chjj/marked">marked</a>.
+Note that without <code>.html</code>, the actual markdown is returned.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">module</span> html <span class="hljs-keyword">from</span> <span class="hljs-comment">'article.md.html.js'</span>
+
+el.innerHTML = html
+</code></pre>
 <h4 id="-jsx-js-"><code>.jsx.js</code></h4>
 <p>Compile <a href="http://facebook.github.io/react/">React</a> <code>.jsx</code> templates to JS.</p>
 <h4 id="-html-domify-js-"><code>.html.domify.js</code></h4>

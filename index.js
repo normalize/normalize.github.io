@@ -1345,9 +1345,7 @@ require("./client/permalinks.js");
 
 var toc = document.querySelector('#toc')
 if (toc) {
-// how do i do early return statements in es6?
-
-{ // create the #toc
+  // create the #toc
   var frag = document.createDocumentFragment()
 
   ;[].forEach.call(document.querySelectorAll('section h2[id]'), function (h) {
@@ -1359,15 +1357,12 @@ if (toc) {
   })
 
   toc.querySelector('.Dropdown-menu').appendChild(frag)
-}
 
-{
+  // make it sticky. to do: use position: sticky; if available
   var html = document.documentElement
   document.addEventListener('scroll', function () {
     html.classList[window.scrollY > 134 ? 'add' : 'remove']('toc-fixed')
   })
-}
-
 }
 
 })

@@ -1,5 +1,7 @@
 
-These are the specifications for https://nlz.io as well as any [normalize-proxy](https://github.com/normalize/proxy.js).
+This is the public HTTP API for https://nlz.io as well as any [normalize-proxy][proxy].
+If you're interested in setting up your own proxy,
+consult the [normalize-proxy repository][proxy].
 
 ### URL Structure
 
@@ -106,6 +108,8 @@ GET https://nlz.io/<remote>/<user>/<project>/metadata.json
 Per-repository metadata that is not version-specific.
 This is where you'll find metadata such as author, keywords, etc.
 
+> Note: not yet implemented.
+
 #### GET search.json
 
 ```
@@ -120,6 +124,8 @@ These may include:
 - `user`/`owner`/`organization`
 - `project`/`repository`
 - `keywords`
+
+> Note: not yet implemented.
 
 #### GET proxy.json
 
@@ -168,3 +174,5 @@ Currently, classification is defined by the following criteria:
 
   - `.browser` exists
   - `.style` exists
+
+[proxy]: https://github.com/normalize/proxy.js

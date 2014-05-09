@@ -83,23 +83,57 @@ This will be disabled by default once generators are widely supported by browser
 
 All extensions whose corresponding MIME type is `text/*` are automatically transformed to a JS string using `JSON.stringify()` unless superceded by another transform.
 
+```js
+module text from 'something.txt'
+
+var el = document.createTextNode()
+el.textContent = text
+```
+
 #### `.json.js`
 
 Transforms JSON files to a JS object.
+
+```js
+module data from 'data.json'
+
+var name = data.name
+```
 
 ### Template Transforms
 
 #### `.jade.html`
 
 Compile [jade](https://github.com/visionmedia/jade) templates to an HTML string.
+For example, combined with the `.<mime:text/*>.js` transform:
+
+```js
+module html from 'template.html.js'
+
+el.innerHTML = html
+```
 
 #### `.jade.js`
 
 Compile [jade](https://github.com/visionmedia/jade) templates to a function.
 
+```js
+module render from 'template.jade.js'
+module data from 'data.json'
+
+el.innerHTML = render(data)
+```
+
 #### `.(md|markdown).html`
 
 Compile markdown templates to an HTML string using [marked](https://github.com/chjj/marked).
+Note that without `.html`, the actual markdown is returned.
+
+```js
+module html from 'article.md.html.js'
+
+el.innerHTML = html
+```
 
 #### `.jsx.js`
 
