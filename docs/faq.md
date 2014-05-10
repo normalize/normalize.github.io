@@ -26,3 +26,11 @@ Basically, forking node would be required to make it work gracefully, which is i
 
 To keep yourself up to date with node.js support,
 follow the [node-normalize](https://github.com/normalize/node-normalize) repository.
+
+### Can I omit `https://` from the URLs?
+
+If browsers support protocol-less URLs, then so will we.
+However, there are a couple potential issues with omitting protocols.
+
+1. It's more difficult to differentiate between URLs and local/relative assets.
+2. Some browsers plan to not support non-SSL SPDY, so this might even work in development.
