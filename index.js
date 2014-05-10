@@ -51,6 +51,76 @@ require.register("./client/permalinks.js", function (exports, module) {
 
 })
 
+require.register("https://nlz.io/github/component/raf/1.1.3/index.js", function (exports, module) {
+/**
+ * Expose `requestAnimationFrame()`.
+ */
+
+exports = module.exports = window.requestAnimationFrame
+  || window.webkitRequestAnimationFrame
+  || window.mozRequestAnimationFrame
+  || window.oRequestAnimationFrame
+  || window.msRequestAnimationFrame
+  || fallback;
+
+/**
+ * Fallback implementation.
+ */
+
+var prev = new Date().getTime();
+function fallback(fn) {
+  var curr = new Date().getTime();
+  var ms = Math.max(0, 16 - (curr - prev));
+  var req = setTimeout(fn, ms);
+  prev = curr;
+  return req;
+}
+
+/**
+ * Cancel.
+ */
+
+var cancel = window.cancelAnimationFrame
+  || window.webkitCancelAnimationFrame
+  || window.mozCancelAnimationFrame
+  || window.oCancelAnimationFrame
+  || window.msCancelAnimationFrame
+  || window.clearTimeout;
+
+exports.cancel = function(id){
+  cancel.call(window, id);
+};
+
+})
+
+require.register("https://nlz.io/github/component/per-frame/1.0.0/index.js", function (exports, module) {
+var raf = require("https://nlz.io/github/component/raf/1.1.3/index.js")
+
+module.exports = function (fn, immediate) {
+  var queued = false
+  // immediate by default
+  if (immediate !== false)
+    call()
+
+  return queue
+
+  function queue() {
+    if (queued)
+      return
+    queued = true
+    raf(call)
+  }
+
+  function call() {
+    fn()
+    queued = false
+  }
+}
+// normalize:common:info: rewriting dependency "raf" to "https://nlz.io/github/component/raf/*/index.js"
+
+
+})
+
 require.register("https://nlz.io/github/component/query/0.0.3/index.js", function (exports, module) {
 function one(selector, el) {
   return el.querySelector(selector);
@@ -1338,16 +1408,17 @@ if (objCtr.defineProperty) {
 
 require.register("./client/toc.js", function (exports, module) {
 
-require("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/index.js");
+var throttle = require("https://nlz.io/github/component/per-frame/1.0.0/index.js");require("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/index.js");
 require("https://nlz.io/github/components/classList.js/2013.5.14/classList.js");
 
 require("./client/permalinks.js");
 
+var html = document.documentElement
 var toc = document.querySelector('#toc')
+var menu = document.querySelector('#toc .Dropdown-menu')
 if (toc) {
   // create the #toc
   var frag = document.createDocumentFragment()
-
   ;[].forEach.call(document.querySelectorAll('section h2[id]'), function (h) {
     var a = document.createElement('a')
     a.className = 'Dropdown-item'
@@ -1355,14 +1426,34 @@ if (toc) {
     a.title = a.textContent = h.firstChild.textContent
     frag.appendChild(a)
   })
+  menu.appendChild(frag)
 
-  toc.querySelector('.Dropdown-menu').appendChild(frag)
+  // apply listeners
+  window.addEventListener('scroll', throttle(function () {
+    setMaxHeight()
+    setAffix()
+  }))
 
-  // make it sticky. to do: use position: sticky; if available
-  var html = document.documentElement
-  document.addEventListener('scroll', function () {
-    html.classList[window.scrollY > 134 ? 'add' : 'remove']('toc-fixed')
-  })
+  window.addEventListener('resize', throttle(function () {
+    setMaxHeight()
+  }))
+
+  // to do: automatically reapply max height whenever the dropdown is open
+  // because iOS seems to be debouncing these events themselves or something
+}
+
+// make it sticky. to do: use position: sticky; if available
+function setAffix() {
+  html.classList[window.scrollY > 134 ? 'add' : 'remove']('toc-fixed')
+}
+
+// change dropdown max-height
+function setMaxHeight() {
+  var maxHeight = window.innerHeight
+    - toc.getBoundingClientRect().top // #toc top
+    - 40 // .Dropdown-toggle height
+    - 20 // border from bottom
+  menu.style['max-height'] = maxHeight + 'px'
 }
 
 })
