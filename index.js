@@ -39,6 +39,598 @@ require.register = function (name, definition) {
   };
 };
 
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/separate-selector.js", function (exports, module) {
+module.exports = function(selector){
+  return selector.split(/\s*,\s*/);
+};
+
+})
+
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/scope/index.js", function (exports, module) {
+var separateSelector = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/separate-selector.js");
+
+module.exports = function(selector, method){
+  var selectors = separateSelector(selector);
+  var scopedSelectors = selectors.map(method);
+  return scopedSelectors.join();
+};
+
+// normalize:common:info: rewriting dependency "../utils/separate-selector" to "../utils/separate-selector.js"
+
+
+})
+
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/scope/support.js", function (exports, module) {
+try {
+  document.createElement('i').querySelector(':scoped *');
+  module.exports = true;
+} catch (e) {
+  module.exports = false;
+}
+
+})
+
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/elements/index.js", function (exports, module) {
+// as it is a circular dependency, we need to keep `module.exports` on top.
+module.exports = Elements;
+
+var pushUniq = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/pushuniq.js");
+var elementsPrototype = Elements.prototype = [];
+var methods = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/index.js");
+
+function Elements() {}
+
+// Elements.queryAll(selector);
+elementsPrototype.queryAll = function (selector) {
+  var pusher = pushUniq();
+  return this.reduce(function(results, element){
+    return pusher(methods.queryAll.call(element, selector));
+  }, null);
+};
+
+// Elements.query(selector);
+elementsPrototype.query = function (selector) {
+  return elementsPrototype.queryAll.call(this, selector)[0] || null;
+};
+
+// normalize:common:info: rewriting dependency "../utils/pushuniq" to "../utils/pushuniq.js"
+// normalize:common:info: rewriting dependency "../methods" to "../methods/index.js"
+
+
+})
+
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/expando.js", function (exports, module) {
+module.exports = String(Math.random()).replace(/\D/g, '');
+
+})
+
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/pushuniq.js", function (exports, module) {
+var Elements = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/elements/index.js");
+var expando = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/expando.js");
+var propertyName = 'domElementsId' + expando;
+var id = -1;
+
+/**
+ * pushUniq
+ *
+ * returns a function that pushes elements not yet in `target`.
+ * as the internal API only uses it before making the array
+ * available, we can use a `map` cache to store the elements
+ * already in the newly built array, letting us prevent extensive looping.
+ */
+module.exports = function (original) {
+  var target = new Elements();
+  var map = {};
+
+  function pusher(source) {
+    var index = -1;
+    var length = source.length;
+    var item;
+    while (++index < length) {
+      item = source[index];
+      if (!item || item.nodeType !== 1) {
+        continue;
+      }
+      if (propertyName in item && map.hasOwnProperty(item[propertyName])) {
+        continue;
+      }
+      item[propertyName] = ++id;
+      map[id] = 1;
+      target.push(item);
+    }
+    return target;
+  }
+
+  if(arguments.length) {
+    pusher(original);
+  }
+
+  return pusher;
+};
+
+// normalize:common:info: rewriting dependency "../elements" to "../elements/index.js"
+// normalize:common:info: rewriting dependency "./expando" to "./expando.js"
+
+
+})
+
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/index.js", function (exports, module) {
+var scope = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/scope/index.js");
+var supportsScoped = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/scope/support.js");
+var methods = module.exports = {};
+var Elements = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/elements/index.js");
+var toArray = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/to-array.js");
+var attributeName = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/attribute-name.js");
+var scopeSelector = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/scope-selector.js");
+var absolutizeSelector = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/absolutize-selector.js");
+var unique = -1;
+
+methods.query = function(selector){
+  return methods.queryAll.call(this, selector)[0] || null;
+};
+
+methods.queryAll = function(sourceSelector){
+  var element = this;
+  var elements;
+  var selector;
+  var result;
+  if(!supportsScoped) {
+    element.setAttribute(attributeName, ++unique);
+  }
+  selector = supportsScoped ?
+    scope(sourceSelector, scopeSelector) :
+    scope(sourceSelector, absolutizeSelector(unique));
+  elements = element.querySelectorAll(selector);
+  if (!supportsScoped) {
+    element.removeAttribute(attributeName);
+  }
+  result = new Elements();
+  result.push.apply(result, toArray(elements));
+  return result;
+};
+
+methods.queryAllWrapper = function(selector){
+  var elements = this.querySelectorAll(selector);
+  var result = new Elements();
+  result.push.apply(result, toArray(elements));
+  return result;
+};
+
+methods.queryWrapper = function(selector){
+  return this.querySelector(selector);
+};
+
+// normalize:common:info: rewriting dependency "../scope" to "../scope/index.js"
+// normalize:common:info: rewriting dependency "../scope/support" to "../scope/support.js"
+// normalize:common:info: rewriting dependency "../elements" to "../elements/index.js"
+// normalize:common:info: rewriting dependency "../utils/to-array" to "../utils/to-array.js"
+// normalize:common:info: rewriting dependency "./attribute-name" to "./attribute-name.js"
+// normalize:common:info: rewriting dependency "./scope-selector" to "./scope-selector.js"
+// normalize:common:info: rewriting dependency "./absolutize-selector" to "./absolutize-selector.js"
+
+
+})
+
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/to-array.js", function (exports, module) {
+module.exports = function(nodeList){
+  var index = -1;
+  var length = nodeList.length;
+  var array = Array(length);
+  while (++index < length) {
+    array[index] = nodeList[index];
+  }
+  return array;
+};
+
+})
+
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/attribute-name.js", function (exports, module) {
+module.exports = 'data-dom-elements-id-' + require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/expando.js");
+
+// normalize:common:info: rewriting dependency "../utils/expando" to "../utils/expando.js"
+
+
+})
+
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/scope-selector.js", function (exports, module) {
+module.exports = function (item) {
+  return ':scoped ' + item;
+};
+
+})
+
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/absolutize-selector.js", function (exports, module) {
+var attributeName = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/attribute-name.js");
+
+module.exports = function (attributeValue) {
+  return function (item){
+    return '[' + attributeName + '="' + attributeValue + '"] ' + item;
+  };
+};
+
+// normalize:common:info: rewriting dependency "./attribute-name" to "./attribute-name.js"
+
+
+})
+
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/is-native.js", function (exports, module) {
+var nativeToString = Function.prototype.toString;
+var nativeQuerySelector = nativeToString.call(document.querySelector);
+var nameRE = /\bquerySelector\b/g;
+
+module.exports = function(context, name){
+  if (!context[name]) {
+    return false;
+  }
+  return (
+    nativeToString.call(context[name]) ===
+    nativeQuerySelector.replace(nameRE, name)
+  );
+};
+
+})
+
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/index.js", function (exports, module) {
+var methods = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/index.js");
+var isNative = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/is-native.js");
+var array = [];
+
+if (
+  typeof Document === 'undefined' ||
+  !('map' in array) ||
+  !('reduce' in array) ||
+  !('querySelectorAll' in document)
+) {
+  throw new TypeError('Missing browser features to initiantiate dom-elements');
+}
+
+if('Element' in window) {
+  if(!isNative(Element.prototype, 'query')) {
+    Element.prototype.query = methods.query;
+  }
+  if(!isNative(Element.prototype, 'queryAll')) {
+    Element.prototype.queryAll = methods.queryAll;
+  }
+}
+
+
+['Document', 'DocumentFragment'].forEach(function (ParentNode) {
+  var prototype;
+  // Don't throw errors if these globals don't exist — just move on.
+  if (!(ParentNode in window)) {
+    return;
+  }
+  prototype = window[ParentNode].prototype;
+  if (!isNative(prototype, 'query')) {
+    prototype.query = methods.queryWrapper;
+  }
+  if (!isNative(prototype, 'queryAll')) {
+    prototype.queryAll = methods.queryAllWrapper;
+  }
+});
+
+// normalize:common:info: rewriting dependency "./methods" to "./methods/index.js"
+// normalize:common:info: rewriting dependency "./utils/is-native" to "./utils/is-native.js"
+
+
+})
+
+require.register("https://nlz.io/github/webreflection/dom4/1.0.1/src/dom4.js", function (exports, module) {
+(function(window){'use strict';
+  /* jshint loopfunc: true, noempty: false*/
+  // http://www.w3.org/TR/dom/#element
+  function textNodeIfString(node) {
+    return typeof node === 'string' ? window.document.createTextNode(node) : node;
+  }
+  function mutationMacro(nodes) {
+    if (nodes.length === 1) {
+      return textNodeIfString(nodes[0]);
+    }
+    for (var
+      fragment = window.document.createDocumentFragment(),
+      list = slice.call(nodes),
+      i = 0; i < nodes.length; i++
+    ) {
+      fragment.appendChild(textNodeIfString(list[i]));
+    }
+    return fragment;
+  }
+  for(var
+    defineProperty = Object.defineProperty || function (object, property, descriptor) {
+      object.__defineGetter__(property, descriptor.get);
+    },
+    indexOf = [].indexOf || function indexOf(value){
+      var length = this.length;
+      while(length--) {
+        if (this[length] === value) {
+          break;
+        }
+      }
+      return length;
+    },
+    head,
+    property,
+    verifyToken,
+    DOMTokenList,
+    trim = /^\s+|\s+$/g,
+    spaces = /\s+/,
+    SPACE = '\x20',
+    toggle = function toggle(token, force) {
+      if (this.contains(token)) {
+        if (!force) {
+          // force is not true (either false or omitted)
+          this.remove(token);
+        }
+      } else if(force === undefined || force) {
+        force = true;
+        this.add(token);
+      }
+      return !!force;
+    },
+    ElementPrototype = (window.Element || window.Node || window.HTMLElement).prototype,
+    properties = [
+      'matches', (
+        ElementPrototype.matchesSelector ||
+        ElementPrototype.webkitMatchesSelector ||
+        ElementPrototype.khtmlMatchesSelector ||
+        ElementPrototype.mozMatchesSelector ||
+        ElementPrototype.msMatchesSelector ||
+        ElementPrototype.oMatchesSelector ||
+        function matches(selector) {
+          var parentNode = this.parentNode;
+          return !!parentNode && -1 < indexOf.call(
+            parentNode.querySelectorAll(selector),
+            this
+          );
+        }
+      ),
+      'prepend', function prepend() {
+        var firstChild = this.firstChild,
+            node = mutationMacro(arguments);
+        if (firstChild) {
+          this.insertBefore(node, firstChild);
+        } else {
+          this.appendChild(node);
+        }
+      },
+      'append', function append() {
+        this.appendChild(mutationMacro(arguments));
+      },
+      'before', function before() {
+        var parentNode = this.parentNode;
+        if (parentNode) {
+          parentNode.insertBefore(
+            mutationMacro(arguments), this
+          );
+        }
+      },
+      'after', function after() {
+        var parentNode = this.parentNode,
+            nextSibling = this.nextSibling,
+            node = mutationMacro(arguments);
+        if (parentNode) {
+          if (nextSibling) {
+            parentNode.insertBefore(node, nextSibling);
+          } else {
+            parentNode.appendChild(node);
+          }
+        }
+      },
+      'replace', function replace() {
+        var parentNode = this.parentNode;
+        if (parentNode) {
+          parentNode.replaceChild(
+            mutationMacro(arguments),
+            this
+          );
+        }
+      },
+      'remove', function remove() {
+        var parentNode = this.parentNode;
+        if (parentNode) {
+          parentNode.removeChild(this);
+        }
+      }
+    ],
+    slice = properties.slice,
+    i = properties.length; i; i -= 2
+  ) {
+    property = properties[i - 2];
+    if (!(property in ElementPrototype)) {
+      ElementPrototype[property] = properties[i - 1];
+    }
+  }
+  // http://www.w3.org/TR/dom/#domtokenlist
+  // iOS 5.1 has completely screwed this property
+  // classList in ElementPrototype is false
+  // but it's actually there as getter
+  if (!('classList' in document.documentElement)) {
+    // http://www.w3.org/TR/domcore/#domtokenlist
+    verifyToken = function (token) {
+      if (!token) {
+        throw 'SyntaxError';
+      } else if (spaces.test(token)) {
+        throw 'InvalidCharacterError';
+      }
+      return token;
+    };
+    DOMTokenList = function (node) {
+      var className = node.className.replace(trim, '');
+      if (className.length) {
+        properties.push.apply(
+          this,
+          className.split(spaces)
+        );
+      }
+      this._ = node;
+    };
+    DOMTokenList.prototype = {
+      length: 0,
+      add: function add() {
+        for(var j = 0, token; j < arguments.length; j++) {
+          token = arguments[j];
+          if(!this.contains(token)) {
+            properties.push.call(this, property);
+          }
+        }
+        this._.className = '' + this;
+      },
+      contains: (function(indexOf){
+        return function contains(token) {
+          i = indexOf.call(this, property = verifyToken(token));
+          return -1 < i;
+        };
+      }([].indexOf || function (token) {
+        i = this.length;
+        while(i-- && this[i] !== token){}
+        return i;
+      })),
+      item: function item(i) {
+        return this[i] || null;
+      },
+      remove: function remove() {
+        for(var j = 0, token; j < arguments.length; j++) {
+          token = arguments[j];
+          if(this.contains(token)) {
+            properties.splice.call(this, i, 1);
+          }
+        }
+        this._.className = '' + this;
+      },
+      toggle: toggle,
+      toString: function toString() {
+        return properties.join.call(this, SPACE);
+      }
+    };
+    defineProperty(ElementPrototype, 'classList', {
+      get: function get() {
+        return new DOMTokenList(this);
+      },
+      set: function(){}
+    });
+  } else {
+    // iOS 5.1 and Nokia ASHA do not support multiple add or remove
+    // trying to detect and fix that in here
+    DOMTokenList = document.createElement('div').classList;
+    DOMTokenList.add('a', 'b', 'a');
+    if ('a\x20b' != DOMTokenList) {
+      // no other way to reach original methods in iOS 5.1
+      ElementPrototype = DOMTokenList.constructor.prototype;
+      if (!('add' in ElementPrototype)) {
+        // ASHA double fails in here
+        ElementPrototype = window.DOMTokenList.prototype;
+      }
+      verifyToken = function (original) {
+        return function () {
+          var i = 0;
+          while (i < arguments.length) {
+            original.call(this, arguments[i++]);
+          }
+        };
+      };
+      ElementPrototype.add = verifyToken(ElementPrototype.add);
+      ElementPrototype.remove = verifyToken(ElementPrototype.remove);
+      // toggle is broken too ^_^ ... let's fix it
+      ElementPrototype.toggle = toggle;
+    }
+  }
+
+  if (!('head' in document)) {
+    defineProperty(document, 'head', {
+      get: function () {
+        return head || (
+          head = document.getElementsByTagName('head')[0]
+        );
+      }
+    });
+  }
+
+  // http://www.w3.org/TR/dom/#customevent
+  try{new window.CustomEvent('?')}catch(o_O){
+    window.CustomEvent = function(
+      eventName,
+      defaultInitDict
+    ){
+
+      // the infamous substitute
+      function CustomEvent(type, eventInitDict) {
+        var event = document.createEvent(eventName);
+        if (typeof type != 'string') {
+          throw new Error('An event name must be provided');
+        }
+        if (eventName == 'Event') {
+          event.initCustomEvent = initCustomEvent;
+        }
+        if (eventInitDict == null) {
+          eventInitDict = defaultInitDict;
+        }
+        event.initCustomEvent(
+          type,
+          eventInitDict.bubbles,
+          eventInitDict.cancelable,
+          eventInitDict.detail
+        );
+        return event;
+      }
+
+      // attached at runtime
+      function initCustomEvent(
+        type, bubbles, cancelable, detail
+      ) {
+        this.initEvent(type, bubbles, cancelable);
+        this.detail = detail;
+      }
+
+      // that's it
+      return CustomEvent;
+    }(
+      // is this IE9 or IE10 ?
+      // where CustomEvent is there
+      // but not usable as construtor ?
+      window.CustomEvent ?
+        // use the CustomEvent interface in such case
+        'CustomEvent' : 'Event',
+        // otherwise the common compatible one
+      {
+        bubbles: false,
+        cancelable: false,
+        detail: null
+      }
+    );
+  }
+
+}(window));
+})
+
+require.register("https://nlz.io/github/polyfills/setimmediate/1.0.0/index.js", function (exports, module) {
+
+if (typeof setImmediate !== 'function') {
+  setImmediate = function setImmediate(fn) {
+    setTimeout(fn, 0)
+  }
+}
+
+})
+
+require.register("https://nlz.io/github/polyfills/bundle/1.0.1/index.js", function (exports, module) {
+
+/**
+ * Polyfills not included within this organization.
+ * Generally, these are better tested, so these go first.
+ * Don't let polyfills/ overwrite these polyfills.
+ */
+
+require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/index.js");
+require("https://nlz.io/github/webreflection/dom4/1.0.1/src/dom4.js");
+
+
+
+
+
+require("https://nlz.io/github/polyfills/setimmediate/1.0.0/index.js");
+
+})
+
 require.register("./client/permalinks.js", function (exports, module) {
 
 [].forEach.call(document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]'), function (h) {
@@ -121,7 +713,8 @@ module.exports = function (fn, immediate) {
 
 })
 
-require.register("https://nlz.io/github/component/query/0.0.3/index.js", function (exports, module) {
+require.register("https://nlz.io/github/component/query/0.0.1/index.js", function (exports, module) {
+
 function one(selector, el) {
   return el.querySelector(selector);
 }
@@ -141,17 +734,16 @@ exports.engine = function(obj){
   if (!obj.all) throw new Error('.all callback required');
   one = obj.one;
   exports.all = obj.all;
-  return exports;
 };
 
 })
 
-require.register("https://nlz.io/github/component/matches-selector/0.1.2/index.js", function (exports, module) {
+require.register("https://nlz.io/github/component/matches-selector/0.1.1/index.js", function (exports, module) {
 /**
  * Module dependencies.
  */
 
-var query = require("https://nlz.io/github/component/query/0.0.3/index.js");
+var query = require("https://nlz.io/github/component/query/0.0.1/index.js");
 
 /**
  * Element prototype.
@@ -210,7 +802,7 @@ module.exports = function (selector, childSelector, sep) {
 })
 
 require.register("https://nlz.io/github/discore/closest/0.1.2/index.js", function (exports, module) {
-var matches = require("https://nlz.io/github/component/matches-selector/0.1.2/index.js")
+var matches = require("https://nlz.io/github/component/matches-selector/0.1.1/index.js")
 
 module.exports = function (element, selector, checkYoSelf, root) {
   element = checkYoSelf ? {parentNode: element} : element
@@ -318,10 +910,10 @@ function Tap(callback) {
 })
 
 require.register("https://nlz.io/github/jonathanong/eevee/0.0.4/index.js", function (exports, module) {
-var matches = require("https://nlz.io/github/component/matches-selector/0.1.2/index.js")
+var matches = require("https://nlz.io/github/component/matches-selector/0.1.1/index.js")
 var context = require("https://nlz.io/github/component/contextual-selector/0.0.2/index.js")
 var closest = require("https://nlz.io/github/discore/closest/0.1.2/index.js")
-var query = require("https://nlz.io/github/component/query/0.0.3/index.js")
+var query = require("https://nlz.io/github/component/query/0.0.1/index.js")
 var tap = require("https://nlz.io/github/component/tap-event/0.0.7/index.js")
 
 module.exports = Eevee
@@ -1084,13 +1676,13 @@ require.register("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/lib
 /* jshint browser: true */
 
 var eevee = require("https://nlz.io/github/jonathanong/eevee/0.0.4/index.js")
-var query = require("https://nlz.io/github/component/query/0.0.3/index.js")
+var query = require("https://nlz.io/github/component/query/0.0.1/index.js")
 var tap = require("https://nlz.io/github/component/tap-event/0.0.7/index.js")
 var keyname = require("https://nlz.io/github/component/keyname/0.0.1/index.js")
 var classes = require("https://nlz.io/github/component/classes/1.2.1/index.js")
 var closest = require("https://nlz.io/github/discore/closest/0.1.2/index.js")
 var clickable = require("https://nlz.io/github/component/clickable/0.0.4/index.js")
-var matches = require("https://nlz.io/github/component/matches-selector/0.1.2/index.js")
+var matches = require("https://nlz.io/github/component/matches-selector/0.1.1/index.js")
 var Emitter = require("https://nlz.io/github/component/emitter/1.1.2/index.js")
 
 exports = module.exports = new Emitter()
@@ -1226,190 +1818,9 @@ require.register("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/ind
 module.exports = require("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/lib/index.js")
 })
 
-require.register("https://nlz.io/github/components/classList.js/2013.5.14/classList.js", function (exports, module) {
-/*
- * classList.js: Cross-browser full element.classList implementation.
- * 2012-11-15
- *
- * By Eli Grey, http://eligrey.com
- * Public Domain.
- * NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
- */
-
-/*global self, document, DOMException */
-
-/*! @source http://purl.eligrey.com/github/classList.js/blob/master/classList.js*/
-
-if (typeof document !== "undefined" && !("classList" in document.createElement("a"))) {
-
-(function (view) {
-
-"use strict";
-
-if (!('HTMLElement' in view) && !('Element' in view)) return;
-
-var
-	  classListProp = "classList"
-	, protoProp = "prototype"
-	, elemCtrProto = (view.HTMLElement || view.Element)[protoProp]
-	, objCtr = Object
-	, strTrim = String[protoProp].trim || function () {
-		return this.replace(/^\s+|\s+$/g, "");
-	}
-	, arrIndexOf = Array[protoProp].indexOf || function (item) {
-		var
-			  i = 0
-			, len = this.length
-		;
-		for (; i < len; i++) {
-			if (i in this && this[i] === item) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	// Vendors: please allow content code to instantiate DOMExceptions
-	, DOMEx = function (type, message) {
-		this.name = type;
-		this.code = DOMException[type];
-		this.message = message;
-	}
-	, checkTokenAndGetIndex = function (classList, token) {
-		if (token === "") {
-			throw new DOMEx(
-				  "SYNTAX_ERR"
-				, "An invalid or illegal string was specified"
-			);
-		}
-		if (/\s/.test(token)) {
-			throw new DOMEx(
-				  "INVALID_CHARACTER_ERR"
-				, "String contains an invalid character"
-			);
-		}
-		return arrIndexOf.call(classList, token);
-	}
-	, ClassList = function (elem) {
-		var
-			  trimmedClasses = strTrim.call(elem.className)
-			, classes = trimmedClasses ? trimmedClasses.split(/\s+/) : []
-			, i = 0
-			, len = classes.length
-		;
-		for (; i < len; i++) {
-			this.push(classes[i]);
-		}
-		this._updateClassName = function () {
-			elem.className = this.toString();
-		};
-	}
-	, classListProto = ClassList[protoProp] = []
-	, classListGetter = function () {
-		return new ClassList(this);
-	}
-;
-// Most DOMException implementations don't allow calling DOMException's toString()
-// on non-DOMExceptions. Error's toString() is sufficient here.
-DOMEx[protoProp] = Error[protoProp];
-classListProto.item = function (i) {
-	return this[i] || null;
-};
-classListProto.contains = function (token) {
-	token += "";
-	return checkTokenAndGetIndex(this, token) !== -1;
-};
-classListProto.add = function () {
-	var
-		  tokens = arguments
-		, i = 0
-		, l = tokens.length
-		, token
-		, updated = false
-	;
-	do {
-		token = tokens[i] + "";
-		if (checkTokenAndGetIndex(this, token) === -1) {
-			this.push(token);
-			updated = true;
-		}
-	}
-	while (++i < l);
-
-	if (updated) {
-		this._updateClassName();
-	}
-};
-classListProto.remove = function () {
-	var
-		  tokens = arguments
-		, i = 0
-		, l = tokens.length
-		, token
-		, updated = false
-	;
-	do {
-		token = tokens[i] + "";
-		var index = checkTokenAndGetIndex(this, token);
-		if (index !== -1) {
-			this.splice(index, 1);
-			updated = true;
-		}
-	}
-	while (++i < l);
-
-	if (updated) {
-		this._updateClassName();
-	}
-};
-classListProto.toggle = function (token, forse) {
-	token += "";
-
-	var
-		  result = this.contains(token)
-		, method = result ?
-			forse !== true && "remove"
-		:
-			forse !== false && "add"
-	;
-
-	if (method) {
-		this[method](token);
-	}
-
-	return !result;
-};
-classListProto.toString = function () {
-	return this.join(" ");
-};
-
-if (objCtr.defineProperty) {
-	var classListPropDesc = {
-		  get: classListGetter
-		, enumerable: true
-		, configurable: true
-	};
-	try {
-		objCtr.defineProperty(elemCtrProto, classListProp, classListPropDesc);
-	} catch (ex) { // IE 8 doesn't support enumerable:true
-		if (ex.number === -0x7FF5EC54) {
-			classListPropDesc.enumerable = false;
-			objCtr.defineProperty(elemCtrProto, classListProp, classListPropDesc);
-		}
-	}
-} else if (objCtr[protoProp].__defineGetter__) {
-	elemCtrProto.__defineGetter__(classListProp, classListGetter);
-}
-
-}(self));
-
-}
-
-})
-
 require.register("./client/toc.js", function (exports, module) {
 
 var throttle = require("https://nlz.io/github/component/per-frame/1.0.0/index.js");require("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/index.js");
-require("https://nlz.io/github/components/classList.js/2013.5.14/classList.js");
 
 require("./client/permalinks.js");
 
@@ -1459,6 +1870,8 @@ function setMaxHeight() {
 })
 
 require.register("./client/index.js", function (exports, module) {
+
+require("https://nlz.io/github/polyfills/bundle/1.0.1/index.js");
 
 require("./client/permalinks.js");
 require("./client/toc.js");
