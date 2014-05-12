@@ -31,6 +31,7 @@ home()
 docs()
 
 sane(process.cwd(), [
+  '*.jade',
   'docs/*',
   'home/*',
 ])
