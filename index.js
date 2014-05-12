@@ -12,8 +12,8 @@ function require(name) {
 
   var definition = module.definition;
   if (definition) {
-    definition.call(this, module.exports = {}, module);
     delete module.definition;
+    definition.call(this, module.exports = {}, module);
   }
 
   return module.exports;

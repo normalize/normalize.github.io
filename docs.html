@@ -365,6 +365,40 @@ so many of these features are subject to change.</p>
 <h4 id="don-t-do-crazy-imports">Don&#39;t do crazy @imports</h4>
 <p>Stick with simple <code>@import</code> statements.
 <code>@import</code> statements using <code>url()</code>s and media queries are not supported.</p>
+</div></section><section><div class="container"><h2 id="bundling">Bundling</h2><p>As shown via <code>nlz build(1)</code>,
+you can build multiple entry points, whether <code>.js</code> or <code>.css</code>,
+all at the same time.</p>
+<pre><code class="lang-bash">nlz build index<span class="hljs-preprocessor">.js</span> something<span class="hljs-preprocessor">.js</span> else<span class="hljs-preprocessor">.js</span>
+</code></pre>
+<p>However, you probably want a couple of partial bundles,
+one for the initial page load and the others for specific pages.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"boot.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"homepage.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre>
+<p>To do is very simple: have <code>boot.js</code> and <code>homepage.js</code> as entry points
+and have <code>homepage.js</code> depend on <code>boot.js</code> directly:</p>
+<pre><code class="lang-js"><span class="hljs-comment">// homepage.js:</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'boot.js'</span>
+</code></pre>
+<p>Then create a build with both entry points:</p>
+<pre><code class="lang-bash">nlz build boot<span class="hljs-preprocessor">.js</span> homepage<span class="hljs-preprocessor">.js</span>
+</code></pre>
+<p>Now you will have to entry points, <code>boot.js</code> and <code>homepage.js</code>.
+<code>boot.js</code> will be required to use <code>homepage.js</code>,
+and none of <code>boot.js</code>&#39;s dependencies will be included in <code>homepage.js</code>.</p>
+<p>If you want to create a single <code>homepage.js</code> bundle,
+just build it independently:</p>
+<pre><code class="lang-bash">nlz build homepage<span class="hljs-preprocessor">.js</span>
+</code></pre>
+<p>Now <code>homepage.js</code> will include all of <code>boot.js</code>.</p>
+<p>This will work with JS as well as CSS.</p>
+<blockquote>
+<p>Notes:</p>
+<ul>
+<li>Common bundles are not yet supported.</li>
+<li>All entry points must be defined with their all their dependencies defined prior.</li>
+</ul>
+</blockquote>
 </div></section><section><div class="container"><h2 id="authoring-tests">Authoring Tests</h2><p>One of the goals of Normalize is to make testing easier.
 Currently, a lot of CLI tools and integrations with various services are required to test web components well.</p>
 <blockquote>
