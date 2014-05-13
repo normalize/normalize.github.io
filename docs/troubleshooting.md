@@ -1,9 +1,9 @@
 
-## Normalization Logs
+### Normalization Logs
 
 The normalization proxy will add logs to two places: `normalize-debug.log` and each file themselves.
 
-### normalize-debug.log
+#### normalize-debug.log
 
 Each normalized repository will have a `normalize-debug.log`:
 
@@ -13,12 +13,12 @@ GET https://nlz.io/github/components/jquery/2.1.0/normalize-debug.log
 
 This file will contain logs that pertain to the entire repository as a whole.
 
-### Per-file logs
+#### Per-file logs
 
 Each file served from the proxy will include its own logs appended to the bottom of the file.
 You can view these comments to see what the proxy did to the file.
 
-## Debug
+### Debug
 
 Whether you're using `nlz(1)` or run your own proxy,
 you can set the `DEBUG` environmental variable to view the logs.
@@ -31,9 +31,9 @@ DEBUG=normalize*
 DEBUG=normalize-proxy*
 ```
 
-## Common Errors
+### Common Errors
 
-### EMFILE Errors
+#### EMFILE Errors
 
 Normalize does __not__ have any concurrency control.
 It executes everything as fast as possible in parallel.
