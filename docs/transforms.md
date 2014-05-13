@@ -1,7 +1,18 @@
 
 These are all the transforms available for both the normalization proxy and `nlz-build(1)`.
-Unlike Component, Browserify, and other build systems,
-transforms are included automatically and stored in a single repository.
+
+There are multiple types of transforms which are not mutually exclusive:
+
+- Build-only - `nlz-build(1)`-only transforms
+- Ubiquitus - transforms for both the CLI and the proxy.
+- 1-to-1 - All included in  [normalize-transforms](https://github.com/normalize/transforms.js)
+- Global-build-only - Global transforms for `nlz-build(1)`, specifically CSS transforms.
+  These are all included in [normalize-build](https://github.com/normalize/build.js) and contrast 1-to-1 transforms.
+- Extension - Extension-based transforms
+- Tranparent - Transforms without an extension
+
+Unlike other bundlers and build systems,
+transforms are included automatically.
 There are a couple of reasons for this:
 
 - This middleware system is a more complicated than other middleware systems:
@@ -17,7 +28,7 @@ There are a couple of reasons for this:
 PRs for additional transforms are welcomed as long as there's a valid use-case and people would actually use it.
 Feel free to create feature requests and pull requests in the [transform.js](https://github.com/normalize/transforms.js) repository.
 
-### How Transforms Work
+### How Extension-based Transforms Work
 
 Given a source file such as `template.html`,
 the walker transforms the file based on additional `.<extensions>`.
@@ -28,13 +39,12 @@ This is superior because:
 - The transforms used are explicitly shown
 - It allows you to use the same source file in multiple ways without configuration
 
-For example, `template.jade.js` would return a jade render function whereas `template.jade.html.js` will return the jade template as a compiled string.
+For example, `template.jade.js` returns a jade render function whereas `template.jade.html.js` returns the jade template as a compiled string.
 
 You can also compose multiple transforms together.
-For example, `.jade.html` is its own transform and so is `.html.js`.
-In other words, `.jade.html.js` is a composition of transforms!
+For example, `.jade.html.js` is a composition of `.jade.html` and `.html.js`.
 
-Unlike other build systems and package managers,
+Unlike other build systems,
 transforms have the ability to inject dependencies into your application and automatically install them,
 making development easier in general.
 For example, to use `.jade.js`, you need to [jade runtime](https://github.com/facebook/regenerator/blob/master/runtime/dev.js).
@@ -52,34 +62,43 @@ export default function template(locals) {
 
 #### Autoprefixer
 
+Type: Transparent, 1-to-1, ubiquitous
+
 All CSS is automatically prefixed using [autoprefixer](https://github.com/ai/autoprefixer).
 No extensions are necessary.
 The default options are used.
 
-#### Rework
+#### CSS Variables
 
-A subset of specification compliant [rework](https://github.com/reworkcss/rework) plugins are included.
-These are essentially a subset of [myth](https://github.com/segmentio/myth).
-These are:
+Type: Global-build-only, transparent
 
-- Color manipulation via [rework-color-function](https://github.com/ianstormtaylor/rework-color-function)
-- Math via [rework-calc](http://www.w3.org/TR/css3-values/#calc-notation)
-- 4/8-digit hex color support via [rework-hex-alpha](https://github.com/ianstormtaylor/rework-hex-alpha)
-- Font-variant shorthands via [rework-font-variant](https://github.com/ianstormtaylor/rework-font-variant)
+CSS Variables support via [variables](https://github.com/css-utils/variables).
+
+#### CSS Color Function
+
+Type: Global-build-only, transparent
+
+CSS color manipulation via [css-colors](https://github.com/css-utils/colors).
 
 ### JS Transforms
 
 #### ES6 Modules
+
+Type: Build-only, 1-to-1, transparent
 
 All ES6 modules are automatically transpiled to CommonJS modules using [es6-module-jstransform](https://github.com/andreypopp/es6-module-jstransform).
 This will be disabled by default once ES6 modules are widely supported by browsers.
 
 #### Regenerator
 
+Type: Build-only, 1-to-1, transparent
+
 All code that uses generators are automatically transformed using [regenerator](https://github.com/facebook/regenerator).
 This will be disabled by default once generators are widely supported by browsers.
 
 #### `.<mime:text/*>.js`
+
+Type: Ubiquitous, 1-to-1, extension
 
 All extensions whose corresponding MIME type is `text/*` are automatically transformed to a JS string using `JSON.stringify()` unless superceded by another transform.
 
@@ -91,6 +110,8 @@ el.textContent = text
 ```
 
 #### `.json.js`
+
+Type: Ubiquitous, 1-to-1, extension
 
 Transforms JSON files to a JS object.
 
@@ -104,6 +125,8 @@ var name = data.name
 
 #### `.jade.html`
 
+Type: Ubiquitous, 1-to-1, extension
+
 Compile [jade](https://github.com/visionmedia/jade) templates to an HTML string.
 For example, combined with the `.<mime:text/*>.js` transform:
 
@@ -114,6 +137,8 @@ el.innerHTML = html
 ```
 
 #### `.jade.js`
+
+Type: Ubiquitous, 1-to-1, extension
 
 Compile [jade](https://github.com/visionmedia/jade) templates to a function.
 
@@ -126,6 +151,8 @@ el.innerHTML = render(data)
 
 #### `.(md|markdown).html`
 
+Type: Ubiquitous, 1-to-1, extension
+
 Compile markdown templates to an HTML string using [marked](https://github.com/chjj/marked).
 Note that without `.html`, the actual markdown is returned.
 
@@ -137,9 +164,13 @@ el.innerHTML = html
 
 #### `.jsx.js`
 
+Type: Ubiquitous, 1-to-1, extension
+
 Compile [React](http://facebook.github.io/react/) `.jsx` templates to JS.
 
 #### `.html.domify.js`
+
+Type: Ubiquitous, 1-to-1, extension
 
 Compile an HTML string to an element using [domify](https://github.com/component/domify).
 This is useful for web components and templates.

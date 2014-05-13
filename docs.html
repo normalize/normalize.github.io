@@ -219,9 +219,19 @@ This allows you to not specify the entry points every time you run <code>nlz bui
   </span>}
 </span>}
 </code></pre>
-</div></section><section><div class="container"><h2 id="transforms">Transforms</h2><p>These are all the transforms available for both the normalization proxy and <code>nlz-build(1)</code>.
-Unlike Component, Browserify, and other build systems,
-transforms are included automatically and stored in a single repository.
+</div></section><section><div class="container"><h2 id="transforms">Transforms</h2><p>These are all the transforms available for both the normalization proxy and <code>nlz-build(1)</code>.</p>
+<p>There are multiple types of transforms which are not mutually exclusive:</p>
+<ul>
+<li>Build-only - <code>nlz-build(1)</code>-only transforms</li>
+<li>Ubiquitus - transforms for both the CLI and the proxy.</li>
+<li>1-to-1 - All included in  <a href="https://github.com/normalize/transforms.js">normalize-transforms</a></li>
+<li>Global-build-only - Global transforms for <code>nlz-build(1)</code>, specifically CSS transforms.
+These are all included in <a href="https://github.com/normalize/build.js">normalize-build</a> and contrast 1-to-1 transforms.</li>
+<li>Extension - Extension-based transforms</li>
+<li>Tranparent - Transforms without an extension</li>
+</ul>
+<p>Unlike other bundlers and build systems,
+transforms are included automatically.
 There are a couple of reasons for this:</p>
 <ul>
 <li><p>This middleware system is a more complicated than other middleware systems:</p>
@@ -238,7 +248,7 @@ It&#39;s counter productive to have different semantics for the same transform a
 </ul>
 <p>PRs for additional transforms are welcomed as long as there&#39;s a valid use-case and people would actually use it.
 Feel free to create feature requests and pull requests in the <a href="https://github.com/normalize/transforms.js">transform.js</a> repository.</p>
-<h3 id="how-transforms-work">How Transforms Work</h3>
+<h3 id="how-extension-based-transforms-work">How Extension-based Transforms Work</h3>
 <p>Given a source file such as <code>template.html</code>,
 the walker transforms the file based on additional <code>.&lt;extensions&gt;</code>.
 For example, <code>template.html.js</code> will export the HTML string as a JS string.
@@ -248,11 +258,10 @@ This is superior because:</p>
 <li>The transforms used are explicitly shown</li>
 <li>It allows you to use the same source file in multiple ways without configuration</li>
 </ul>
-<p>For example, <code>template.jade.js</code> would return a jade render function whereas <code>template.jade.html.js</code> will return the jade template as a compiled string.</p>
+<p>For example, <code>template.jade.js</code> returns a jade render function whereas <code>template.jade.html.js</code> returns the jade template as a compiled string.</p>
 <p>You can also compose multiple transforms together.
-For example, <code>.jade.html</code> is its own transform and so is <code>.html.js</code>.
-In other words, <code>.jade.html.js</code> is a composition of transforms!</p>
-<p>Unlike other build systems and package managers,
+For example, <code>.jade.html.js</code> is a composition of <code>.jade.html</code> and <code>.html.js</code>.</p>
+<p>Unlike other build systems,
 transforms have the ability to inject dependencies into your application and automatically install them,
 making development easier in general.
 For example, to use <code>.jade.js</code>, you need to <a href="https://github.com/facebook/regenerator/blob/master/runtime/dev.js">jade runtime</a>.
@@ -265,27 +274,27 @@ export <span class="hljs-keyword">default</span> <span class="hljs-function"><sp
 </code></pre>
 <h3 id="css-transforms">CSS Transforms</h3>
 <h4 id="autoprefixer">Autoprefixer</h4>
+<p>Type: Transparent, 1-to-1, ubiquitous</p>
 <p>All CSS is automatically prefixed using <a href="https://github.com/ai/autoprefixer">autoprefixer</a>.
 No extensions are necessary.
 The default options are used.</p>
-<h4 id="rework">Rework</h4>
-<p>A subset of specification compliant <a href="https://github.com/reworkcss/rework">rework</a> plugins are included.
-These are essentially a subset of <a href="https://github.com/segmentio/myth">myth</a>.
-These are:</p>
-<ul>
-<li>Color manipulation via <a href="https://github.com/ianstormtaylor/rework-color-function">rework-color-function</a></li>
-<li>Math via <a href="http://www.w3.org/TR/css3-values/#calc-notation">rework-calc</a></li>
-<li>4/8-digit hex color support via <a href="https://github.com/ianstormtaylor/rework-hex-alpha">rework-hex-alpha</a></li>
-<li>Font-variant shorthands via <a href="https://github.com/ianstormtaylor/rework-font-variant">rework-font-variant</a></li>
-</ul>
+<h4 id="css-variables">CSS Variables</h4>
+<p>Type: Global-build-only, transparent</p>
+<p>CSS Variables support via <a href="https://github.com/css-utils/variables">variables</a>.</p>
+<h4 id="css-color-function">CSS Color Function</h4>
+<p>Type: Global-build-only, transparent</p>
+<p>CSS color manipulation via <a href="https://github.com/css-utils/colors">css-colors</a>.</p>
 <h3 id="js-transforms">JS Transforms</h3>
 <h4 id="es6-modules">ES6 Modules</h4>
+<p>Type: Build-only, 1-to-1, transparent</p>
 <p>All ES6 modules are automatically transpiled to CommonJS modules using <a href="https://github.com/andreypopp/es6-module-jstransform">es6-module-jstransform</a>.
 This will be disabled by default once ES6 modules are widely supported by browsers.</p>
 <h4 id="regenerator">Regenerator</h4>
+<p>Type: Build-only, 1-to-1, transparent</p>
 <p>All code that uses generators are automatically transformed using <a href="https://github.com/facebook/regenerator">regenerator</a>.
 This will be disabled by default once generators are widely supported by browsers.</p>
 <h4 id="-mime-text-js-"><code>.&lt;mime:text/*&gt;.js</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
 <p>All extensions whose corresponding MIME type is <code>text/*</code> are automatically transformed to a JS string using <code>JSON.stringify()</code> unless superceded by another transform.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">module</span> <span class="hljs-keyword">text</span> <span class="hljs-keyword">from</span> <span class="hljs-comment">'something.txt'</span>
 
@@ -293,6 +302,7 @@ var el = document.createTextNode()
 el.textContent = <span class="hljs-keyword">text</span>
 </code></pre>
 <h4 id="-json-js-"><code>.json.js</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
 <p>Transforms JSON files to a JS object.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">module</span> data <span class="hljs-keyword">from</span> <span class="hljs-string">'data.json'</span>
 
@@ -300,6 +310,7 @@ el.textContent = <span class="hljs-keyword">text</span>
 </code></pre>
 <h3 id="template-transforms">Template Transforms</h3>
 <h4 id="-jade-html-"><code>.jade.html</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
 <p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to an HTML string.
 For example, combined with the <code>.&lt;mime:text/*&gt;.js</code> transform:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">module</span> html <span class="hljs-keyword">from</span> <span class="hljs-comment">'template.html.js'</span>
@@ -307,6 +318,7 @@ For example, combined with the <code>.&lt;mime:text/*&gt;.js</code> transform:</
 el.innerHTML = html
 </code></pre>
 <h4 id="-jade-js-"><code>.jade.js</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
 <p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to a function.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">module</span> render <span class="hljs-keyword">from</span> <span class="hljs-comment">'template.jade.js'</span>
 <span class="hljs-keyword">module</span> data <span class="hljs-keyword">from</span> <span class="hljs-comment">'data.json'</span>
@@ -314,6 +326,7 @@ el.innerHTML = html
 el.innerHTML = render(data)
 </code></pre>
 <h4 id="-md-markdown-html-"><code>.(md|markdown).html</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
 <p>Compile markdown templates to an HTML string using <a href="https://github.com/chjj/marked">marked</a>.
 Note that without <code>.html</code>, the actual markdown is returned.</p>
 <pre><code class="lang-js"><span class="hljs-keyword">module</span> html <span class="hljs-keyword">from</span> <span class="hljs-comment">'article.md.html.js'</span>
@@ -321,8 +334,10 @@ Note that without <code>.html</code>, the actual markdown is returned.</p>
 el.innerHTML = html
 </code></pre>
 <h4 id="-jsx-js-"><code>.jsx.js</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
 <p>Compile <a href="http://facebook.github.io/react/">React</a> <code>.jsx</code> templates to JS.</p>
 <h4 id="-html-domify-js-"><code>.html.domify.js</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
 <p>Compile an HTML string to an element using <a href="https://github.com/component/domify">domify</a>.
 This is useful for web components and templates.</p>
 <pre><code class="lang-js"><span class="hljs-reserved">var</span> template = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./template.html.domify.js'</span>)
