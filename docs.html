@@ -478,6 +478,35 @@ an HTML document with <code>&lt;div id=&quot;mocha&quot;&gt;&lt;/div&gt;</code> 
 <p>This will make it easier for the proxy to normalize licenses.
 Otherwise, it would have to parse the readme or the JSON files for the correct license.
 Plus, it declutters your readme!</p>
+</div></section><section><div class="container"><h2 id="troubleshooting">Troubleshooting</h2><h2 id="normalization-logs">Normalization Logs</h2>
+<p>The normalization proxy will add logs to two places: <code>normalize-debug.log</code> and each file themselves.</p>
+<h3 id="normalize-debug-log">normalize-debug.log</h3>
+<p>Each normalized repository will have a <code>normalize-debug.log</code>:</p>
+<pre><code><span class="hljs-constant">GET</span> <span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/nlz.io/github</span><span class="hljs-regexp">/components/jquery</span><span class="hljs-regexp">/2.1.0/normalize</span>-debug.log
+</code></pre><p>This file will contain logs that pertain to the entire repository as a whole.</p>
+<h3 id="per-file-logs">Per-file logs</h3>
+<p>Each file served from the proxy will include its own logs appended to the bottom of the file.
+You can view these comments to see what the proxy did to the file.</p>
+<h2 id="debug">Debug</h2>
+<p>Whether you&#39;re using <code>nlz(1)</code> or run your own proxy,
+you can set the <code>DEBUG</code> environmental variable to view the logs.
+See <a href="https://github.com/visionmedia/debug">visionmedia/debug</a> for more usage info.
+In particular,
+you want to do one of the following:</p>
+<pre><code class="lang-bash">DEBUG=<span class="hljs-built_in">normalize</span>*
+DEBUG=<span class="hljs-built_in">normalize</span>-proxy*
+</code></pre>
+<h2 id="common-errors">Common Errors</h2>
+<h3 id="emfile-errors">EMFILE Errors</h3>
+<p>Normalize does <strong>not</strong> have any concurrency control.
+It executes everything as fast as possible in parallel.
+What this means is that you could have a lot of file descriptors open at the same time.</p>
+<p>Concurrency control is complex and unnecessary for build systems that don&#39;t require concurrency.
+If you&#39;re hitting <code>EMFILE</code> errors,
+then all you have to do is set your <code>ulimit</code> higher:</p>
+<pre><code class="lang-bash">ulimit <span class="hljs-attribute">-n</span> <span class="hljs-number">10000</span>
+</code></pre>
+<p>There&#39;s no reason you should have low limits in development.</p>
 </div></section><section><div class="container"><h2 id="production-checklist">Production Checklist</h2><p><a href="https://nlz.io">https://nlz.io</a> is <strong>NOT</strong> ready to be used as a CDN in production.
 You may still use it as a registry and proxy for <code>nlz(1)</code>,
 but serving files from <a href="https://nlz.io">https://nlz.io</a> is not recommended.</p>
