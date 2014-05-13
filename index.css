@@ -470,6 +470,10 @@ body {
   background-color: #fff;
 }
 
+code {
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
 a,
 a:visited,
 a:active {
@@ -990,6 +994,27 @@ footer {
 }
 /* end: "./client/buttons.css" */
 
+/* begin: "./client/tables.css" */
+table {
+  margin: 10px 10px 20px;
+  border: 1px solid #ccc;
+}
+
+table th,
+table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+table thead th {
+  font-weight: 600;
+}
+
+table tbody tr:nth-child(odd) {
+  background-color: #fafafa;
+}
+/* end: "./client/tables.css" */
+
 /* begin: "https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/lib/index.css" */
 /**
  * .Dropdown(.open)(.up)(.down)(.left)(.right)
@@ -1144,6 +1169,8 @@ html.toc-fixed #toc {
 /* @import 'footer.css'; */
 
 /* @import 'buttons.css'; */
+
+/* @import 'tables.css'; */
 
 /* @import 'toc.css'; */
 

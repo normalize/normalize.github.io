@@ -8,6 +8,10 @@ body {
   background-color: #fff;
 }
 
+code {
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
 a,
 a:visited,
 a:active {
