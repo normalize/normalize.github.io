@@ -376,10 +376,22 @@ This matches <code>@import</code>, <code>href</code>, and <code>src</code> seman
 These two methods are the most compatible with CommonJS modules.
 ES6 modules are not finalized yet,
 so many of these features are subject to change.</p>
-</div></section><section><div class="container"><h2 id="authoring-css">Authoring CSS</h2><h3 id="don-ts">Don&#39;ts</h3>
+</div></section><section><div class="container"><h2 id="authoring-css">Authoring CSS</h2><h3 id="best-practices">Best Practices</h3>
 <h4 id="don-t-do-crazy-imports">Don&#39;t do crazy @imports</h4>
 <p>Stick with simple <code>@import</code> statements.
-<code>@import</code> statements using <code>url()</code>s and media queries are not supported.</p>
+<code>@import</code> statements using <code>url()</code>s and media queries are not supported.
+Instead of using <code>@import</code>s with media queries,
+just use each as separate entry points and use <code>&lt;link&gt;</code> tags with media queries.</p>
+<h4 id="-import-liberally">@import liberally</h4>
+<p><code>@import</code>ing the same CSS file multiple does not include it multiple in the build,
+nor does it create multiple HTTP requests.
+What it does do, however, is guarantee ordering.
+All CSS files <code>@import</code>ed within a CSS file will be included before the the rest of the CSS file&#39;s rules.</p>
+</div></section><section><div class="container"><h2 id="authoring-components">Authoring Components</h2><h3 id="best-practices">Best Practices</h3>
+<h4 id="keep-your-license-file-separate">Keep your LICENSE file separate</h4>
+<p>This will make it easier for the proxy to normalize licenses.
+Otherwise, it would have to parse the readme or the JSON files for the correct license.
+Plus, it declutters your readme!</p>
 </div></section><section><div class="container"><h2 id="bundling">Bundling</h2><p>As shown via <code>nlz build(1)</code>,
 you can build multiple entry points, whether <code>.js</code> or <code>.css</code>,
 all at the same time.</p>
@@ -489,10 +501,6 @@ Just create git hooks to open the commit SHA&#39;s tests in different browsers.<
 Thus, one of the goals of <a href="https://nlz.io">https://nlz.io</a> is to automatically generate <code>test.html</code> if there&#39;s a <code>test.js</code>.
 For example, if <code>mocha</code> is detected as the test runner,
 an HTML document with <code>&lt;div id=&quot;mocha&quot;&gt;&lt;/div&gt;</code> and the mocha stylesheet would be created automatically at the proxy.</p>
-</div></section><section><div class="container"><h2 id="best-practices">Best Practices</h2><h3 id="keep-your-license-file-separate">Keep your LICENSE file separate</h3>
-<p>This will make it easier for the proxy to normalize licenses.
-Otherwise, it would have to parse the readme or the JSON files for the correct license.
-Plus, it declutters your readme!</p>
 </div></section><section><div class="container"><h2 id="troubleshooting">Troubleshooting</h2><h3 id="normalization-logs">Normalization Logs</h3>
 <p>The normalization proxy will add logs to two places: <code>normalize-debug.log</code> and each file themselves.</p>
 <h4 id="normalize-debug-log">normalize-debug.log</h4>
