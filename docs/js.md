@@ -44,7 +44,7 @@ Give browsers filename priority and specify `.main = 'node.js'` in your `package
 
 #### Don't use `import *` or `import {}`
 
-Stick with `module X from 'name'` and `import 'name'`.
+Stick with `import X from 'name'` and `import 'name'`.
 These two methods are the most compatible with CommonJS modules.
 ES6 modules are not finalized yet,
 so many of these features are subject to change.

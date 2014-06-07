@@ -26,7 +26,7 @@ mocha.reporter('spec')
 mocha.timeout('10s')
 
 // include tests within this file
-module Component from 'index.js'
+import Component from 'index.js'
 
 describe('My Component', function () {
   // ... tests

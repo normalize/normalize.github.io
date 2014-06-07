@@ -39,7 +39,7 @@ block main
       all of which will eventually be supported natively by browsers.
 
       ```js
-      module $ from "https://nlz.io/npm/-/jquery/~2.1.0/jquery.js";
+      import $ from "https://nlz.io/npm/-/jquery/~2.1.0/jquery.js";
       ```
 
       ```css
@@ -201,20 +201,20 @@ block main
 
       ```js
       // use the template as a function
-      module render from 'template.jade.js'
+      import render from 'template.jade.js'
 
       var html = render({
         name: 'jong'
       })
 
       // use the template as an HTML string
-      module html from 'template.jade.html.js'
+      import html from 'template.jade.html.js'
 
       document.body.insertAdjacentHTML('beforeend', html)
 
       // use the template as a DOM element via domify
       // https://github.com/component/domify
-      module el from 'template.jade.html.domify.js'
+      import el from 'template.jade.html.domify.js'
 
       document.body.appendChild(el.cloneNode(true))
       ```

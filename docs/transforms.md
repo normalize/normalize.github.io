@@ -51,7 +51,7 @@ For example, to use `.jade.js`, you need to [jade runtime](https://github.com/fa
 The Jade transform will automatically inject the runtime by compiling your jade template to something like this:
 
 ```js
-module jade from 'https://nlz.io/github/visionmedia/jade/1/lib/runtime.js'
+import jade from 'https://nlz.io/github/visionmedia/jade/1/lib/runtime.js'
 
 export default function template(locals) {
   // compiled jade
@@ -103,7 +103,7 @@ Type: Ubiquitous, 1-to-1, extension
 All extensions whose corresponding MIME type is `text/*` are automatically transformed to a JS string using `JSON.stringify()` unless superceded by another transform.
 
 ```js
-module text from 'something.txt'
+import text from 'something.txt'
 
 var el = document.createTextNode()
 el.textContent = text
@@ -116,7 +116,7 @@ Type: Ubiquitous, 1-to-1, extension
 Transforms JSON files to a JS object.
 
 ```js
-module data from 'data.json'
+import data from 'data.json'
 
 var name = data.name
 ```
@@ -131,7 +131,7 @@ Compile [jade](https://github.com/visionmedia/jade) templates to an HTML string.
 For example, combined with the `.<mime:text/*>.js` transform:
 
 ```js
-module html from 'template.html.js'
+import html from 'template.html.js'
 
 el.innerHTML = html
 ```
@@ -143,8 +143,8 @@ Type: Ubiquitous, 1-to-1, extension
 Compile [jade](https://github.com/visionmedia/jade) templates to a function.
 
 ```js
-module render from 'template.jade.js'
-module data from 'data.json'
+import render from 'template.jade.js'
+import data from 'data.json'
 
 el.innerHTML = render(data)
 ```
@@ -157,7 +157,7 @@ Compile markdown templates to an HTML string using [marked](https://github.com/c
 Note that without `.html`, the actual markdown is returned.
 
 ```js
-module html from 'article.md.html.js'
+import html from 'article.md.html.js'
 
 el.innerHTML = html
 ```
