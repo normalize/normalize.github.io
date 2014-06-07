@@ -80,6 +80,37 @@ Type: Global-build-only, transparent
 
 CSS color manipulation via [css-colors](https://github.com/css-utils/colors).
 
+#### `less.css`
+
+Type: Ubiquitous, 1-to-1, extension
+
+Convert LESS files to CSS.
+
+```css
+@import 'styles.less.css';
+```
+
+#### `(sass|scss).css`
+
+Type: Ubiquitous, 1-to-1, extension
+
+Convert SASS files to CSS.
+
+```css
+@import 'styles.sass.css';
+@import 'styles.scss.css';
+```
+
+#### `stylus.css`
+
+Type: Ubiquitous, 1-to-1, extension
+
+Convert Stylus files to CSS.
+
+```css
+@import 'styles.styl.css';
+```
+
 ### JS Transforms
 
 #### ES6 Modules
@@ -119,6 +150,18 @@ Transforms JSON files to a JS object.
 import data from 'data.json'
 
 var name = data.name
+```
+
+#### `.coffee.js`
+
+Type: Ubiquitous, 1-to-1, extension
+
+Transforms a CoffeeScript file to JS.
+
+```js
+import fn from 'thing.coffee.js'
+
+fn()
 ```
 
 ### Template Transforms
