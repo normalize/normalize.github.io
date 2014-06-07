@@ -135,6 +135,11 @@ GET https://nlz.io/proxy.json
 
 Returns relevant information about the proxy including hostname, version, and supported remotes.
 
+#### GET polyfill.js
+
+Creates a polyfill bundle based on the client's user agent.
+See [polyfills/polyfills](https://github.com/polyfills/polyfills) for more details.
+
 ### Normalization
 
 Packages are "normalized" based on these JSON files in descending priority.
