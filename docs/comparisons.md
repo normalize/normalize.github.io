@@ -31,3 +31,18 @@ This is primarily due to two reasons:
 
 1. Absolute URLs are mostly redundant and very compressible.
 2. The `require()` implementation is minimal and is basically just a hash lookup.
+
+### vs. jspm.io and family
+
+A similar project is [jspm.io](http://jspm.io).
+Some key differences are:
+
+- There are no required special syntaxes. URLs are just URLs.
+  Special syntaxes are optional and require the developer to create their own custom
+  ES6 module loader on the client.
+- Normalize is not client-side heavy and does not necessitate the use of polyfills.
+  Normalize bundling overhead is minimal.
+- Normalize treats non-js assets as first-class citizens.
+- Normalize does not have its own registry.
+- Normalize has the ability to proxy from arbitrary remotes.
+- Normalize treats dynamic imports as second class citizens.
