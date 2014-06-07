@@ -98,6 +98,9 @@ These may include:</p>
 <pre><code class="lang-js">GET https://nlz<span class="hljs-preprocessor">.io</span>/proxy<span class="hljs-preprocessor">.json</span>
 </code></pre>
 <p>Returns relevant information about the proxy including hostname, version, and supported remotes.</p>
+<h4 id="get-polyfill-js">GET polyfill.js</h4>
+<p>Creates a polyfill bundle based on the client&#39;s user agent.
+See <a href="https://github.com/polyfills/polyfills">polyfills/polyfills</a> for more details.</p>
 <h3 id="normalization">Normalization</h3>
 <p>Packages are &quot;normalized&quot; based on these JSON files in descending priority.</p>
 <ol>
@@ -266,7 +269,7 @@ transforms have the ability to inject dependencies into your application and aut
 making development easier in general.
 For example, to use <code>.jade.js</code>, you need to <a href="https://github.com/facebook/regenerator/blob/master/runtime/dev.js">jade runtime</a>.
 The Jade transform will automatically inject the runtime by compiling your jade template to something like this:</p>
-<pre><code class="lang-js">module jade from <span class="hljs-string">'https://nlz.io/github/visionmedia/jade/1/lib/runtime.js'</span>
+<pre><code class="lang-js">import jade from <span class="hljs-string">'https://nlz.io/github/visionmedia/jade/1/lib/runtime.js'</span>
 
 export <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">template</span><span class="hljs-params">(locals)</span> {</span>
   <span class="hljs-comment">// compiled jade</span>
@@ -284,6 +287,22 @@ The default options are used.</p>
 <h4 id="css-color-function">CSS Color Function</h4>
 <p>Type: Global-build-only, transparent</p>
 <p>CSS color manipulation via <a href="https://github.com/css-utils/colors">css-colors</a>.</p>
+<h4 id="-less-css-"><code>less.css</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Convert LESS files to CSS.</p>
+<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'styles.less.css'</span></span>;
+</code></pre>
+<h4 id="-sass-scss-css-"><code>(sass|scss).css</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Convert SASS files to CSS.</p>
+<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'styles.sass.css'</span></span>;
+<span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'styles.scss.css'</span></span>;
+</code></pre>
+<h4 id="-stylus-css-"><code>stylus.css</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Convert Stylus files to CSS.</p>
+<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'styles.styl.css'</span></span>;
+</code></pre>
 <h3 id="js-transforms">JS Transforms</h3>
 <h4 id="es6-modules">ES6 Modules</h4>
 <p>Type: Build-only, 1-to-1, transparent</p>
@@ -296,7 +315,7 @@ This will be disabled by default once generators are widely supported by browser
 <h4 id="-mime-text-js-"><code>.&lt;mime:text/*&gt;.js</code></h4>
 <p>Type: Ubiquitous, 1-to-1, extension</p>
 <p>All extensions whose corresponding MIME type is <code>text/*</code> are automatically transformed to a JS string using <code>JSON.stringify()</code> unless superceded by another transform.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">module</span> <span class="hljs-keyword">text</span> <span class="hljs-keyword">from</span> <span class="hljs-comment">'something.txt'</span>
+<pre><code class="lang-js">import <span class="hljs-keyword">text</span> <span class="hljs-built_in">from</span> <span class="hljs-string">'something.txt'</span>
 
 var el = document.createTextNode()
 el.textContent = <span class="hljs-keyword">text</span>
@@ -304,24 +323,31 @@ el.textContent = <span class="hljs-keyword">text</span>
 <h4 id="-json-js-"><code>.json.js</code></h4>
 <p>Type: Ubiquitous, 1-to-1, extension</p>
 <p>Transforms JSON files to a JS object.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">module</span> data <span class="hljs-keyword">from</span> <span class="hljs-string">'data.json'</span>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> <span class="hljs-built_in">data</span> from <span class="hljs-string">'data.json'</span>
 
-<span class="hljs-keyword">var</span> name = data.name
+<span class="hljs-built_in">var</span> name <span class="hljs-subst">=</span> <span class="hljs-built_in">data</span><span class="hljs-built_in">.</span>name
+</code></pre>
+<h4 id="-coffee-js-"><code>.coffee.js</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Transforms a CoffeeScript file to JS.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> fn <span class="hljs-keyword">from</span> <span class="hljs-string">'thing.coffee.js'</span>
+
+fn()
 </code></pre>
 <h3 id="template-transforms">Template Transforms</h3>
 <h4 id="-jade-html-"><code>.jade.html</code></h4>
 <p>Type: Ubiquitous, 1-to-1, extension</p>
 <p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to an HTML string.
 For example, combined with the <code>.&lt;mime:text/*&gt;.js</code> transform:</p>
-<pre><code class="lang-js"><span class="hljs-keyword">module</span> html <span class="hljs-keyword">from</span> <span class="hljs-comment">'template.html.js'</span>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> html <span class="hljs-keyword">from</span> <span class="hljs-string">'template.html.js'</span>
 
 el.innerHTML = html
 </code></pre>
 <h4 id="-jade-js-"><code>.jade.js</code></h4>
 <p>Type: Ubiquitous, 1-to-1, extension</p>
 <p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to a function.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">module</span> render <span class="hljs-keyword">from</span> <span class="hljs-comment">'template.jade.js'</span>
-<span class="hljs-keyword">module</span> data <span class="hljs-keyword">from</span> <span class="hljs-comment">'data.json'</span>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> render <span class="hljs-keyword">from</span> <span class="hljs-string">'template.jade.js'</span>
+<span class="hljs-keyword">import</span> data <span class="hljs-keyword">from</span> <span class="hljs-string">'data.json'</span>
 
 el.innerHTML = render(data)
 </code></pre>
@@ -329,7 +355,7 @@ el.innerHTML = render(data)
 <p>Type: Ubiquitous, 1-to-1, extension</p>
 <p>Compile markdown templates to an HTML string using <a href="https://github.com/chjj/marked">marked</a>.
 Note that without <code>.html</code>, the actual markdown is returned.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">module</span> html <span class="hljs-keyword">from</span> <span class="hljs-comment">'article.md.html.js'</span>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> html <span class="hljs-keyword">from</span> <span class="hljs-string">'article.md.html.js'</span>
 
 el.innerHTML = html
 </code></pre>
@@ -372,7 +398,7 @@ This matches <code>@import</code>, <code>href</code>, and <code>src</code> seman
 <h4 id="use-index-js-for-browsers-node-js-for-node-js">Use index.js for browsers, node.js for node.js</h4>
 <p>Give browsers filename priority and specify <code>.main = &#39;node.js&#39;</code> in your <code>package.json</code>s.</p>
 <h4 id="don-t-use-import-or-import-">Don&#39;t use <code>import *</code> or <code>import {}</code></h4>
-<p>Stick with <code>module X from &#39;name&#39;</code> and <code>import &#39;name&#39;</code>.
+<p>Stick with <code>import X from &#39;name&#39;</code> and <code>import &#39;name&#39;</code>.
 These two methods are the most compatible with CommonJS modules.
 ES6 modules are not finalized yet,
 so many of these features are subject to change.</p>
@@ -447,7 +473,7 @@ mocha.reporter(<span class="hljs-string">'spec'</span>)
 mocha.timeout(<span class="hljs-string">'10s'</span>)
 
 // include tests within this file
-module Component from <span class="hljs-string">'index.js'</span>
+import Component from <span class="hljs-string">'index.js'</span>
 
 describe(<span class="hljs-string">'My Component'</span>, <span class="hljs-keyword">function</span> () {
   // <span class="hljs-keyword">...</span> tests
@@ -591,6 +617,20 @@ This is primarily due to two reasons:</p>
 <li>Absolute URLs are mostly redundant and very compressible.</li>
 <li>The <code>require()</code> implementation is minimal and is basically just a hash lookup.</li>
 </ol>
+<h3 id="vs-jspm-io-and-family">vs. jspm.io and family</h3>
+<p>A similar project is <a href="http://jspm.io">jspm.io</a>.
+Some key differences are:</p>
+<ul>
+<li>There are no required special syntaxes. URLs are just URLs.
+Special syntaxes are optional and require the developer to create their own custom
+ES6 module loader on the client.</li>
+<li>Normalize is not client-side heavy and does not necessitate the use of polyfills.
+Normalize bundling overhead is minimal.</li>
+<li>Normalize treats non-js assets as first-class citizens.</li>
+<li>Normalize does not have its own registry.</li>
+<li>Normalize has the ability to proxy from arbitrary remotes.</li>
+<li>Normalize treats dynamic imports as second class citizens.</li>
+</ul>
 </div></section><section><div class="container"><h2 id="philosophy">Philosophy</h2><p>Normalize.IO was born out of frustration with the current web development workflow.
 It has a very specific philosophy,
 which will affect its development.</p>
