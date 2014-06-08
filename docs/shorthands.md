@@ -84,7 +84,7 @@ component/emitter@1/lib => /component/emitter/1/lib/index.js
 Note that `@<version>` here is required for the shorthand,
 otherwise it could be a file.
 
-#### Everything else
+#### Everything Else
 
 All other remotes can be abbreviated to:
 
@@ -97,9 +97,9 @@ Where:
 - `remote` is the remote name or alias.
 - `user` is optional if the remote allows namespaces,
   otherwise must be omitted
-- `project`
-- `version` - is optional
-- `file`
+- `project` - the name of the project/module/package
+- `version` - is optional, defaulting to `*`
+- `file` - can be completely empty, defaulting to `/index.js`
 
 Some remotes, such as npm, have or will have namespaces.
 However, it will be treated as if it does not as most modules do not use namespaces.

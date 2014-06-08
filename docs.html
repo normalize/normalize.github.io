@@ -186,7 +186,7 @@ i.e. <code>@&lt;org&gt;/&lt;module&gt;@&lt;version&gt;/&lt;file&gt;...</code>:</
 component/emitter<span class="hljs-variable">@1</span>/lib =&gt; <span class="hljs-regexp">/component/emitter</span><span class="hljs-regexp">/1/lib</span><span class="hljs-regexp">/index.js</span>
 </code></pre><p>Note that <code>@&lt;version&gt;</code> here is required for the shorthand,
 otherwise it could be a file.</p>
-<h4 id="everything-else">Everything else</h4>
+<h4 id="everything-else">Everything Else</h4>
 <p>All other remotes can be abbreviated to:</p>
 <pre><code>&lt;remote&gt;:&lt;user&gt;/&lt;project&gt;@&lt;version&gt;/&lt;file&gt;<span class="hljs-keyword">...</span>
 </code></pre><p>Where:</p>
@@ -194,9 +194,9 @@ otherwise it could be a file.</p>
 <li><code>remote</code> is the remote name or alias.</li>
 <li><code>user</code> is optional if the remote allows namespaces,
 otherwise must be omitted</li>
-<li><code>project</code></li>
-<li><code>version</code> - is optional</li>
-<li><code>file</code></li>
+<li><code>project</code> - the name of the project/module/package</li>
+<li><code>version</code> - is optional, defaulting to <code>*</code></li>
+<li><code>file</code> - can be completely empty, defaulting to <code>/index.js</code></li>
 </ul>
 <p>Some remotes, such as npm, have or will have namespaces.
 However, it will be treated as if it does not as most modules do not use namespaces.
