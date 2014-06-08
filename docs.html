@@ -136,6 +136,71 @@ Currently, classification is defined by the following criteria:</p>
 </ul>
 </li>
 </ul>
+</div></section><section><div class="container"><h2 id="url-shorthands">URL Shorthands</h2><p>Typing <code>https://nlz.io/</code> everywhere becomes tedious quickly,
+so Normalize allows you to use shorthands for dependencies.
+Shorthands simply expand to the long Normalize URLs.
+However, due to the wide remote support Normalize provides,
+shorthands require a certain degree of specificity.</p>
+<p>However, shorthands can only be used if either:</p>
+<ol>
+<li>You use a build process, <code>nlz build</code></li>
+<li>You use a custom ES6 module loader</li>
+</ol>
+<p>Thus, shorthands are second-class citizens.
+Normalize will eventually provide a custom module loader for these shorthands.</p>
+<h3 id="the-law-of-shorthands">The Law of Shorthands</h3>
+<ol>
+<li>Shorthands only apply to JavaScript files.
+There are no shorthands for CSS and HTML files as they do not have custom loaders.</li>
+<li>Do not use shorthands in libraries,
+only applications where you can expect a custom module loader to be used.
+Creating libraries with shorthands is too vendor-specific.</li>
+<li><code>@</code> is used for versions and commits.
+Do <strong>not</strong> use <code>#</code>.</li>
+</ol>
+<h3 id="shorthands">Shorthands</h3>
+<h4 id="extensions">Extensions</h4>
+<p>Files that end with <code>/</code> expand to <code>/index.js</code>:</p>
+<pre><code>emitter<span class="hljs-variable">@1</span>/lib/ =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/lib/index.js
+</code></pre><p>Files that do not end with <code>.js</code> simply have <code>.js</code> appended:</p>
+<pre><code>emitter<span class="hljs-variable">@1</span>/index =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+</code></pre><h4 id="npm">npm</h4>
+<p><code>&lt;module&gt;@&lt;version&gt;/&lt;file&gt;...</code> resolves to <code>https://nlz.io/npm/-/&lt;module&gt;/&lt;version&gt;/&lt;file&gt;...</code>:</p>
+<pre><code>emitter<span class="hljs-variable">@1</span> =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+emitter<span class="hljs-variable">@1</span>/ =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+emitter<span class="hljs-variable">@1</span>/something =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/something.js
+</code></pre><p>Namespaces are prefixed with <code>@&lt;org&gt;</code>,
+i.e. <code>@&lt;org&gt;/&lt;module&gt;@&lt;version&gt;/&lt;file&gt;...</code>:</p>
+<pre><code><span class="hljs-variable">@nlz</span>/emitter<span class="hljs-variable">@1</span> =&gt; <span class="hljs-regexp">/npm/nlz</span><span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+<span class="hljs-variable">@nlz</span>/emitter<span class="hljs-variable">@1</span>/ =&gt; <span class="hljs-regexp">/npm/nlz</span><span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+<span class="hljs-variable">@nlz</span>/emitter<span class="hljs-variable">@1</span>/something =&gt; <span class="hljs-regexp">/npm/nlz</span><span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/something.js
+</code></pre><p>When prefixed with <code>@org</code>, the <code>@&lt;version&gt;</code> is optional:</p>
+<pre><code><span class="hljs-property">@nlz</span><span class="hljs-regexp">/emitter =&gt; /npm/nlz/emitter/</span>*/index.js
+<span class="hljs-property">@nlz</span><span class="hljs-regexp">/emitter/</span><span class="hljs-function"> =&gt;</span> <span class="hljs-regexp">/npm/nlz/emitter/</span>*/index.js
+<span class="hljs-property">@nlz</span><span class="hljs-regexp">/emitter/something =&gt; /npm/nlz/emitter/</span>*/something.js
+</code></pre><p>npm shorthands may always be prefixed with <code>npm:</code>:</p>
+<pre><code><span class="hljs-symbol">npm:</span>emitter<span class="hljs-variable">@1</span> =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+</code></pre><h4 id="github">GitHub</h4>
+<p><code>&lt;user&gt;/&lt;project&gt;@&lt;version&gt;/&lt;file&gt;...</code> resolves to <code>https://nlz.io/&lt;user&gt;/&lt;project&gt;/&lt;version&gt;/&lt;file&gt;...</code>:</p>
+<pre><code>component/emitter<span class="hljs-variable">@1</span> =&gt; <span class="hljs-regexp">/component/emitter</span><span class="hljs-regexp">/1/index</span>.js
+component/emitter<span class="hljs-variable">@1</span>/lib =&gt; <span class="hljs-regexp">/component/emitter</span><span class="hljs-regexp">/1/lib</span><span class="hljs-regexp">/index.js</span>
+</code></pre><p>Note that <code>@&lt;version&gt;</code> here is required for the shorthand,
+otherwise it could be a file.</p>
+<h4 id="everything-else">Everything else</h4>
+<p>All other remotes can be abbreviated to:</p>
+<pre><code>&lt;remote&gt;:&lt;user&gt;/&lt;project&gt;@&lt;version&gt;/&lt;file&gt;<span class="hljs-keyword">...</span>
+</code></pre><p>Where:</p>
+<ul>
+<li><code>remote</code> is the remote name or alias.</li>
+<li><code>user</code> is optional if the remote allows namespaces,
+otherwise must be omitted</li>
+<li><code>project</code></li>
+<li><code>version</code> - is optional</li>
+<li><code>file</code></li>
+</ul>
+<p>Some remotes, such as npm, have or will have namespaces.
+However, it will be treated as if it does not as most modules do not use namespaces.
+As you can see from above, npm modules have a custom shorthand syntax due to this pecularity.</p>
 </div></section><section><div class="container"><h2 id="nlz-cli">nlz(1)</h2><p><code>nlz(1)</code> is the stopgap CLI tool for normalization proxies.
 Eventually, <code>nlz build(1)</code> will be completely optional,
 and <code>nlz(1)</code> will primarily be a CLI tool for inspecting your app/component&#39;s dependency tree.</p>
