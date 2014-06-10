@@ -1,5 +1,7 @@
 
-import 'https://nlz.io/github/polyfills/bundle/1/index.js'
+import 'barberboy/dom-elements@*'
+import 'webreflection/dom4@*'
+import 'yuzujs/setimmediate@*'
 
 import 'permalinks.js'
 import 'toc.js'

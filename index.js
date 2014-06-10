@@ -315,325 +315,205 @@ if('Element' in window) {
 
 })
 
-require.register("https://nlz.io/github/webreflection/dom4/1.0.1/src/dom4.js", function (exports, module) {
-(function(window){'use strict';
-  /* jshint loopfunc: true, noempty: false*/
-  // http://www.w3.org/TR/dom/#element
-  function textNodeIfString(node) {
-    return typeof node === 'string' ? window.document.createTextNode(node) : node;
-  }
-  function mutationMacro(nodes) {
-    if (nodes.length === 1) {
-      return textNodeIfString(nodes[0]);
+require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/index.js", function (exports, module) {
+module.exports = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/index.js")
+})
+
+require.register("https://nlz.io/github/webreflection/dom4/1.0.1/build/dom4.js", function (exports, module) {
+/*! (C) WebReflection Mit Style License */
+(function(e){"use strict";function t(t){return typeof t=="string"?e.document.createTextNode(t):t}function n(n){if(n.length===1)return t(n[0]);for(var r=e.document.createDocumentFragment(),i=v.call(n),s=0;s<n.length;s++)r.appendChild(t(i[s]));return r}for(var r=Object.defineProperty||function(e,t,n){e.__defineGetter__(t,n.get)},i=[].indexOf||function(t){var n=this.length;while(n--)if(this[n]===t)break;return n},s,o,u,a,f=/^\s+|\s+$/g,l=/\s+/,c=" ",h=function(t,n){if(this.contains(t))n||this.remove(t);else if(n===undefined||n)n=!0,this.add(t);return!!n},p=(e.Element||e.Node||e.HTMLElement).prototype,d=["matches",p.matchesSelector||p.webkitMatchesSelector||p.khtmlMatchesSelector||p.mozMatchesSelector||p.msMatchesSelector||p.oMatchesSelector||function(t){var n=this.parentNode;return!!n&&-1<i.call(n.querySelectorAll(t),this)},"prepend",function(){var t=this.firstChild,r=n(arguments);t?this.insertBefore(r,t):this.appendChild(r)},"append",function(){this.appendChild(n(arguments))},"before",function(){var t=this.parentNode;t&&t.insertBefore(n(arguments),this)},"after",function(){var t=this.parentNode,r=this.nextSibling,i=n(arguments);t&&(r?t.insertBefore(i,r):t.appendChild(i))},"replace",function(){var t=this.parentNode;t&&t.replaceChild(n(arguments),this)},"remove",function(){var t=this.parentNode;t&&t.removeChild(this)}],v=d.slice,m=d.length;m;m-=2)o=d[m-2],o in p||(p[o]=d[m-1]);"classList"in document.documentElement?(a=document.createElement("div").classList,a.add("a","b","a"),"a b"!=a&&(p=a.constructor.prototype,"add"in p||(p=e.DOMTokenList.prototype),u=function(e){return function(){var t=0;while(t<arguments.length)e.call(this,arguments[t++])}},p.add=u(p.add),p.remove=u(p.remove),p.toggle=h)):(u=function(e){if(!e)throw"SyntaxError";if(l.test(e))throw"InvalidCharacterError";return e},a=function(e){var t=e.className.replace(f,"");t.length&&d.push.apply(this,t.split(l)),this._=e},a.prototype={length:0,add:function(){for(var t=0,n;t<arguments.length;t++)n=arguments[t],this.contains(n)||d.push.call(this,o);this._.className=""+this},contains:function(e){return function(n){return m=e.call(this,o=u(n)),-1<m}}([].indexOf||function(e){m=this.length;while(m--&&this[m]!==e);return m}),item:function(t){return this[t]||null},remove:function(){for(var t=0,n;t<arguments.length;t++)n=arguments[t],this.contains(n)&&d.splice.call(this,m,1);this._.className=""+this},toggle:h,toString:function y(){return d.join.call(this,c)}},r(p,"classList",{get:function(){return new a(this)},set:function(){}})),"head"in document||r(document,"head",{get:function(){return s||(s=document.getElementsByTagName("head")[0])}});try{new e.CustomEvent("?")}catch(g){e.CustomEvent=function(e,t){function n(n,i){var s=document.createEvent(e);if(typeof n!="string")throw new Error("An event name must be provided");return e=="Event"&&(s.initCustomEvent=r),i==null&&(i=t),s.initCustomEvent(n,i.bubbles,i.cancelable,i.detail),s}function r(e,t,n,r){this.initEvent(e,t,n),this.detail=r}return n}(e.CustomEvent?"CustomEvent":"Event",{bubbles:!1,cancelable:!1,detail:null})}})(window);
+})
+
+require.register("https://nlz.io/github/webreflection/dom4/1.0.1/index.js", function (exports, module) {
+module.exports = require("https://nlz.io/github/webreflection/dom4/1.0.1/build/dom4.js")
+})
+
+require.register("https://nlz.io/github/yuzujs/setimmediate/1.0.2/setImmediate.js", function (exports, module) {
+(function (global, undefined) {
+    "use strict";
+
+    if (global.setImmediate) {
+        return;
     }
-    for (var
-      fragment = window.document.createDocumentFragment(),
-      list = slice.call(nodes),
-      i = 0; i < nodes.length; i++
-    ) {
-      fragment.appendChild(textNodeIfString(list[i]));
+
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var setImmediate;
+
+    function addFromSetImmediateArguments(args) {
+        tasksByHandle[nextHandle] = partiallyApplied.apply(undefined, args);
+        return nextHandle++;
     }
-    return fragment;
-  }
-  for(var
-    defineProperty = Object.defineProperty || function (object, property, descriptor) {
-      object.__defineGetter__(property, descriptor.get);
-    },
-    indexOf = [].indexOf || function indexOf(value){
-      var length = this.length;
-      while(length--) {
-        if (this[length] === value) {
-          break;
-        }
-      }
-      return length;
-    },
-    head,
-    property,
-    verifyToken,
-    DOMTokenList,
-    trim = /^\s+|\s+$/g,
-    spaces = /\s+/,
-    SPACE = '\x20',
-    toggle = function toggle(token, force) {
-      if (this.contains(token)) {
-        if (!force) {
-          // force is not true (either false or omitted)
-          this.remove(token);
-        }
-      } else if(force === undefined || force) {
-        force = true;
-        this.add(token);
-      }
-      return !!force;
-    },
-    ElementPrototype = (window.Element || window.Node || window.HTMLElement).prototype,
-    properties = [
-      'matches', (
-        ElementPrototype.matchesSelector ||
-        ElementPrototype.webkitMatchesSelector ||
-        ElementPrototype.khtmlMatchesSelector ||
-        ElementPrototype.mozMatchesSelector ||
-        ElementPrototype.msMatchesSelector ||
-        ElementPrototype.oMatchesSelector ||
-        function matches(selector) {
-          var parentNode = this.parentNode;
-          return !!parentNode && -1 < indexOf.call(
-            parentNode.querySelectorAll(selector),
-            this
-          );
-        }
-      ),
-      'prepend', function prepend() {
-        var firstChild = this.firstChild,
-            node = mutationMacro(arguments);
-        if (firstChild) {
-          this.insertBefore(node, firstChild);
+
+    // This function accepts the same arguments as setImmediate, but
+    // returns a function that requires no arguments.
+    function partiallyApplied(handler) {
+        var args = [].slice.call(arguments, 1);
+        return function() {
+            if (typeof handler === "function") {
+                handler.apply(undefined, args);
+            } else {
+                (new Function("" + handler))();
+            }
+        };
+    }
+
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(partiallyApplied(runIfPresent, handle), 0);
         } else {
-          this.appendChild(node);
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    task();
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
+            }
         }
-      },
-      'append', function append() {
-        this.appendChild(mutationMacro(arguments));
-      },
-      'before', function before() {
-        var parentNode = this.parentNode;
-        if (parentNode) {
-          parentNode.insertBefore(
-            mutationMacro(arguments), this
-          );
-        }
-      },
-      'after', function after() {
-        var parentNode = this.parentNode,
-            nextSibling = this.nextSibling,
-            node = mutationMacro(arguments);
-        if (parentNode) {
-          if (nextSibling) {
-            parentNode.insertBefore(node, nextSibling);
-          } else {
-            parentNode.appendChild(node);
-          }
-        }
-      },
-      'replace', function replace() {
-        var parentNode = this.parentNode;
-        if (parentNode) {
-          parentNode.replaceChild(
-            mutationMacro(arguments),
-            this
-          );
-        }
-      },
-      'remove', function remove() {
-        var parentNode = this.parentNode;
-        if (parentNode) {
-          parentNode.removeChild(this);
-        }
-      }
-    ],
-    slice = properties.slice,
-    i = properties.length; i; i -= 2
-  ) {
-    property = properties[i - 2];
-    if (!(property in ElementPrototype)) {
-      ElementPrototype[property] = properties[i - 1];
     }
-  }
-  // http://www.w3.org/TR/dom/#domtokenlist
-  // iOS 5.1 has completely screwed this property
-  // classList in ElementPrototype is false
-  // but it's actually there as getter
-  if (!('classList' in document.documentElement)) {
-    // http://www.w3.org/TR/domcore/#domtokenlist
-    verifyToken = function (token) {
-      if (!token) {
-        throw 'SyntaxError';
-      } else if (spaces.test(token)) {
-        throw 'InvalidCharacterError';
-      }
-      return token;
-    };
-    DOMTokenList = function (node) {
-      var className = node.className.replace(trim, '');
-      if (className.length) {
-        properties.push.apply(
-          this,
-          className.split(spaces)
-        );
-      }
-      this._ = node;
-    };
-    DOMTokenList.prototype = {
-      length: 0,
-      add: function add() {
-        for(var j = 0, token; j < arguments.length; j++) {
-          token = arguments[j];
-          if(!this.contains(token)) {
-            properties.push.call(this, property);
-          }
-        }
-        this._.className = '' + this;
-      },
-      contains: (function(indexOf){
-        return function contains(token) {
-          i = indexOf.call(this, property = verifyToken(token));
-          return -1 < i;
-        };
-      }([].indexOf || function (token) {
-        i = this.length;
-        while(i-- && this[i] !== token){}
-        return i;
-      })),
-      item: function item(i) {
-        return this[i] || null;
-      },
-      remove: function remove() {
-        for(var j = 0, token; j < arguments.length; j++) {
-          token = arguments[j];
-          if(this.contains(token)) {
-            properties.splice.call(this, i, 1);
-          }
-        }
-        this._.className = '' + this;
-      },
-      toggle: toggle,
-      toString: function toString() {
-        return properties.join.call(this, SPACE);
-      }
-    };
-    defineProperty(ElementPrototype, 'classList', {
-      get: function get() {
-        return new DOMTokenList(this);
-      },
-      set: function(){}
-    });
-  } else {
-    // iOS 5.1 and Nokia ASHA do not support multiple add or remove
-    // trying to detect and fix that in here
-    DOMTokenList = document.createElement('div').classList;
-    DOMTokenList.add('a', 'b', 'a');
-    if ('a\x20b' != DOMTokenList) {
-      // no other way to reach original methods in iOS 5.1
-      ElementPrototype = DOMTokenList.constructor.prototype;
-      if (!('add' in ElementPrototype)) {
-        // ASHA double fails in here
-        ElementPrototype = window.DOMTokenList.prototype;
-      }
-      verifyToken = function (original) {
-        return function () {
-          var i = 0;
-          while (i < arguments.length) {
-            original.call(this, arguments[i++]);
-          }
-        };
-      };
-      ElementPrototype.add = verifyToken(ElementPrototype.add);
-      ElementPrototype.remove = verifyToken(ElementPrototype.remove);
-      // toggle is broken too ^_^ ... let's fix it
-      ElementPrototype.toggle = toggle;
+
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
     }
-  }
 
-  if (!('head' in document)) {
-    defineProperty(document, 'head', {
-      get: function () {
-        return head || (
-          head = document.getElementsByTagName('head')[0]
-        );
-      }
-    });
-  }
+    function installNextTickImplementation() {
+        setImmediate = function() {
+            var handle = addFromSetImmediateArguments(arguments);
+            process.nextTick(partiallyApplied(runIfPresent, handle));
+            return handle;
+        };
+    }
 
-  // http://www.w3.org/TR/dom/#customevent
-  try{new window.CustomEvent('?')}catch(o_O){
-    window.CustomEvent = function(
-      eventName,
-      defaultInitDict
-    ){
-
-      // the infamous substitute
-      function CustomEvent(type, eventInitDict) {
-        var event = document.createEvent(eventName);
-        if (typeof type != 'string') {
-          throw new Error('An event name must be provided');
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
         }
-        if (eventName == 'Event') {
-          event.initCustomEvent = initCustomEvent;
+    }
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
         }
-        if (eventInitDict == null) {
-          eventInitDict = defaultInitDict;
-        }
-        event.initCustomEvent(
-          type,
-          eventInitDict.bubbles,
-          eventInitDict.cancelable,
-          eventInitDict.detail
-        );
-        return event;
-      }
 
-      // attached at runtime
-      function initCustomEvent(
-        type, bubbles, cancelable, detail
-      ) {
-        this.initEvent(type, bubbles, cancelable);
-        this.detail = detail;
-      }
+        setImmediate = function() {
+            var handle = addFromSetImmediateArguments(arguments);
+            global.postMessage(messagePrefix + handle, "*");
+            return handle;
+        };
+    }
 
-      // that's it
-      return CustomEvent;
-    }(
-      // is this IE9 or IE10 ?
-      // where CustomEvent is there
-      // but not usable as construtor ?
-      window.CustomEvent ?
-        // use the CustomEvent interface in such case
-        'CustomEvent' : 'Event',
-        // otherwise the common compatible one
-      {
-        bubbles: false,
-        cancelable: false,
-        detail: null
-      }
-    );
-  }
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
 
-}(window));
-})
+        setImmediate = function() {
+            var handle = addFromSetImmediateArguments(arguments);
+            channel.port2.postMessage(handle);
+            return handle;
+        };
+    }
 
-require.register("https://nlz.io/github/polyfills/setimmediate/1.0.0/index.js", function (exports, module) {
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        setImmediate = function() {
+            var handle = addFromSetImmediateArguments(arguments);
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+            return handle;
+        };
+    }
 
-if (typeof setImmediate !== 'function') {
-  setImmediate = function setImmediate(fn) {
-    setTimeout(fn, 0)
-  }
-}
+    function installSetTimeoutImplementation() {
+        setImmediate = function() {
+            var handle = addFromSetImmediateArguments(arguments);
+            setTimeout(partiallyApplied(runIfPresent, handle), 0);
+            return handle;
+        };
+    }
+
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(new Function("return this")()));
 
 })
 
-require.register("https://nlz.io/github/polyfills/bundle/1.0.1/index.js", function (exports, module) {
-
-/**
- * Polyfills not included within this organization.
- * Generally, these are better tested, so these go first.
- * Don't let polyfills/ overwrite these polyfills.
- */
-
-require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/index.js");
-require("https://nlz.io/github/webreflection/dom4/1.0.1/src/dom4.js");
-
-
-
-
-
-require("https://nlz.io/github/polyfills/setimmediate/1.0.0/index.js");
-
+require.register("https://nlz.io/github/yuzujs/setimmediate/1.0.2/index.js", function (exports, module) {
+module.exports = require("https://nlz.io/github/yuzujs/setimmediate/1.0.2/setImmediate.js")
 })
 
 require.register("./client/permalinks.js", function (exports, module) {
 
-[].forEach.call(document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]'), function (h) {
+document.queryAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').forEach(function (h) {
   var a = document.createElement('a')
   a.href = '#' + h.id
   a.textContent = '#'
@@ -713,8 +593,7 @@ module.exports = function (fn, immediate) {
 
 })
 
-require.register("https://nlz.io/github/component/query/0.0.1/index.js", function (exports, module) {
-
+require.register("https://nlz.io/github/component/query/0.0.3/index.js", function (exports, module) {
 function one(selector, el) {
   return el.querySelector(selector);
 }
@@ -734,16 +613,17 @@ exports.engine = function(obj){
   if (!obj.all) throw new Error('.all callback required');
   one = obj.one;
   exports.all = obj.all;
+  return exports;
 };
 
 })
 
-require.register("https://nlz.io/github/component/matches-selector/0.1.1/index.js", function (exports, module) {
+require.register("https://nlz.io/github/component/matches-selector/0.1.4/index.js", function (exports, module) {
 /**
  * Module dependencies.
  */
 
-var query = require("https://nlz.io/github/component/query/0.0.1/index.js");
+var query = require("https://nlz.io/github/component/query/0.0.3/index.js");
 
 /**
  * Element prototype.
@@ -801,8 +681,8 @@ module.exports = function (selector, childSelector, sep) {
 }
 })
 
-require.register("https://nlz.io/github/discore/closest/0.1.2/index.js", function (exports, module) {
-var matches = require("https://nlz.io/github/component/matches-selector/0.1.1/index.js")
+require.register("https://nlz.io/github/discore/closest/0.1.3/index.js", function (exports, module) {
+var matches = require("https://nlz.io/github/component/matches-selector/0.1.4/index.js")
 
 module.exports = function (element, selector, checkYoSelf, root) {
   element = checkYoSelf ? {parentNode: element} : element
@@ -910,10 +790,10 @@ function Tap(callback) {
 })
 
 require.register("https://nlz.io/github/jonathanong/eevee/0.0.4/index.js", function (exports, module) {
-var matches = require("https://nlz.io/github/component/matches-selector/0.1.1/index.js")
+var matches = require("https://nlz.io/github/component/matches-selector/0.1.4/index.js")
 var context = require("https://nlz.io/github/component/contextual-selector/0.0.2/index.js")
-var closest = require("https://nlz.io/github/discore/closest/0.1.2/index.js")
-var query = require("https://nlz.io/github/component/query/0.0.1/index.js")
+var closest = require("https://nlz.io/github/discore/closest/0.1.3/index.js")
+var query = require("https://nlz.io/github/component/query/0.0.3/index.js")
 var tap = require("https://nlz.io/github/component/tap-event/0.0.7/index.js")
 
 module.exports = Eevee
@@ -1676,13 +1556,13 @@ require.register("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/lib
 /* jshint browser: true */
 
 var eevee = require("https://nlz.io/github/jonathanong/eevee/0.0.4/index.js")
-var query = require("https://nlz.io/github/component/query/0.0.1/index.js")
+var query = require("https://nlz.io/github/component/query/0.0.3/index.js")
 var tap = require("https://nlz.io/github/component/tap-event/0.0.7/index.js")
 var keyname = require("https://nlz.io/github/component/keyname/0.0.1/index.js")
 var classes = require("https://nlz.io/github/component/classes/1.2.1/index.js")
-var closest = require("https://nlz.io/github/discore/closest/0.1.2/index.js")
+var closest = require("https://nlz.io/github/discore/closest/0.1.3/index.js")
 var clickable = require("https://nlz.io/github/component/clickable/0.0.4/index.js")
-var matches = require("https://nlz.io/github/component/matches-selector/0.1.1/index.js")
+var matches = require("https://nlz.io/github/component/matches-selector/0.1.4/index.js")
 var Emitter = require("https://nlz.io/github/component/emitter/1.1.2/index.js")
 
 exports = module.exports = new Emitter()
@@ -1820,7 +1700,8 @@ module.exports = require("https://nlz.io/github/jonathanong/delegated-dropdown/0
 
 require.register("./client/toc.js", function (exports, module) {
 
-var throttle = require("https://nlz.io/github/component/per-frame/1.0.0/index.js");require("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/index.js");
+var throttle = require("https://nlz.io/github/component/per-frame/1.0.0/index.js");
+require("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/index.js");
 
 require("./client/permalinks.js");
 
@@ -1871,7 +1752,9 @@ function setMaxHeight() {
 
 require.register("./client/index.js", function (exports, module) {
 
-require("https://nlz.io/github/polyfills/bundle/1.0.1/index.js");
+require("https://nlz.io/github/barberboy/dom-elements/0.1.0/index.js");
+require("https://nlz.io/github/webreflection/dom4/1.0.1/index.js");
+require("https://nlz.io/github/yuzujs/setimmediate/1.0.2/index.js");
 
 require("./client/permalinks.js");
 require("./client/toc.js");

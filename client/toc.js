@@ -1,7 +1,6 @@
 
-module throttle from 'https://nlz.io/github/component/per-frame/*/index.js'
-
-import 'https://nlz.io/github/jonathanong/delegated-dropdown/0/index.js'
+import throttle from 'component/per-frame@1'
+import 'jonathanong/delegated-dropdown@0'
 
 import 'permalinks.js'
 
