@@ -1,0 +1,27 @@
+
+extends ../layout
+
+block header
+  .container
+    h1 About
+
+block main
+  #toc.Dropdown.right.down
+    a.Dropdown-toggle(href='#') #
+    .Dropdown-menu
+
+  section: .container
+    h2(id='philosophy') Philosophy
+    include:markdown philosophy.md
+
+  section: .container
+    h2(id='production-checklist') Production Checklist
+    include:markdown production.md
+
+  section: .container
+    h2(id='comparisons') Comparisons
+    include:markdown comparisons.md
+
+  section: .container
+    h2(id='faq') Frequently Asked Questions
+    include:markdown faq.md

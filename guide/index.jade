@@ -1,0 +1,43 @@
+
+extends ../layout
+
+block header
+  .container
+    h1 Guide
+
+block main
+  #toc.Dropdown.right.down
+    a.Dropdown-toggle(href='#') #
+    .Dropdown-menu
+
+  section: .container
+    h2(id='authoring-javascript') Authoring JavaScript
+    include:markdown js.md
+
+  section: .container
+    h2(id='authoring-css') Authoring CSS
+    include:markdown css.md
+
+  //- section: .container
+  //-   h2(id='authoring-web-components') Authoring Web Components
+  //-   include:markdown web.md
+
+  section: .container
+    h2(id='authoring-components') Authoring Components
+    include:markdown components.md
+
+  //- section: .container
+  //-   h2(id='authoring-apps') Authoring Applications
+  //-   include:markdown apps.md
+
+  section: .container
+    h2(id='authoring-tests') Authoring Tests
+    include:markdown tests.md
+
+  section: .container
+    h2(id='bundling') Bundling
+    include:markdown bundling.md
+
+  section: .container
+    h2(id='troubleshooting') Troubleshooting
+    include:markdown troubleshooting.md

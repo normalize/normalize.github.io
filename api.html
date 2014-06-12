@@ -1,0 +1,445 @@
+<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">nlz.io</a><a href="https://github.com/normalize/discussions" class="top-bar-link">discuss</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="guide.html" class="top-bar-link">guide</a><a href="api.html" class="top-bar-link">api</a><a href="about.html" class="top-bar-link">about</a></div></div><header><div class="container"><h1>API</h1></div></header><main><div id="toc" class="Dropdown right down"><a href="#" class="Dropdown-toggle">#</a><div class="Dropdown-menu"></div></div><section><div class="container"><h2 id="triage">Triage</h2><p>Normalize is split into multiple repositories.
+Most of these repositories can be found within the <a href="https://github.com/normalize">normalize GitHub organization</a>.
+When requesting features or reporting bugs,
+please try to open an issue in the correct repository.</p>
+<ul>
+<li><a href="https://github.com/normalize/discussions">discussions</a> - a repository for any general discussions.
+Don&#39;t know where to open an issue?
+Want to ask for support?
+Open an issue here.</li>
+<li><a href="https://github.com/normalize/normalize.github.io">normalize.github.io</a> - this Normalize.IO homepage and documentation</li>
+<li><a href="https://github.com/normalize/proxy.js">proxy.js</a> - the normalization proxy</li>
+<li><a href="https://github.com/normalize/nlz">nlz</a> - the command line <code>nlz(1)</code> utility</li>
+<li><a href="https://github.com/normalize/transforms.js">transforms.js</a> - all the transforms supported by both the proxy and <code>nlz(1)</code></li>
+</ul>
+</div></section><section><div class="container"><h2 id="proxy">Normalization Proxy</h2><p>This is the public HTTP API for <a href="https://nlz.io">https://nlz.io</a> as well as any <a href="https://github.com/normalize/proxy.js">normalize-proxy</a>.
+If you&#39;re interested in setting up your own proxy,
+consult the <a href="https://github.com/normalize/proxy.js">normalize-proxy repository</a>.</p>
+<h3 id="url-structure">URL Structure</h3>
+<p>URLs generally have the form:</p>
+<pre><code>https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">version</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">file</span>&gt;</span>
+</code></pre><p>Obviously, different proxies will have different hostnames.
+The <code>version</code> and <code>file</code> may not be included in some end points.</p>
+<h4 id="protocol">Protocol</h4>
+<p>Every proxy <strong>must</strong> serve via HTTPS and SPDY/HTTPv2,
+even with a self-signed certificate.</p>
+<h4 id="remote">Remote</h4>
+<p>A supported remote&#39;s name, for example <code>github/</code>.</p>
+<p>Aliases will also be supported and will simply redirect to the canonical short name.
+For example, <code>github.com</code> and <code>raw.githubusercontent.com</code> would redirect to <code>github</code>.</p>
+<h4 id="user">User</h4>
+<p>The owner of a repository.
+If the remote does not have a namespace, the user should simply be <code>-</code>.</p>
+<pre><code class="lang-bash"><span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/nlz.io/npm</span><span class="hljs-regexp">/-/escape</span>-regexp/*<span class="hljs-regexp">/index.js</span>
+</code></pre>
+<h4 id="project">Project</h4>
+<p>The name of the project or module.</p>
+<h4 id="version">Version</h4>
+<p>Any version as defined by <a href="http://semver.org">http://semver.org</a> v2.0.0.
+You should not include leading <code>v</code>s and <code>=</code> in single versions</p>
+<p>Eventually, commit SHAs for <code>git</code> remotes will be supported.
+However, branches will never be supported.</p>
+<h3 id="api-end-points">API End Points</h3>
+<h4 id="get-file">GET File</h4>
+<p>You may still <code>GET</code> files directly, even with transforms.
+All of the files&#39; dependencies will be SPDY pushed to the client.
+A redirect may be returned as a response.
+If this is the case, the redirect location will be SPDY pushed as well.</p>
+<p>Each file can have the following query strings.
+These are only valid when <strong>exact</strong>, so don&#39;t include a trailing <code>=</code>.
+Only one query string can be used at a time:</p>
+<ul>
+<li><code>?source</code> - return/redirect the source file and its dependencies all without any transformations applied. Useful for building server-side.</li>
+<li><code>?min</code> - minify the transformation. Only applies to JS, CSS, and HTML assets.</li>
+</ul>
+<p>If any of these query strings are included,
+then all the pushed dependencies will also include the same query string.</p>
+<p>Each file will have an <code>ETag</code> header which is the <code>sha256</code> sum of the <strong>source</strong> file.
+Thus, the only real way to verify whether this header is correct is to check the <code>?source</code> file.
+The ETag will remain the same between query strings and differences in transforms</p>
+<p>Note that the ETag header is subject to change as this is obviously less than ideal.</p>
+<h4 id="get-pull">GET pull</h4>
+<pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/pull
+</code></pre><p>This will <code>pull</code> a specific version from the remote if it has not be installed already.
+If successful, a <code>204</code> status code will be returned.
+You may consider this the optional &quot;publish&quot; step of Normalize.IO.</p>
+<h4 id="get-versions-json">GET versions.json</h4>
+<pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/versions.json
+</code></pre><p>Will return an array of versions that are currently available on the proxy.
+If no versions are installed,
+a <code>404</code> and an empty array will be returned.</p>
+<p>If you pushed a new version of a package,
+but the proxy has not installed it yet,
+simply install it by hitting the <code>pull</code> entry point or <code>GET</code> any file.</p>
+<p>The semantics of this endpoint is subject to change.
+In particular, it should return all available versions on the remote.</p>
+<h4 id="get-metadata-json">GET metadata.json</h4>
+<pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/metadata.json
+</code></pre><p>Per-repository metadata that is not version-specific.
+This is where you&#39;ll find metadata such as author, keywords, etc.</p>
+<blockquote>
+<p>Note: not yet implemented.</p>
+</blockquote>
+<h4 id="get-search-json">GET search.json</h4>
+<pre><code>GET https://nlz.io/search.json?<span class="hljs-keyword">...</span>
+</code></pre><p>Search the proxy&#39;s installed files and projects.
+All search parameters should be passed as query string parameters.
+These may include:</p>
+<ul>
+<li><code>remote</code></li>
+<li><code>user</code>/<code>owner</code>/<code>organization</code></li>
+<li><code>project</code>/<code>repository</code></li>
+<li><code>keywords</code></li>
+</ul>
+<blockquote>
+<p>Note: not yet implemented.</p>
+</blockquote>
+<h4 id="get-proxy-json">GET proxy.json</h4>
+<pre><code class="lang-js">GET https://nlz<span class="hljs-preprocessor">.io</span>/proxy<span class="hljs-preprocessor">.json</span>
+</code></pre>
+<p>Returns relevant information about the proxy including hostname, version, and supported remotes.</p>
+<h4 id="get-polyfill-js">GET polyfill.js</h4>
+<p>Creates a polyfill bundle based on the client&#39;s user agent.
+See <a href="https://github.com/polyfills/polyfills">polyfills/polyfills</a> for more details.</p>
+<h3 id="normalization">Normalization</h3>
+<p>Packages are &quot;normalized&quot; based on these JSON files in descending priority.</p>
+<ol>
+<li><code>component.json</code></li>
+<li><code>package.json</code></li>
+<li><code>bower.json</code></li>
+</ol>
+<p>This is particularly important if you compile your module for one package manager but not the others.
+Thus, if you have to compile your module for a package manager,
+compile it for <code>bower</code>.</p>
+<h4 id="package-json">package.json</h4>
+<p>Only <code>npm</code> and <code>github</code>-style dependencies are supported.
+Only semantic versions are supported - versions that have weird suffixes will be ignored.
+Other types of dependencies such as tarballs will be ignored.</p>
+<h4 id="circular-dependencies">Circular Dependencies</h4>
+<p>Modules that must be normalized and have circular dependencies are not supported.
+In fact, these modules may actually mess up the proxy.
+Please don&#39;t create circular dependencies!
+Use <code>devDependencies</code> or something instead.</p>
+<h3 id="module-classification">Module Classification</h3>
+<p>The normalization proxy is currently designed primarily for web components and modules.
+Thus, it needs a way to classify whether a module is web-compatible.
+Currently, classification is defined by the following criteria:</p>
+<ul>
+<li><code>index.html</code> exists</li>
+<li><code>index.css</code> exists</li>
+<li><code>component.json</code> exists</li>
+<li><code>bower.json</code> exists</li>
+<li><p><code>package.json</code>:</p>
+<ul>
+<li><code>.browser</code> exists</li>
+<li><code>.style</code> exists</li>
+</ul>
+</li>
+</ul>
+</div></section><section><div class="container"><h2 id="url-shorthands">URL Shorthands</h2><p>Typing <code>https://nlz.io/</code> everywhere becomes tedious quickly,
+so Normalize allows you to use shorthands for dependencies.
+Shorthands simply expand to the long Normalize URLs.
+However, due to the wide remote support Normalize provides,
+shorthands require a certain degree of specificity.</p>
+<p>However, shorthands can only be used if either:</p>
+<ol>
+<li>You use a build process, <code>nlz build</code></li>
+<li>You use a custom ES6 module loader</li>
+</ol>
+<p>Thus, shorthands are second-class citizens.
+Normalize will eventually provide a custom module loader for these shorthands.</p>
+<h3 id="the-law-of-shorthands">The Law of Shorthands</h3>
+<ol>
+<li>Shorthands only apply to JavaScript files.
+There are no shorthands for CSS and HTML files as they do not have custom loaders.</li>
+<li>Do not use shorthands in libraries,
+only applications where you can expect a custom module loader to be used.
+Creating libraries with shorthands is too vendor-specific.</li>
+<li><code>@</code> is used for versions and commits.
+Do <strong>not</strong> use <code>#</code>.</li>
+</ol>
+<h3 id="shorthands">Shorthands</h3>
+<h4 id="extensions">Extensions</h4>
+<p>Files that end with <code>/</code> expand to <code>/index.js</code>:</p>
+<pre><code>emitter<span class="hljs-variable">@1</span>/lib/ =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/lib/index.js
+</code></pre><p>Files that do not end with <code>.js</code> simply have <code>.js</code> appended:</p>
+<pre><code>emitter<span class="hljs-variable">@1</span>/index =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+</code></pre><h4 id="npm">npm</h4>
+<p><code>&lt;module&gt;@&lt;version&gt;/&lt;file&gt;...</code> resolves to <code>https://nlz.io/npm/-/&lt;module&gt;/&lt;version&gt;/&lt;file&gt;...</code>:</p>
+<pre><code>emitter<span class="hljs-variable">@1</span> =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+emitter<span class="hljs-variable">@1</span>/ =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+emitter<span class="hljs-variable">@1</span>/something =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/something.js
+</code></pre><p>Namespaces are prefixed with <code>@&lt;org&gt;</code>,
+i.e. <code>@&lt;org&gt;/&lt;module&gt;@&lt;version&gt;/&lt;file&gt;...</code>:</p>
+<pre><code><span class="hljs-variable">@nlz</span>/emitter<span class="hljs-variable">@1</span> =&gt; <span class="hljs-regexp">/npm/nlz</span><span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+<span class="hljs-variable">@nlz</span>/emitter<span class="hljs-variable">@1</span>/ =&gt; <span class="hljs-regexp">/npm/nlz</span><span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+<span class="hljs-variable">@nlz</span>/emitter<span class="hljs-variable">@1</span>/something =&gt; <span class="hljs-regexp">/npm/nlz</span><span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/something.js
+</code></pre><p>When prefixed with <code>@org</code>, the <code>@&lt;version&gt;</code> is optional:</p>
+<pre><code><span class="hljs-property">@nlz</span><span class="hljs-regexp">/emitter =&gt; /npm/nlz/emitter/</span>*/index.js
+<span class="hljs-property">@nlz</span><span class="hljs-regexp">/emitter/</span><span class="hljs-function"> =&gt;</span> <span class="hljs-regexp">/npm/nlz/emitter/</span>*/index.js
+<span class="hljs-property">@nlz</span><span class="hljs-regexp">/emitter/something =&gt; /npm/nlz/emitter/</span>*/something.js
+</code></pre><p>npm shorthands may always be prefixed with <code>npm:</code>:</p>
+<pre><code><span class="hljs-symbol">npm:</span>emitter<span class="hljs-variable">@1</span> =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+</code></pre><h4 id="github">GitHub</h4>
+<p><code>&lt;user&gt;/&lt;project&gt;@&lt;version&gt;/&lt;file&gt;...</code> resolves to <code>https://nlz.io/&lt;user&gt;/&lt;project&gt;/&lt;version&gt;/&lt;file&gt;...</code>:</p>
+<pre><code>component/emitter<span class="hljs-variable">@1</span> =&gt; <span class="hljs-regexp">/component/emitter</span><span class="hljs-regexp">/1/index</span>.js
+component/emitter<span class="hljs-variable">@1</span>/lib =&gt; <span class="hljs-regexp">/component/emitter</span><span class="hljs-regexp">/1/lib</span><span class="hljs-regexp">/index.js</span>
+</code></pre><p>Note that <code>@&lt;version&gt;</code> here is required for the shorthand,
+otherwise it could be a file.</p>
+<h4 id="everything-else">Everything Else</h4>
+<p>All other remotes can be abbreviated to:</p>
+<pre><code>&lt;remote&gt;:&lt;user&gt;/&lt;project&gt;@&lt;version&gt;/&lt;file&gt;<span class="hljs-keyword">...</span>
+</code></pre><p>Where:</p>
+<ul>
+<li><code>remote</code> is the remote name or alias.</li>
+<li><code>user</code> is optional if the remote allows namespaces,
+otherwise must be omitted</li>
+<li><code>project</code> - the name of the project/module/package</li>
+<li><code>version</code> - is optional, defaulting to <code>*</code></li>
+<li><code>file</code> - can be completely empty, defaulting to <code>/index.js</code></li>
+</ul>
+<p>Some remotes, such as npm, have or will have namespaces.
+However, it will be treated as if it does not as most modules do not use namespaces.
+As you can see from above, npm modules have a custom shorthand syntax due to this pecularity.</p>
+</div></section><section><div class="container"><h2 id="nlz-cli">nlz(1)</h2><p><code>nlz(1)</code> is the stopgap CLI tool for normalization proxies.
+Eventually, <code>nlz build(1)</code> will be completely optional,
+and <code>nlz(1)</code> will primarily be a CLI tool for inspecting your app/component&#39;s dependency tree.</p>
+<h3 id="installation">Installation</h3>
+<p>Currently, you must install <code>nlz(1)</code> with <code>npm(1)</code>:</p>
+<pre><code class="lang-bash">npm <span class="hljs-keyword">install</span> -g nlz
+</code></pre>
+<p><code>nlz(1)</code> only supports node v0.10,
+but you should use node v0.11+ for better performance as generators are extensively used in the source code.</p>
+<h3 id="nlz-build">nlz build</h3>
+<p>This is the primary build command.
+You may think of it as <a href="http://browserify.org">browserify</a>&#39;s build command,
+but multiple entry points are supported,
+as well as CSS and (eventually) HTML files.</p>
+<p>Most of these parameters and options can be set via <code>.nlzrc</code>,
+allowing developers to simply run <code>nlz build --watch</code>.</p>
+<h4 id="entry-points">Entry Points</h4>
+<pre><code class="lang-bash">nlz build [entrypoints...]
+
+<span class="hljs-comment">// will build to build/index.js and build/index.css, respectively</span>
+nlz build <span class="hljs-keyword">client</span>/<span class="hljs-keyword">index</span>.js <span class="hljs-keyword">client</span>/<span class="hljs-keyword">index</span>.css
+</code></pre>
+<h4 id="-out-o">--out, -o</h4>
+<p>The destination folder, defaulting to <code>build/</code>.
+The destination file will be the same name as the entry point&#39;s file name.</p>
+<pre><code class="lang-bash">nlz build <span class="hljs-keyword">client</span>/<span class="hljs-keyword">index</span>.js --out <span class="hljs-keyword">public</span>
+</code></pre>
+<h4 id="-watch-w">--watch, -w</h4>
+<p>Watch the source files for changes and rebuild automatically.
+You <strong>should</strong> use this as rebuilds are fast and incremental.
+Simply loading <code>nlz(1)</code> takes a considerable amount of time,
+especially if you use a lot of transformations.</p>
+<pre><code class="lang-bash">nlz build <span class="hljs-keyword">client</span>/<span class="hljs-keyword">index</span>.js --watch
+</code></pre>
+</div></section><section><div class="container"><h2 id="nlzrc">.nlzrc</h2><p><code>.nlzrc</code> is an optional JSON configuration file for local environments.
+It&#39;s completely optional.
+You may have a global, <code>.nlzrc</code> configuration for your computer as well as local <code>.nlzrc</code> configuration for each app.
+For example, you might want to point all your requests to a proxy on your network instead of <a href="https://nlz.io">https://nlz.io</a>.</p>
+<h3 id="-proxy-and-self-signed">.proxy and .self-signed</h3>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">proxy</span>": <span class="hljs-value"><span class="hljs-string">"localhost:8888"</span></span>,
+  "<span class="hljs-attribute">self-signed</span>": <span class="hljs-value"><span class="hljs-literal">true</span>
+</span>}
+</code></pre>
+<p>This is to set a custom proxy other than <a href="https://nlz.io">https://nlz.io</a>.
+<code>proxy</code> should be the full host, including the port.
+Set <code>self-signed</code> to <code>true</code> if the proxy is using a self-signed certification,
+otherwise an error will be thrown.
+Remember, proxies must always use SSL.</p>
+<h3 id="-directory">.directory</h3>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">directory</span>": <span class="hljs-value"><span class="hljs-string">"/User/jong/.repositories"</span>
+</span>}
+</code></pre>
+<p>By default, all files are stored to <code>process.cwd() + &#39;/repositories&#39;</code>.
+Thus, every app or component you work on will have its own <code>directory</code> folder.
+This may be less than ideal for you as you&#39;ll have multiple copies.</p>
+<p>You may optionally set this directory to a global directory like <code>~/.repositories</code>
+so that every app or component you work on share the same files.
+It will also make installations a little faster.</p>
+<h3 id="-transforms">.transforms</h3>
+<p>Options for transforms.
+<strong>All</strong> transforms are enabled by default.
+If you set any <code>.transforms</code> options,
+all transforms will now be opt-in.</p>
+<p>You shouldn&#39;t need to touch this as transforms&#39; libraries are lazily loaded.
+You won&#39;t get much performance benefit from disabling transforms.</p>
+<h3 id="-entrypoints">.entrypoints</h3>
+<p>The entry points for the build.
+This allows you to not specify the entry points every time you run <code>nlz build(1)</code>.</p>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">entrypoints</span>": <span class="hljs-value">[<span class="hljs-string">"client/index.js"</span>, <span class="hljs-string">"client/index.css"</span>]
+</span>}
+</code></pre>
+<p>You may also use objects if you want to set custom options on each entry point:</p>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">entrypoints</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">client/index.js</span>": <span class="hljs-value">{
+
+    }</span>,
+    "<span class="hljs-attribute">client/index.css</span>": <span class="hljs-value">{
+
+    }
+  </span>}
+</span>}
+</code></pre>
+</div></section><section><div class="container"><h2 id="transforms">Transforms</h2><p>These are all the transforms available for both the normalization proxy and <code>nlz-build(1)</code>.</p>
+<p>There are multiple types of transforms which are not mutually exclusive:</p>
+<ul>
+<li>Build-only - <code>nlz-build(1)</code>-only transforms</li>
+<li>Ubiquitus - transforms for both the CLI and the proxy.</li>
+<li>1-to-1 - All included in  <a href="https://github.com/normalize/transforms.js">normalize-transforms</a></li>
+<li>Global-build-only - Global transforms for <code>nlz-build(1)</code>, specifically CSS transforms.
+These are all included in <a href="https://github.com/normalize/build.js">normalize-build</a> and contrast 1-to-1 transforms.</li>
+<li>Extension - Extension-based transforms</li>
+<li>Tranparent - Transforms without an extension</li>
+</ul>
+<p>Unlike other bundlers and build systems,
+transforms are included automatically.
+There are a couple of reasons for this:</p>
+<ul>
+<li><p>This middleware system is a more complicated than other middleware systems:</p>
+<ul>
+<li>The use of Koa-based upstream/downstream is quite complex</li>
+<li>Order of middleware is very important</li>
+<li>Transforms are not orthogonal to another,
+so we have to make sure each plugin interacts with each other well.</li>
+</ul>
+</li>
+<li><p>The purpose of normalization is for everyone to be on the same page.
+It&#39;s counter productive to have different semantics for the same transform across applications.</p>
+</li>
+</ul>
+<p>PRs for additional transforms are welcomed as long as there&#39;s a valid use-case and people would actually use it.
+Feel free to create feature requests and pull requests in the <a href="https://github.com/normalize/transforms.js">transform.js</a> repository.</p>
+<h3 id="how-extension-based-transforms-work">How Extension-based Transforms Work</h3>
+<p>Given a source file such as <code>template.html</code>,
+the walker transforms the file based on additional <code>.&lt;extensions&gt;</code>.
+For example, <code>template.html.js</code> will export the HTML string as a JS string.
+This is superior because:</p>
+<ul>
+<li>It&#39;s compatible with HTTP servers</li>
+<li>The transforms used are explicitly shown</li>
+<li>It allows you to use the same source file in multiple ways without configuration</li>
+</ul>
+<p>For example, <code>template.jade.js</code> returns a jade render function whereas <code>template.jade.html.js</code> returns the jade template as a compiled string.</p>
+<p>You can also compose multiple transforms together.
+For example, <code>.jade.html.js</code> is a composition of <code>.jade.html</code> and <code>.html.js</code>.</p>
+<p>Unlike other build systems,
+transforms have the ability to inject dependencies into your application and automatically install them,
+making development easier in general.
+For example, to use <code>.jade.js</code>, you need to <a href="https://github.com/facebook/regenerator/blob/master/runtime/dev.js">jade runtime</a>.
+The Jade transform will automatically inject the runtime by compiling your jade template to something like this:</p>
+<pre><code class="lang-js">import jade from <span class="hljs-string">'https://nlz.io/github/visionmedia/jade/1/lib/runtime.js'</span>
+
+export <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">template</span><span class="hljs-params">(locals)</span> {</span>
+  <span class="hljs-comment">// compiled jade</span>
+}
+</code></pre>
+<h3 id="css-transforms">CSS Transforms</h3>
+<h4 id="autoprefixer">Autoprefixer</h4>
+<p>Type: Transparent, 1-to-1, ubiquitous</p>
+<p>All CSS is automatically prefixed using <a href="https://github.com/ai/autoprefixer">autoprefixer</a>.
+No extensions are necessary.
+The default options are used.</p>
+<h4 id="css-variables">CSS Variables</h4>
+<p>Type: Global-build-only, transparent</p>
+<p>CSS Variables support via <a href="https://github.com/css-utils/variables">variables</a>.</p>
+<h4 id="css-color-function">CSS Color Function</h4>
+<p>Type: Global-build-only, transparent</p>
+<p>CSS color manipulation via <a href="https://github.com/css-utils/colors">css-colors</a>.</p>
+<h4 id="-less-css-"><code>less.css</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Convert LESS files to CSS.</p>
+<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'styles.less.css'</span></span>;
+</code></pre>
+<h4 id="-sass-scss-css-"><code>(sass|scss).css</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Convert SASS files to CSS.</p>
+<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'styles.sass.css'</span></span>;
+<span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'styles.scss.css'</span></span>;
+</code></pre>
+<h4 id="-stylus-css-"><code>stylus.css</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Convert Stylus files to CSS.</p>
+<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'styles.styl.css'</span></span>;
+</code></pre>
+<h3 id="js-transforms">JS Transforms</h3>
+<h4 id="es6-modules">ES6 Modules</h4>
+<p>Type: Build-only, 1-to-1, transparent</p>
+<p>All ES6 modules are automatically transpiled to CommonJS modules using <a href="https://github.com/andreypopp/es6-module-jstransform">es6-module-jstransform</a>.
+This will be disabled by default once ES6 modules are widely supported by browsers.</p>
+<h4 id="regenerator">Regenerator</h4>
+<p>Type: Build-only, 1-to-1, transparent</p>
+<p>All code that uses generators are automatically transformed using <a href="https://github.com/facebook/regenerator">regenerator</a>.
+This will be disabled by default once generators are widely supported by browsers.</p>
+<h4 id="-mime-text-js-"><code>.&lt;mime:text/*&gt;.js</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>All extensions whose corresponding MIME type is <code>text/*</code> are automatically transformed to a JS string using <code>JSON.stringify()</code> unless superceded by another transform.</p>
+<pre><code class="lang-js">import <span class="hljs-keyword">text</span> <span class="hljs-built_in">from</span> <span class="hljs-string">'something.txt'</span>
+
+var el = document.createTextNode()
+el.textContent = <span class="hljs-keyword">text</span>
+</code></pre>
+<h4 id="-json-js-"><code>.json.js</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Transforms JSON files to a JS object.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> <span class="hljs-built_in">data</span> from <span class="hljs-string">'data.json'</span>
+
+<span class="hljs-built_in">var</span> name <span class="hljs-subst">=</span> <span class="hljs-built_in">data</span><span class="hljs-built_in">.</span>name
+</code></pre>
+<h4 id="-coffee-js-"><code>.coffee.js</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Transforms a CoffeeScript file to JS.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> fn <span class="hljs-keyword">from</span> <span class="hljs-string">'thing.coffee.js'</span>
+
+fn()
+</code></pre>
+<h3 id="template-transforms">Template Transforms</h3>
+<h4 id="-jade-html-"><code>.jade.html</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to an HTML string.
+For example, combined with the <code>.&lt;mime:text/*&gt;.js</code> transform:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> html <span class="hljs-keyword">from</span> <span class="hljs-string">'template.html.js'</span>
+
+el.innerHTML = html
+</code></pre>
+<h4 id="-jade-js-"><code>.jade.js</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Compile <a href="https://github.com/visionmedia/jade">jade</a> templates to a function.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> render <span class="hljs-keyword">from</span> <span class="hljs-string">'template.jade.js'</span>
+<span class="hljs-keyword">import</span> data <span class="hljs-keyword">from</span> <span class="hljs-string">'data.json'</span>
+
+el.innerHTML = render(data)
+</code></pre>
+<h4 id="-md-markdown-html-"><code>.(md|markdown).html</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Compile markdown templates to an HTML string using <a href="https://github.com/chjj/marked">marked</a>.
+Note that without <code>.html</code>, the actual markdown is returned.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> html <span class="hljs-keyword">from</span> <span class="hljs-string">'article.md.html.js'</span>
+
+el.innerHTML = html
+</code></pre>
+<h4 id="-jsx-js-"><code>.jsx.js</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Compile <a href="http://facebook.github.io/react/">React</a> <code>.jsx</code> templates to JS.</p>
+<h4 id="-html-domify-js-"><code>.html.domify.js</code></h4>
+<p>Type: Ubiquitous, 1-to-1, extension</p>
+<p>Compile an HTML string to an element using <a href="https://github.com/component/domify">domify</a>.
+This is useful for web components and templates.</p>
+<pre><code class="lang-js"><span class="hljs-reserved">var</span> template = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./template.html.domify.js'</span>)
+
+<span class="hljs-built_in">document</span>.body.appendChild(template.cloneNode(<span class="hljs-literal">true</span>))
+</code></pre>
+</div></section></main><footer><div class="container"><div id="footer-badges"><script data-gittip-username="jonathanong" src="https://gttp.co/v1.js" async></script></div><ul id="footer-links"><li>Jonathan Ong &copy; 2014</li><li><a href="http://jongleberry.com">jongleberry.com</a></li><li><a href="https://github.com/jonathanong">@jonathanong</a></li><li><a href="https://twitter.com/jongleberry">@jongleberry</a></li><li><a href="mailto:me@jongleberry.com">me@jongleberry.com</a></li></ul></div></footer><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-7367759-13', 'normalize.github.io');
+ga('send', 'pageview');
+</script><script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script><script src="index.js"></script></body></html>

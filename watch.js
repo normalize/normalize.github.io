@@ -11,32 +11,33 @@ marked.setOptions({
   }
 })
 
-function home() {
-  var filename = process.cwd() + '/home/index.jade'
-  var html = jade.render(fs.readFileSync(filename, 'utf8'), {
-    filename: filename
-  })
-  fs.writeFileSync(process.cwd() + '/index.html', html)
-}
+var dirs = [
+  'home',
+  'api',
+  'guide',
+  'about',
+]
 
-function docs() {
-  var filename = process.cwd() + '/docs/index.jade'
-  var html = jade.render(fs.readFileSync(filename, 'utf8'), {
-    filename: filename
-  })
-  fs.writeFileSync(process.cwd() + '/docs.html', html)
-}
+var fns = dirs.map(function (dir) {
+  return function() {
+    var filename = process.cwd() + '/' + dir + '/index.jade'
+    var html = jade.render(fs.readFileSync(filename, 'utf8'), {
+      filename: filename
+    })
+    fs.writeFileSync(process.cwd() + '/' + dir + '.html', html)
+  }
+})
 
-home()
-docs()
+fns.forEach(function (fn) {
+  fn()
+})
 
-sane(process.cwd(), [
-  '*.jade',
-  'docs/*',
-  'home/*',
-])
+sane(process.cwd(), ['*.jade'].concat(dirs.map(function (dir) {
+  return dir + '/*'
+})))
 .on('change', function (filepath) {
   console.log('%s changed, rebuilding', filepath)
-  home()
-  docs()
+  fns.forEach(function (fn) {
+    fn()
+  })
 })

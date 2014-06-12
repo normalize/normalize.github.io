@@ -1,0 +1,35 @@
+
+extends ../layout
+
+block header
+  .container
+    h1 API
+
+block main
+  #toc.Dropdown.right.down
+    a.Dropdown-toggle(href='#') #
+    .Dropdown-menu
+
+  section: .container
+    h2(id='triage') Triage
+    include:markdown triage.md
+
+  section: .container
+    h2(id='proxy') Normalization Proxy
+    include:markdown proxy.md
+
+  section: .container
+    h2(id='url-shorthands') URL Shorthands
+    include:markdown shorthands.md
+
+  section: .container
+    h2(id='nlz-cli') nlz(1)
+    include:markdown nlz.md
+
+  section: .container
+    h2(id='nlzrc') .nlzrc
+    include:markdown nlzrc.md
+
+  section: .container
+    h2(id='transforms') Transforms
+    include:markdown transforms.md

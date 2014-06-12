@@ -1,0 +1,184 @@
+<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">nlz.io</a><a href="https://github.com/normalize/discussions" class="top-bar-link">discuss</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="guide.html" class="top-bar-link">guide</a><a href="api.html" class="top-bar-link">api</a><a href="about.html" class="top-bar-link">about</a></div></div><header><div class="container"><h1>About</h1></div></header><main><div id="toc" class="Dropdown right down"><a href="#" class="Dropdown-toggle">#</a><div class="Dropdown-menu"></div></div><section><div class="container"><h2 id="philosophy">Philosophy</h2><p>Normalize.IO was born out of frustration with the current web development workflow.
+It has a very specific philosophy,
+which will affect its development.</p>
+<p>Wondering if Normalize.IO should add a feature?
+If it complies with these tenets, then let us know!
+Otherwise, don&#39;t bother.</p>
+<h3 id="back-to-the-basics">Back to the Basics</h3>
+<p>The web development stack should be as short as possible.
+This means no unnecessary abstractions or opinions and just use what W3C, WHATWG, and ES has given us.
+Build tools like LESS, CoffeeScript, and Grunt are second-class citizens.</p>
+<p>Let&#39;s not try to build the ideal stack of <code>npm + browserify + less + rework-npm + gulp + yeoman</code>, etc.
+We should strive towards <strong>no stack</strong> using only features browsers (will) support,
+and at most 1 tool, <code>nlz</code> or anything similar, as a stopgap until browsers get us there.</p>
+<h3 id="specification-compliant">Specification Compliant</h3>
+<p>Normalize.IO will strive to comply with specifications from the web authorities,
+particularly ECMAScript, WHATWG, and W3C.
+Specifications like CommonJS, AMD, and UMD are completely irrelevant and are only used as stopgaps for the true specifications.</p>
+<p>Thus, you may see features such as <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables">CSS Variables</a> and <a href="http://facebook.github.io/regenerator/">regenerator</a> automatically included, acting like polyfills.
+But you will not see features such as <a href="https://github.com/reworkcss/rework-inherit">@extend</a> included unless they are added to the specifications, even as a draft.</p>
+<h3 id="opt-in-everything">Opt-In Everything</h3>
+<p>Many build systems such as <code>grunt</code>, <code>gulp</code>, <code>broccoli</code>, <code>browserify</code>, and <code>component</code> have a lot of possible plugins and configuration options.
+However, these have become a bane for web development as now users have to install tens of modules just to get their app running
+as well as figure out how to configure all these plugins to work with each other with giant configuration scripts.
+Developers would also have to write plugins for every time of platform,
+creating what I call &quot;module pollution&quot;.</p>
+<p>The Normalize.IO philosophy is the opposite - it should include all plugins that 99% of web developers use,
+allowing most to be able to just simply <code>nlz build --watch</code> their component or app and call it a day.
+Eventually, they should be able to skip <code>nlz</code> and simply <code>open webpage.html</code>.
+Bootstrapping apps and components should not be complicated.</p>
+<p>This means that Normalize.IO will marginalize those 1% of developers who want something very specific and most likely outside of specifications.
+If the 1% wishes to use Normalize.IO, they would have to essentially create their own custom proxy and client to do so.
+Otherwise, they could use the many other build tools at their disposal.</p>
+<h3 id="normalize-web-development">Normalize Web Development</h3>
+<p>Aside from the top three tenets,
+the idea behind Normalize.IO is to &quot;normalize&quot; or &quot;standardize&quot; web development.
+We want to keep features specification compliant and (cognitive) overhead minimal.</p>
+<p>But of course, this means normalizing and standardizing how apps and components are built and structured.
+This is the primary concept behind <code>entrypoints</code> such as <code>index.js</code>, <code>test.js</code>, <code>README</code>, etc.
+People should know what to expect from a &quot;normal&quot; app/module/component.</p>
+<h3 id="1-to-1-transformations">1-to-1 Transformations</h3>
+<p>One of the most complicated type of transform are many-to-1 transforms.
+For example, concatenating all your SCSS files, then converting it to a single CSS file.
+However there are many wrong with this philosophy.</p>
+<p>Normalize.IO will only support 1-to-1 transformations except for a few cases,
+but most likely with caveats.</p>
+<h4 id="file-interdependence">File Interdependence</h4>
+<p>The only dependencies files should have upon each other are those defined by specifications such as <code>@import</code>.
+Anything else is too opinionated for Normalize.IO.
+With CSS preprocessors, this may be necessary when using mixins, variables, etc.,
+but you should instead strive towards specifications such as <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables">CSS Variables</a>.</p>
+<h4 id="no-incremental-builds">No Incremental Builds</h4>
+<p>Only supporting 1-to-1 transformations allow very fast build times through incremental builds.
+<code>nlz</code> uses <code>make</code>-like 1-to-1 transforms and only rebuilds source files that have changed.
+When you have many-to-one transforms, 1 line change would require a full rebuild.
+The difference is a <code>x * 100ms</code> vs. <code>&lt; 100ms</code> build times,
+especially with CSS preprocessors such as Stylus and SASS.</p>
+<h4 id="no-complicated-build-process">No Complicated Build Process</h4>
+<p>Many build tools such as <code>grunt</code>, <code>gulp</code>, and <code>broccoli</code> were created out of a need to support these types of transforms.
+In the end, you create very complex build processes and configuration options,
+all of which is unnecessary and not specification-compliant.</p>
+</div></section><section><div class="container"><h2 id="production-checklist">Production Checklist</h2><p><a href="https://nlz.io">https://nlz.io</a> is <strong>NOT</strong> ready to be used as a CDN in production.
+You may still use it as a registry and proxy for <code>nlz(1)</code>,
+but serving files from <a href="https://nlz.io">https://nlz.io</a> is not recommended.</p>
+<p>The following criteria must be met before it is ready for production usage:</p>
+<ul>
+<li>A CDN that supports SPDY Push must be used. We&#39;re not going to setup a complex infrastructure to make this work (like npm).</li>
+<li>Browsers must support SPDY</li>
+<li>Browsers must support URLs in ES6 module <code>import</code> statements</li>
+<li>Browsers must support <code>&lt;link rel=&quot;import&quot; href=&quot;&quot;&gt;</code> tags</li>
+</ul>
+</div></section><section><div class="container"><h2 id="comparisons">Comparisons</h2><h3 id="bundling-vs-browserify-vs-webpack">Bundling vs. Browserify vs. Webpack</h3>
+<p><code>nlz build(1)</code> is pretty similar to Browserify.
+How does the bundling compare?
+Let&#39;s compare the created bundles for <a href="https://github.com/barberboy/dom-elements">dom-elements</a>.
+We&#39;ll do basic builds, minification, and compression.
+You can view the <a href="https://github.com/normalize/comparisons/blob/master/Makefile">Makefile</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Build</th>
+<th>Normalize</th>
+<th>Browserify</th>
+<th>Webpack</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.js</td>
+<td>9,663b</td>
+<td>6,717b</td>
+<td>7,939b</td>
+</tr>
+<tr>
+<td>.min.js</td>
+<td>4,632b</td>
+<td>3,486b</td>
+<td>2,585b</td>
+</tr>
+<tr>
+<td>.min.js.gz</td>
+<td>1,252b</td>
+<td>1,346b</td>
+<td>1,060b</td>
+</tr>
+</tbody>
+</table>
+<p>What you&#39;ll see is that Normalize&#39;s JS builds are larger than Browserify&#39;s.
+This is due to a couple of reasons:</p>
+<ol>
+<li>Normalize doesn&#39;t automatically minimize the <code>require()</code> implementation.
+Doing so unnecessarily hides the magic from developers.</li>
+<li>Normalize doesn&#39;t wrap the build within a closure.
+Developers can do that themselves.
+This allows developers to <code>require(&#39;./index.js&#39;)</code> outside the build.</li>
+<li>Normalize dependency names are generally longer to keep them unique.</li>
+<li>Normalize adds comments to each file for debugging.</li>
+</ol>
+<p>But then you&#39;ll notice that Normalize&#39;s gzip build is actually smaller than browserify&#39;s.
+In the end, the gzip size is all that matters.
+This is primarily due to two reasons:</p>
+<ol>
+<li>Absolute URLs are mostly redundant and very compressible.</li>
+<li>The <code>require()</code> implementation is minimal and is basically just a hash lookup.</li>
+</ol>
+<p>But why is Webpack superior than both Normalize and Browserify?
+If you look at the Webpack bundle, you&#39;ll notice two things:</p>
+<ol>
+<li>Module IDs are rewritten into numbers (stored in an array)</li>
+<li>All modules are loaded in an array</li>
+</ol>
+<p>Normalize won&#39;t ever do 1) because this will make modules difficult to use outside the bundle
+as well as make the resulting bundle more difficult to read.
+<code>require()</code> is global by default so developers can <code>require()</code> outside the build.
+The bundle will be smaller if wrapped in a closure.</p>
+<p>Normalize may eventually do 2) only if supported by ES6 module loaders,
+but until then, it&#39;s easier if each module is disjoint from the other.</p>
+<h3 id="vs-jspm-io-and-family">vs. jspm.io and family</h3>
+<p>A similar project is <a href="http://jspm.io">jspm.io</a>.
+Some key differences are:</p>
+<ul>
+<li>There are no required special syntaxes. URLs are just URLs.
+Special syntaxes are optional and require the developer to create their own custom
+ES6 module loader on the client.</li>
+<li>Normalize is not client-side heavy and does not necessitate the use of polyfills.
+Normalize bundling overhead is minimal.</li>
+<li>Normalize treats non-js assets as first-class citizens.</li>
+<li>Normalize does not have its own registry.</li>
+<li>Normalize has the ability to proxy from arbitrary remotes.</li>
+<li>Normalize treats dynamic imports as second class citizens.</li>
+</ul>
+</div></section><section><div class="container"><h2 id="faq">Frequently Asked Questions</h2><h3 id="how-will-you-make-money-">How will you make money?</h3>
+<p>Currently, Normalize.IO is being developed as a build process for my own app.
+Thus, only features I use will be actively developed by my own free will.</p>
+<p>For long term support, you should <a href="https://www.gittip.com/jonathanong/">gittip me</a> as hosting costs are at least $100 a year,
+half of which is just the domain name.
+If tipped, I&#39;ll be inclined to work on features I don&#39;t use.</p>
+<p>For business and enterprise features,
+you&#39;ll probably want to set a bounties via <a href="https://www.bountysource.com/">bountysource</a> or contact me directly for paid support.
+All my code is open source, so I personally don&#39;t have a need for these types of features, but I believe these are eventually necessary.</p>
+<p>If Normalize.IO takes off, I&#39;d like to create a &quot;proxy as a service&quot; much like nodejitsu&#39;s private npm servers,
+but I wouldn&#39;t want to do it myself since I have no interest in dev ops.</p>
+<p>I&#39;m particularly interested in corporate sponsorships,
+particularly the first CDN that could provide SPDY Push support.</p>
+<h3 id="will-normalize-io-support-node-js-">Will Normalize.IO support node.js?</h3>
+<p>Hopefully, node.js will eventually support <a href="https://nlz.io">https://nlz.io</a> without a client with ES6 modules.
+But supporting node.js with a command line interface is difficult as there are many obstacles to overcome.
+Basically, forking node would be required to make it work gracefully, which is in the realm of possibility.</p>
+<p>To keep yourself up to date with node.js support,
+follow the <a href="https://github.com/normalize/node-normalize">node-normalize</a> repository.</p>
+<h3 id="can-i-omit-https-from-the-urls-">Can I omit <code>https://</code> from the URLs?</h3>
+<p>If browsers support protocol-less URLs, then so will we.
+However, there are a couple potential issues with omitting protocols.</p>
+<ol>
+<li>It&#39;s more difficult to differentiate between URLs and local/relative assets.</li>
+<li>Some browsers plan to not support non-SSL SPDY, so this might even work in development.</li>
+</ol>
+</div></section></main><footer><div class="container"><div id="footer-badges"><script data-gittip-username="jonathanong" src="https://gttp.co/v1.js" async></script></div><ul id="footer-links"><li>Jonathan Ong &copy; 2014</li><li><a href="http://jongleberry.com">jongleberry.com</a></li><li><a href="https://github.com/jonathanong">@jonathanong</a></li><li><a href="https://twitter.com/jongleberry">@jongleberry</a></li><li><a href="mailto:me@jongleberry.com">me@jongleberry.com</a></li></ul></div></footer><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-7367759-13', 'normalize.github.io');
+ga('send', 'pageview');
+</script><script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script><script src="index.js"></script></body></html>
