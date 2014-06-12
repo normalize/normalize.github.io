@@ -39,15 +39,15 @@ require.register = function (name, definition) {
   };
 };
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/separate-selector.js", function (exports, module) {
+require.register("barberboy/dom-elements@0.1.0/src/utils/separate-selector", function (exports, module) {
 module.exports = function(selector){
   return selector.split(/\s*,\s*/);
 };
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/scope/index.js", function (exports, module) {
-var separateSelector = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/separate-selector.js");
+require.register("barberboy/dom-elements@0.1.0/src/scope/", function (exports, module) {
+var separateSelector = require("barberboy/dom-elements@0.1.0/src/utils/separate-selector");
 
 module.exports = function(selector, method){
   var selectors = separateSelector(selector);
@@ -60,7 +60,7 @@ module.exports = function(selector, method){
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/scope/support.js", function (exports, module) {
+require.register("barberboy/dom-elements@0.1.0/src/scope/support", function (exports, module) {
 try {
   document.createElement('i').querySelector(':scoped *');
   module.exports = true;
@@ -70,13 +70,13 @@ try {
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/elements/index.js", function (exports, module) {
+require.register("barberboy/dom-elements@0.1.0/src/elements/", function (exports, module) {
 // as it is a circular dependency, we need to keep `module.exports` on top.
 module.exports = Elements;
 
-var pushUniq = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/pushuniq.js");
+var pushUniq = require("barberboy/dom-elements@0.1.0/src/utils/pushuniq");
 var elementsPrototype = Elements.prototype = [];
-var methods = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/index.js");
+var methods = require("barberboy/dom-elements@0.1.0/src/methods/");
 
 function Elements() {}
 
@@ -99,14 +99,14 @@ elementsPrototype.query = function (selector) {
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/expando.js", function (exports, module) {
+require.register("barberboy/dom-elements@0.1.0/src/utils/expando", function (exports, module) {
 module.exports = String(Math.random()).replace(/\D/g, '');
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/pushuniq.js", function (exports, module) {
-var Elements = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/elements/index.js");
-var expando = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/expando.js");
+require.register("barberboy/dom-elements@0.1.0/src/utils/pushuniq", function (exports, module) {
+var Elements = require("barberboy/dom-elements@0.1.0/src/elements/");
+var expando = require("barberboy/dom-elements@0.1.0/src/utils/expando");
 var propertyName = 'domElementsId' + expando;
 var id = -1;
 
@@ -154,15 +154,15 @@ module.exports = function (original) {
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/index.js", function (exports, module) {
-var scope = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/scope/index.js");
-var supportsScoped = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/scope/support.js");
+require.register("barberboy/dom-elements@0.1.0/src/methods/", function (exports, module) {
+var scope = require("barberboy/dom-elements@0.1.0/src/scope/");
+var supportsScoped = require("barberboy/dom-elements@0.1.0/src/scope/support");
 var methods = module.exports = {};
-var Elements = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/elements/index.js");
-var toArray = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/to-array.js");
-var attributeName = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/attribute-name.js");
-var scopeSelector = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/scope-selector.js");
-var absolutizeSelector = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/absolutize-selector.js");
+var Elements = require("barberboy/dom-elements@0.1.0/src/elements/");
+var toArray = require("barberboy/dom-elements@0.1.0/src/utils/to-array");
+var attributeName = require("barberboy/dom-elements@0.1.0/src/methods/attribute-name");
+var scopeSelector = require("barberboy/dom-elements@0.1.0/src/methods/scope-selector");
+var absolutizeSelector = require("barberboy/dom-elements@0.1.0/src/methods/absolutize-selector");
 var unique = -1;
 
 methods.query = function(selector){
@@ -211,7 +211,7 @@ methods.queryWrapper = function(selector){
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/to-array.js", function (exports, module) {
+require.register("barberboy/dom-elements@0.1.0/src/utils/to-array", function (exports, module) {
 module.exports = function(nodeList){
   var index = -1;
   var length = nodeList.length;
@@ -224,23 +224,23 @@ module.exports = function(nodeList){
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/attribute-name.js", function (exports, module) {
-module.exports = 'data-dom-elements-id-' + require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/expando.js");
+require.register("barberboy/dom-elements@0.1.0/src/methods/attribute-name", function (exports, module) {
+module.exports = 'data-dom-elements-id-' + require("barberboy/dom-elements@0.1.0/src/utils/expando");
 
 // normalize:common:info: rewriting dependency "../utils/expando" to "../utils/expando.js"
 
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/scope-selector.js", function (exports, module) {
+require.register("barberboy/dom-elements@0.1.0/src/methods/scope-selector", function (exports, module) {
 module.exports = function (item) {
   return ':scoped ' + item;
 };
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/absolutize-selector.js", function (exports, module) {
-var attributeName = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/attribute-name.js");
+require.register("barberboy/dom-elements@0.1.0/src/methods/absolutize-selector", function (exports, module) {
+var attributeName = require("barberboy/dom-elements@0.1.0/src/methods/attribute-name");
 
 module.exports = function (attributeValue) {
   return function (item){
@@ -253,7 +253,7 @@ module.exports = function (attributeValue) {
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/is-native.js", function (exports, module) {
+require.register("barberboy/dom-elements@0.1.0/src/utils/is-native", function (exports, module) {
 var nativeToString = Function.prototype.toString;
 var nativeQuerySelector = nativeToString.call(document.querySelector);
 var nameRE = /\bquerySelector\b/g;
@@ -270,9 +270,9 @@ module.exports = function(context, name){
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/index.js", function (exports, module) {
-var methods = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/methods/index.js");
-var isNative = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/is-native.js");
+require.register("barberboy/dom-elements@0.1.0/src/", function (exports, module) {
+var methods = require("barberboy/dom-elements@0.1.0/src/methods/");
+var isNative = require("barberboy/dom-elements@0.1.0/src/utils/is-native");
 var array = [];
 
 if (
@@ -315,20 +315,20 @@ if('Element' in window) {
 
 })
 
-require.register("https://nlz.io/github/barberboy/dom-elements/0.1.0/index.js", function (exports, module) {
-module.exports = require("https://nlz.io/github/barberboy/dom-elements/0.1.0/src/index.js")
+require.register("barberboy/dom-elements@0.1.0", function (exports, module) {
+module.exports = require("barberboy/dom-elements@0.1.0/src/")
 })
 
-require.register("https://nlz.io/github/webreflection/dom4/1.0.1/build/dom4.js", function (exports, module) {
+require.register("webreflection/dom4@1.0.1/build/dom4", function (exports, module) {
 /*! (C) WebReflection Mit Style License */
 (function(e){"use strict";function t(t){return typeof t=="string"?e.document.createTextNode(t):t}function n(n){if(n.length===1)return t(n[0]);for(var r=e.document.createDocumentFragment(),i=v.call(n),s=0;s<n.length;s++)r.appendChild(t(i[s]));return r}for(var r=Object.defineProperty||function(e,t,n){e.__defineGetter__(t,n.get)},i=[].indexOf||function(t){var n=this.length;while(n--)if(this[n]===t)break;return n},s,o,u,a,f=/^\s+|\s+$/g,l=/\s+/,c=" ",h=function(t,n){if(this.contains(t))n||this.remove(t);else if(n===undefined||n)n=!0,this.add(t);return!!n},p=(e.Element||e.Node||e.HTMLElement).prototype,d=["matches",p.matchesSelector||p.webkitMatchesSelector||p.khtmlMatchesSelector||p.mozMatchesSelector||p.msMatchesSelector||p.oMatchesSelector||function(t){var n=this.parentNode;return!!n&&-1<i.call(n.querySelectorAll(t),this)},"prepend",function(){var t=this.firstChild,r=n(arguments);t?this.insertBefore(r,t):this.appendChild(r)},"append",function(){this.appendChild(n(arguments))},"before",function(){var t=this.parentNode;t&&t.insertBefore(n(arguments),this)},"after",function(){var t=this.parentNode,r=this.nextSibling,i=n(arguments);t&&(r?t.insertBefore(i,r):t.appendChild(i))},"replace",function(){var t=this.parentNode;t&&t.replaceChild(n(arguments),this)},"remove",function(){var t=this.parentNode;t&&t.removeChild(this)}],v=d.slice,m=d.length;m;m-=2)o=d[m-2],o in p||(p[o]=d[m-1]);"classList"in document.documentElement?(a=document.createElement("div").classList,a.add("a","b","a"),"a b"!=a&&(p=a.constructor.prototype,"add"in p||(p=e.DOMTokenList.prototype),u=function(e){return function(){var t=0;while(t<arguments.length)e.call(this,arguments[t++])}},p.add=u(p.add),p.remove=u(p.remove),p.toggle=h)):(u=function(e){if(!e)throw"SyntaxError";if(l.test(e))throw"InvalidCharacterError";return e},a=function(e){var t=e.className.replace(f,"");t.length&&d.push.apply(this,t.split(l)),this._=e},a.prototype={length:0,add:function(){for(var t=0,n;t<arguments.length;t++)n=arguments[t],this.contains(n)||d.push.call(this,o);this._.className=""+this},contains:function(e){return function(n){return m=e.call(this,o=u(n)),-1<m}}([].indexOf||function(e){m=this.length;while(m--&&this[m]!==e);return m}),item:function(t){return this[t]||null},remove:function(){for(var t=0,n;t<arguments.length;t++)n=arguments[t],this.contains(n)&&d.splice.call(this,m,1);this._.className=""+this},toggle:h,toString:function y(){return d.join.call(this,c)}},r(p,"classList",{get:function(){return new a(this)},set:function(){}})),"head"in document||r(document,"head",{get:function(){return s||(s=document.getElementsByTagName("head")[0])}});try{new e.CustomEvent("?")}catch(g){e.CustomEvent=function(e,t){function n(n,i){var s=document.createEvent(e);if(typeof n!="string")throw new Error("An event name must be provided");return e=="Event"&&(s.initCustomEvent=r),i==null&&(i=t),s.initCustomEvent(n,i.bubbles,i.cancelable,i.detail),s}function r(e,t,n,r){this.initEvent(e,t,n),this.detail=r}return n}(e.CustomEvent?"CustomEvent":"Event",{bubbles:!1,cancelable:!1,detail:null})}})(window);
 })
 
-require.register("https://nlz.io/github/webreflection/dom4/1.0.1/index.js", function (exports, module) {
-module.exports = require("https://nlz.io/github/webreflection/dom4/1.0.1/build/dom4.js")
+require.register("webreflection/dom4@1.0.1", function (exports, module) {
+module.exports = require("webreflection/dom4@1.0.1/build/dom4")
 })
 
-require.register("https://nlz.io/github/yuzujs/setimmediate/1.0.2/setImmediate.js", function (exports, module) {
+require.register("yuzujs/setimmediate@1.0.2/setImmediate", function (exports, module) {
 (function (global, undefined) {
     "use strict";
 
@@ -507,8 +507,8 @@ require.register("https://nlz.io/github/yuzujs/setimmediate/1.0.2/setImmediate.j
 
 })
 
-require.register("https://nlz.io/github/yuzujs/setimmediate/1.0.2/index.js", function (exports, module) {
-module.exports = require("https://nlz.io/github/yuzujs/setimmediate/1.0.2/setImmediate.js")
+require.register("yuzujs/setimmediate@1.0.2", function (exports, module) {
+module.exports = require("yuzujs/setimmediate@1.0.2/setImmediate")
 })
 
 require.register("./client/permalinks.js", function (exports, module) {
@@ -523,7 +523,7 @@ document.queryAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').forEach(func
 
 })
 
-require.register("https://nlz.io/github/component/raf/1.1.3/index.js", function (exports, module) {
+require.register("component/raf@1.1.3", function (exports, module) {
 /**
  * Expose `requestAnimationFrame()`.
  */
@@ -565,8 +565,8 @@ exports.cancel = function(id){
 
 })
 
-require.register("https://nlz.io/github/component/per-frame/1.0.0/index.js", function (exports, module) {
-var raf = require("https://nlz.io/github/component/raf/1.1.3/index.js")
+require.register("component/per-frame@1.0.0", function (exports, module) {
+var raf = require("component/raf@1.1.3")
 
 module.exports = function (fn, immediate) {
   var queued = false
@@ -593,7 +593,7 @@ module.exports = function (fn, immediate) {
 
 })
 
-require.register("https://nlz.io/github/component/query/0.0.3/index.js", function (exports, module) {
+require.register("component/query@0.0.3", function (exports, module) {
 function one(selector, el) {
   return el.querySelector(selector);
 }
@@ -618,12 +618,12 @@ exports.engine = function(obj){
 
 })
 
-require.register("https://nlz.io/github/component/matches-selector/0.1.4/index.js", function (exports, module) {
+require.register("component/matches-selector@0.1.4", function (exports, module) {
 /**
  * Module dependencies.
  */
 
-var query = require("https://nlz.io/github/component/query/0.0.3/index.js");
+var query = require("component/query@0.0.3");
 
 /**
  * Element prototype.
@@ -670,7 +670,7 @@ function match(el, selector) {
 
 })
 
-require.register("https://nlz.io/github/component/contextual-selector/0.0.2/index.js", function (exports, module) {
+require.register("component/contextual-selector@0.0.2", function (exports, module) {
 module.exports = function (selector, childSelector, sep) {
   childSelector || (childSelector = '*')
   sep || (sep = ' ')
@@ -681,8 +681,8 @@ module.exports = function (selector, childSelector, sep) {
 }
 })
 
-require.register("https://nlz.io/github/discore/closest/0.1.3/index.js", function (exports, module) {
-var matches = require("https://nlz.io/github/component/matches-selector/0.1.4/index.js")
+require.register("discore/closest@0.1.3", function (exports, module) {
+var matches = require("component/matches-selector@0.1.4")
 
 module.exports = function (element, selector, checkYoSelf, root) {
   element = checkYoSelf ? {parentNode: element} : element
@@ -706,7 +706,7 @@ module.exports = function (element, selector, checkYoSelf, root) {
 
 })
 
-require.register("https://nlz.io/github/component/tap-event/0.0.7/index.js", function (exports, module) {
+require.register("component/tap-event@0.0.7", function (exports, module) {
 var cancelEvents = [
   'touchmove',
   'touchcancel',
@@ -789,12 +789,12 @@ function Tap(callback) {
 }
 })
 
-require.register("https://nlz.io/github/jonathanong/eevee/0.0.4/index.js", function (exports, module) {
-var matches = require("https://nlz.io/github/component/matches-selector/0.1.4/index.js")
-var context = require("https://nlz.io/github/component/contextual-selector/0.0.2/index.js")
-var closest = require("https://nlz.io/github/discore/closest/0.1.3/index.js")
-var query = require("https://nlz.io/github/component/query/0.0.3/index.js")
-var tap = require("https://nlz.io/github/component/tap-event/0.0.7/index.js")
+require.register("jonathanong/eevee@0.0.4", function (exports, module) {
+var matches = require("component/matches-selector@0.1.4")
+var context = require("component/contextual-selector@0.0.2")
+var closest = require("discore/closest@0.1.3")
+var query = require("component/query@0.0.3")
+var tap = require("component/tap-event@0.0.7")
 
 module.exports = Eevee
 
@@ -1121,7 +1121,7 @@ function getEvents(events) {
 
 })
 
-require.register("https://nlz.io/github/component/keyname/0.0.1/index.js", function (exports, module) {
+require.register("component/keyname@0.0.1", function (exports, module) {
 
 /**
  * Key name map.
@@ -1165,7 +1165,7 @@ module.exports = function(n){
 };
 })
 
-require.register("https://nlz.io/github/component/indexof/0.0.3/index.js", function (exports, module) {
+require.register("component/indexof@0.0.3", function (exports, module) {
 module.exports = function(arr, obj){
   if (arr.indexOf) return arr.indexOf(obj);
   for (var i = 0; i < arr.length; ++i) {
@@ -1175,12 +1175,12 @@ module.exports = function(arr, obj){
 };
 })
 
-require.register("https://nlz.io/github/component/classes/1.2.1/index.js", function (exports, module) {
+require.register("component/classes@1.2.1", function (exports, module) {
 /**
  * Module dependencies.
  */
 
-var index = require("https://nlz.io/github/component/indexof/0.0.3/index.js");
+var index = require("component/indexof@0.0.3");
 
 /**
  * Whitespace regexp.
@@ -1366,7 +1366,7 @@ ClassList.prototype.contains = function(name){
 
 })
 
-require.register("https://nlz.io/github/component/clickable/0.0.4/index.js", function (exports, module) {
+require.register("component/clickable@0.0.4", function (exports, module) {
 module.exports = function (e) {
   // primary button only
   if (e.type === 'click' && e.button !== 0)
@@ -1384,7 +1384,7 @@ module.exports = function (e) {
 }
 })
 
-require.register("https://nlz.io/github/component/emitter/1.1.2/index.js", function (exports, module) {
+require.register("component/emitter@1.1.2", function (exports, module) {
 
 /**
  * Expose `Emitter`.
@@ -1552,18 +1552,18 @@ Emitter.prototype.hasListeners = function(event){
 
 })
 
-require.register("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/lib/index.js", function (exports, module) {
+require.register("jonathanong/delegated-dropdown@0.0.7/lib/", function (exports, module) {
 /* jshint browser: true */
 
-var eevee = require("https://nlz.io/github/jonathanong/eevee/0.0.4/index.js")
-var query = require("https://nlz.io/github/component/query/0.0.3/index.js")
-var tap = require("https://nlz.io/github/component/tap-event/0.0.7/index.js")
-var keyname = require("https://nlz.io/github/component/keyname/0.0.1/index.js")
-var classes = require("https://nlz.io/github/component/classes/1.2.1/index.js")
-var closest = require("https://nlz.io/github/discore/closest/0.1.3/index.js")
-var clickable = require("https://nlz.io/github/component/clickable/0.0.4/index.js")
-var matches = require("https://nlz.io/github/component/matches-selector/0.1.4/index.js")
-var Emitter = require("https://nlz.io/github/component/emitter/1.1.2/index.js")
+var eevee = require("jonathanong/eevee@0.0.4")
+var query = require("component/query@0.0.3")
+var tap = require("component/tap-event@0.0.7")
+var keyname = require("component/keyname@0.0.1")
+var classes = require("component/classes@1.2.1")
+var closest = require("discore/closest@0.1.3")
+var clickable = require("component/clickable@0.0.4")
+var matches = require("component/matches-selector@0.1.4")
+var Emitter = require("component/emitter@1.1.2")
 
 exports = module.exports = new Emitter()
 exports.position = positionDropdown
@@ -1694,14 +1694,14 @@ function closeDropdown(dropdown) {
 
 })
 
-require.register("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/index.js", function (exports, module) {
-module.exports = require("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/lib/index.js")
+require.register("jonathanong/delegated-dropdown@0.0.7", function (exports, module) {
+module.exports = require("jonathanong/delegated-dropdown@0.0.7/lib/")
 })
 
 require.register("./client/toc.js", function (exports, module) {
 
-var throttle = require("https://nlz.io/github/component/per-frame/1.0.0/index.js");
-require("https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/index.js");
+var throttle = require("component/per-frame@1.0.0");
+require("jonathanong/delegated-dropdown@0.0.7");
 
 require("./client/permalinks.js");
 
@@ -1752,9 +1752,9 @@ function setMaxHeight() {
 
 require.register("./client/index.js", function (exports, module) {
 
-require("https://nlz.io/github/barberboy/dom-elements/0.1.0/index.js");
-require("https://nlz.io/github/webreflection/dom4/1.0.1/index.js");
-require("https://nlz.io/github/yuzujs/setimmediate/1.0.2/index.js");
+require("barberboy/dom-elements@0.1.0");
+require("webreflection/dom4@1.0.1");
+require("yuzujs/setimmediate@1.0.2");
 
 require("./client/permalinks.js");
 require("./client/toc.js");
