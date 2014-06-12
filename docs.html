@@ -631,7 +631,7 @@ but serving files from <a href="https://nlz.io">https://nlz.io</a> is not recomm
 <li>Browsers must support URLs in ES6 module <code>import</code> statements</li>
 <li>Browsers must support <code>&lt;link rel=&quot;import&quot; href=&quot;&quot;&gt;</code> tags</li>
 </ul>
-</div></section><section><div class="container"><h2 id="comparisons">Comparisons</h2><h3 id="bundling-vs-browserify">Bundling vs. Browserify</h3>
+</div></section><section><div class="container"><h2 id="comparisons">Comparisons</h2><h3 id="bundling-vs-browserify-vs-webpack">Bundling vs. Browserify vs. Webpack</h3>
 <p><code>nlz build(1)</code> is pretty similar to Browserify.
 How does the bundling compare?
 Let&#39;s compare the created bundles for <a href="https://github.com/barberboy/dom-elements">dom-elements</a>.
@@ -643,23 +643,27 @@ You can view the <a href="https://github.com/normalize/comparisons/blob/master/M
 <th>Build</th>
 <th>Normalize</th>
 <th>Browserify</th>
+<th>Webpack</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>.js</td>
-<td>10,525b</td>
-<td>6,625b</td>
+<td>9,663b</td>
+<td>6,717b</td>
+<td>7,939b</td>
 </tr>
 <tr>
 <td>.min.js</td>
-<td>5,494b</td>
-<td>3,425b</td>
+<td>4,632b</td>
+<td>3,486b</td>
+<td>2,585b</td>
 </tr>
 <tr>
 <td>.min.js.gz</td>
-<td>1,292b</td>
-<td>1,328b</td>
+<td>1,252b</td>
+<td>1,346b</td>
+<td>1,060b</td>
 </tr>
 </tbody>
 </table>
@@ -671,8 +675,7 @@ Doing so unnecessarily hides the magic from developers.</li>
 <li>Normalize doesn&#39;t wrap the build within a closure.
 Developers can do that themselves.
 This allows developers to <code>require(&#39;./index.js&#39;)</code> outside the build.</li>
-<li>Normalize uses the full URL for dependencies.
-<code>require(&#39;../utils/separate-selector.js&#39;)</code> is expanded to <code>require(&#39;https://nlz.io/github/barberboy/dom-elements/0.1.0/src/utils/separate-selector.js&#39;)</code>.</li>
+<li>Normalize dependency names are generally longer to keep them unique.</li>
 <li>Normalize adds comments to each file for debugging.</li>
 </ol>
 <p>But then you&#39;ll notice that Normalize&#39;s gzip build is actually smaller than browserify&#39;s.
@@ -682,6 +685,18 @@ This is primarily due to two reasons:</p>
 <li>Absolute URLs are mostly redundant and very compressible.</li>
 <li>The <code>require()</code> implementation is minimal and is basically just a hash lookup.</li>
 </ol>
+<p>But why is Webpack superior than both Normalize and Browserify?
+If you look at the Webpack bundle, you&#39;ll notice two things:</p>
+<ol>
+<li>Module IDs are rewritten into numbers (stored in an array)</li>
+<li>All modules are loaded in an array</li>
+</ol>
+<p>Normalize won&#39;t ever do 1) because this will make modules difficult to use outside the bundle
+as well as make the resulting bundle more difficult to read.
+<code>require()</code> is global by default so developers can <code>require()</code> outside the build.
+The bundle will be smaller if wrapped in a closure.</p>
+<p>Normalize may eventually do 2) only if supported by ES6 module loaders,
+but until then, it&#39;s easier if each module is disjoint from the other.</p>
 <h3 id="vs-jspm-io-and-family">vs. jspm.io and family</h3>
 <p>A similar project is <a href="http://jspm.io">jspm.io</a>.
 Some key differences are:</p>
