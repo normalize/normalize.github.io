@@ -19,7 +19,7 @@ Set `self-signed` to `true` if the proxy is using a self-signed certification,
 otherwise an error will be thrown.
 Remember, proxies must always use SSL.
 
-### .directory
+### .directory = "repositories"
 
 ```json
 {
@@ -70,3 +70,14 @@ You may also use objects if you want to set custom options on each entry point:
   }
 }
 ```
+
+### .manifest = "normalize-manifest.json"
+
+This allows you to use a custom `normalize-manifest.json` file name.
+
+### .minifiedLength = true
+
+Option whether to include each file's minified length in the manifest.
+This takes a long time to calculate,
+so is only recommended when you do `--watch`.
+Set to `false` if you never want to calculate this.

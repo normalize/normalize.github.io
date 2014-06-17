@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">nlz.io</a><a href="https://github.com/normalize/discussions" class="top-bar-link">discuss</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="guide.html" class="top-bar-link">guide</a><a href="api.html" class="top-bar-link">api</a><a href="about.html" class="top-bar-link">about</a></div></div><header><div class="container"><h1>API</h1></div></header><main><div id="toc" class="Dropdown right down"><a href="#" class="Dropdown-toggle">#</a><div class="Dropdown-menu"></div></div><section><div class="container"><h2 id="triage">Triage</h2><p>Normalize is split into multiple repositories.
-Most of these repositories can be found within the <a href="https://github.com/normalize">normalize GitHub organization</a>.
+Most of these repositories can be found within the <a href="https://github.com/normalize">Normalize GitHub organization</a>.
 When requesting features or reporting bugs,
 please try to open an issue in the correct repository.</p>
 <ul>
@@ -14,15 +14,16 @@ Open an issue here.</li>
 </ul>
 </div></section><section><div class="container"><h2 id="proxy">Normalization Proxy</h2><p>This is the public HTTP API for <a href="https://nlz.io">https://nlz.io</a> as well as any <a href="https://github.com/normalize/proxy.js">normalize-proxy</a>.
 If you&#39;re interested in setting up your own proxy,
-consult the <a href="https://github.com/normalize/proxy.js">normalize-proxy repository</a>.</p>
+consult the <a href="https://github.com/normalize/proxy.js">normalize-proxy repository</a> itself.</p>
 <h3 id="url-structure">URL Structure</h3>
-<p>URLs generally have the form:</p>
-<pre><code>https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">version</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">file</span>&gt;</span>
+<p>All URLs have the form:</p>
+<pre><code>https://nlz.io/&lt;remote&gt;/&lt;user&gt;/&lt;project&gt;/&lt;version&gt;/&lt;file&gt;<span class="hljs-keyword">...</span>
 </code></pre><p>Obviously, different proxies will have different hostnames.
 The <code>version</code> and <code>file</code> may not be included in some end points.</p>
 <h4 id="protocol">Protocol</h4>
 <p>Every proxy <strong>must</strong> serve via HTTPS and SPDY/HTTPv2,
-even with a self-signed certificate.</p>
+even with a self-signed certificate.
+The primary reason is that some browsers intend to not support SPDY without SSL.</p>
 <h4 id="remote">Remote</h4>
 <p>A supported remote&#39;s name, for example <code>github/</code>.</p>
 <p>Aliases will also be supported and will simply redirect to the canonical short name.
@@ -30,10 +31,9 @@ For example, <code>github.com</code> and <code>raw.githubusercontent.com</code> 
 <h4 id="user">User</h4>
 <p>The owner of a repository.
 If the remote does not have a namespace, the user should simply be <code>-</code>.</p>
-<pre><code class="lang-bash"><span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/nlz.io/npm</span><span class="hljs-regexp">/-/escape</span>-regexp/*<span class="hljs-regexp">/index.js</span>
-</code></pre>
-<h4 id="project">Project</h4>
-<p>The name of the project or module.</p>
+<pre><code><span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/nlz.io/npm</span><span class="hljs-regexp">/-/escape</span>-regexp/*<span class="hljs-regexp">/index.js</span>
+</code></pre><h4 id="project">Project</h4>
+<p>The name of the project/module/component.</p>
 <h4 id="version">Version</h4>
 <p>Any version as defined by <a href="http://semver.org">http://semver.org</a> v2.0.0.
 You should not include leading <code>v</code>s and <code>=</code> in single versions</p>
@@ -57,7 +57,9 @@ then all the pushed dependencies will also include the same query string.</p>
 <p>Each file will have an <code>ETag</code> header which is the <code>sha256</code> sum of the <strong>source</strong> file.
 Thus, the only real way to verify whether this header is correct is to check the <code>?source</code> file.
 The ETag will remain the same between query strings and differences in transforms</p>
-<p>Note that the ETag header is subject to change as this is obviously less than ideal.</p>
+<blockquote>
+<p>Note: the ETag header is subject to change as this is obviously less than ideal.</p>
+</blockquote>
 <h4 id="get-pull">GET pull</h4>
 <pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/pull
 </code></pre><p>This will <code>pull</code> a specific version from the remote if it has not be installed already.
@@ -71,8 +73,10 @@ a <code>404</code> and an empty array will be returned.</p>
 <p>If you pushed a new version of a package,
 but the proxy has not installed it yet,
 simply install it by hitting the <code>pull</code> entry point or <code>GET</code> any file.</p>
-<p>The semantics of this endpoint is subject to change.
+<blockquote>
+<p>Note: he semantics of this endpoint is subject to change.
 In particular, it should return all available versions on the remote.</p>
+</blockquote>
 <h4 id="get-metadata-json">GET metadata.json</h4>
 <pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/metadata.json
 </code></pre><p>Per-repository metadata that is not version-specific.
@@ -144,17 +148,18 @@ shorthands require a certain degree of specificity.</p>
 <p>However, shorthands can only be used if either:</p>
 <ol>
 <li>You use a build process, <code>nlz build</code></li>
-<li>You use a custom ES6 module loader</li>
+<li>You use a custom client-side ES6 module loader</li>
 </ol>
 <p>Thus, shorthands are second-class citizens.
 Normalize will eventually provide a custom module loader for these shorthands.</p>
 <h3 id="the-law-of-shorthands">The Law of Shorthands</h3>
 <ol>
 <li>Shorthands only apply to JavaScript files.
-There are no shorthands for CSS and HTML files as they do not have custom loaders.</li>
+There are no shorthands for CSS and HTML files as they do not allow custom loaders.</li>
 <li>Do not use shorthands in libraries,
 only applications where you can expect a custom module loader to be used.
-Creating libraries with shorthands is too vendor-specific.</li>
+Creating libraries with shorthands is too vendor-specific.
+URLs should always work in any environment!</li>
 <li><code>@</code> is used for versions and commits.
 Do <strong>not</strong> use <code>#</code>.</li>
 </ol>
@@ -192,8 +197,7 @@ otherwise it could be a file.</p>
 </code></pre><p>Where:</p>
 <ul>
 <li><code>remote</code> is the remote name or alias.</li>
-<li><code>user</code> is optional if the remote allows namespaces,
-otherwise must be omitted</li>
+<li><code>user</code> is optional if the remote has a global namespace (i.e. <code>npm</code>)</li>
 <li><code>project</code> - the name of the project/module/package</li>
 <li><code>version</code> - is optional, defaulting to <code>*</code></li>
 <li><code>file</code> - can be completely empty, defaulting to <code>/index.js</code></li>
@@ -210,6 +214,17 @@ and <code>nlz(1)</code> will primarily be a CLI tool for inspecting your app/com
 </code></pre>
 <p><code>nlz(1)</code> only supports node v0.10,
 but you should use node v0.11+ for better performance as generators are extensively used in the source code.</p>
+<p>Be sure to globally install any transforms you&#39;d like to use as well.</p>
+<pre><code class="lang-bash">npm <span class="hljs-keyword">install</span> -g jade marked
+</code></pre>
+<h3 id="normalize-manifest-json">normalize-manifest.json</h3>
+<p>When running <code>nlz-build(1)</code> or <code>nlz-manifest(1)</code>,
+a <code>normalize-manifest.json</code> file is created.
+You can use this to inspect all the files in the build as well as its
+dependency tree.
+<code>nlz(1)</code> uses this file in other commands, such as <code>nlz-dependencies(1)</code>,
+to help inspect the files and the dependency tree.
+Be sure to add this file to your <code>.gitignore</code>!</p>
 <h3 id="nlz-build">nlz build</h3>
 <p>This is the primary build command.
 You may think of it as <a href="http://browserify.org">browserify</a>&#39;s build command,
@@ -235,6 +250,78 @@ Simply loading <code>nlz(1)</code> takes a considerable amount of time,
 especially if you use a lot of transformations.</p>
 <pre><code class="lang-bash">nlz build <span class="hljs-keyword">client</span>/<span class="hljs-keyword">index</span>.js --watch
 </code></pre>
+<h3 id="nlz-manifest">nlz manifest</h3>
+<p>Similar to <code>nlz-build(1)</code>,
+except no files will actually be built.
+Use this just to create <code>normalize-manifest.json</code>,
+which is required for the dependency inspection commands.</p>
+<h4 id="-no-min-m">--no-min, -M</h4>
+<p>By default, <code>nlz-manifest(1)</code> calculates the minified size of assets.
+This gives each file a better representation of its size
+in the final bundle.
+However, this takes a long time compute.
+Set <code>--no-min</code> to disable minified size calculations.</p>
+<h3 id="nlz-dependencies">nlz dependencies</h3>
+<p>List all the dependencies,
+included nested ones,
+of a single entry point.
+Unlike other &quot;ls&quot; type commands,
+this command does not create an incredibly nested tree.
+The file size is listed next to each file.</p>
+<pre><code class="lang-bash">nlz dependencies &lt;entrypoint&gt;
+
+<span class="hljs-comment">// list the dependencies of a single file</span>
+nlz dependencies <span class="hljs-keyword">index</span>.js
+</code></pre>
+<p><img src="images/nlz-dependencies.png" alt="nlz-dependencies(1)"></p>
+<h4 id="-remotes-r">--remotes, -r</h4>
+<p>By default, dependencies of remote dependencies are not traversed.
+To include them, use the <code>--remotes</code> option.</p>
+<h3 id="nlz-dependents">nlz dependents</h3>
+<p>This command is similar to <code>nlz-dependencies(1)</code>,
+except shows all the nested dependents of a particular file.
+Any file included in the manifest could be used as an entry point.</p>
+<pre><code class="lang-bash">nlz dependencies &lt;entrypoint&gt;
+
+// list <span class="hljs-keyword">all</span> the nested dependents <span class="hljs-keyword">of</span> <span class="hljs-keyword">component</span>/emitter@<span class="hljs-number">1.1</span><span class="hljs-number">.2</span>
+nlz dependents <span class="hljs-keyword">component</span>/emitter@<span class="hljs-number">1.1</span><span class="hljs-number">.2</span>
+</code></pre>
+<p><img src="images/nlz-dependents.png" alt="nlz-dependents(1)"></p>
+<h3 id="nlz-duplicates">nlz duplicates</h3>
+<p>Lists all remote dependents of which you use more than a single version.
+In frontend development,
+you don&#39;t want duplicate dependencies as it means unnecessary bandwidth usage.</p>
+<pre><code class="lang-bash"><span class="hljs-comment">// list the duplicate dependencies</span>
+<span class="hljs-comment">// based on the current normalize-manifest.json</span>
+nlz duplicates
+</code></pre>
+<p><code>nlz-duplicates(1)</code> will show:</p>
+<ul>
+<li>The &quot;redundancy size&quot;, or the estimated bytes you could save by de-duping each dependency.</li>
+<li>Each version of the dependency used.</li>
+<li>Each file of each dependency used, it&#39;s size, and its dependents.</li>
+</ul>
+<p><img src="images/nlz-duplicates.png" alt="nlz-duplicates(1)"></p>
+<h3 id="nlz-size">nlz size</h3>
+<p>List the sizes of an entry point and its dependencies,
+as well as its combined size.
+Useful for gauging which dependency is the largest.</p>
+<pre><code class="lang-bash">nlz size &lt;entrypoint&gt;
+
+<span class="hljs-regexp">//</span> get the size of test/<span class="hljs-keyword">index</span>.js <span class="hljs-keyword">and</span> its dependencies
+nlz size test/<span class="hljs-keyword">index</span>.js
+</code></pre>
+<p><img src="images/nlz-size.png" alt="nlz-size(1)"></p>
+<h4 id="-exts-e">--exts, -e</h4>
+<p>Filter the files by a comma-separated list of extensions.
+For example:</p>
+<pre><code class="lang-bash">nlz size <span class="hljs-operator">-e</span> js,css,svg test/index.js
+</code></pre>
+<h4 id="-threshold-t">--threshold, -t</h4>
+<p>Only show files larger than a <code>threshold</code> file size.
+For example, only list files larger than <code>1kb</code>:</p>
+<pre><code class="lang-bash">nlz size -t <span class="hljs-number">1</span>kb test/<span class="hljs-keyword">index</span>.js
+</code></pre>
 </div></section><section><div class="container"><h2 id="nlzrc">.nlzrc</h2><p><code>.nlzrc</code> is an optional JSON configuration file for local environments.
 It&#39;s completely optional.
 You may have a global, <code>.nlzrc</code> configuration for your computer as well as local <code>.nlzrc</code> configuration for each app.
@@ -250,7 +337,7 @@ For example, you might want to point all your requests to a proxy on your networ
 Set <code>self-signed</code> to <code>true</code> if the proxy is using a self-signed certification,
 otherwise an error will be thrown.
 Remember, proxies must always use SSL.</p>
-<h3 id="-directory">.directory</h3>
+<h3 id="-directory-repositories-">.directory = &quot;repositories&quot;</h3>
 <pre><code class="lang-json">{
   "<span class="hljs-attribute">directory</span>": <span class="hljs-value"><span class="hljs-string">"/User/jong/.repositories"</span>
 </span>}
@@ -287,6 +374,13 @@ This allows you to not specify the entry points every time you run <code>nlz bui
   </span>}
 </span>}
 </code></pre>
+<h3 id="-manifest-normalize-manifest-json-">.manifest = &quot;normalize-manifest.json&quot;</h3>
+<p>This allows you to use a custom <code>normalize-manifest.json</code> file name.</p>
+<h3 id="-minifiedlength-true">.minifiedLength = true</h3>
+<p>Option whether to include each file&#39;s minified length in the manifest.
+This takes a long time to calculate,
+so is only recommended when you do <code>--watch</code>.
+Set to <code>false</code> if you never want to calculate this.</p>
 </div></section><section><div class="container"><h2 id="transforms">Transforms</h2><p>These are all the transforms available for both the normalization proxy and <code>nlz-build(1)</code>.</p>
 <p>There are multiple types of transforms which are not mutually exclusive:</p>
 <ul>
@@ -299,21 +393,30 @@ These are all included in <a href="https://github.com/normalize/build.js">normal
 <li>Tranparent - Transforms without an extension</li>
 </ul>
 <p>Unlike other bundlers and build systems,
-transforms are included automatically.
+adapters transforms are included automatically.
 There are a couple of reasons for this:</p>
 <ul>
-<li><p>This middleware system is a more complicated than other middleware systems:</p>
-<ul>
+<li>This middleware system is a more complicated than other middleware systems:<ul>
 <li>The use of Koa-based upstream/downstream is quite complex</li>
 <li>Order of middleware is very important</li>
 <li>Transforms are not orthogonal to another,
 so we have to make sure each plugin interacts with each other well.</li>
 </ul>
 </li>
-<li><p>The purpose of normalization is for everyone to be on the same page.
-It&#39;s counter productive to have different semantics for the same transform across applications.</p>
-</li>
+<li>The purpose of normalization is for everyone to be on the same page.
+It&#39;s counter productive to have different semantics for the same transform across applications.</li>
 </ul>
+<p>However, for both the proxy and for <code>nlz(1)</code>,
+<strong>you must install each underlying library yourself</strong>.
+If all libraries were included,
+then <code>nlz(1)</code> will quickly grow to <code>100mb+</code> as well as have a very long install time
+due to all the C/C++ addons these libraries use.
+For example, to use the Jade transform, you must also install Jade globally:</p>
+<pre><code class="lang-bash"><span class="hljs-preprocessor"># Install Normalize</span>
+npm i -g nlz
+<span class="hljs-preprocessor"># Install Jade as well</span>
+npm i -g jade
+</code></pre>
 <p>PRs for additional transforms are welcomed as long as there&#39;s a valid use-case and people would actually use it.
 Feel free to create feature requests and pull requests in the <a href="https://github.com/normalize/transforms.js">transform.js</a> repository.</p>
 <h3 id="how-extension-based-transforms-work">How Extension-based Transforms Work</h3>

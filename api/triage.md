@@ -1,6 +1,6 @@
 
 Normalize is split into multiple repositories.
-Most of these repositories can be found within the [normalize GitHub organization](https://github.com/normalize).
+Most of these repositories can be found within the [Normalize GitHub organization](https://github.com/normalize).
 When requesting features or reporting bugs,
 please try to open an issue in the correct repository.
 

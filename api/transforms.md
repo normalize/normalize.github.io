@@ -12,18 +12,30 @@ There are multiple types of transforms which are not mutually exclusive:
 - Tranparent - Transforms without an extension
 
 Unlike other bundlers and build systems,
-transforms are included automatically.
+adapters transforms are included automatically.
 There are a couple of reasons for this:
 
 - This middleware system is a more complicated than other middleware systems:
-
     - The use of Koa-based upstream/downstream is quite complex
     - Order of middleware is very important
     - Transforms are not orthogonal to another,
       so we have to make sure each plugin interacts with each other well.
-
 - The purpose of normalization is for everyone to be on the same page.
   It's counter productive to have different semantics for the same transform across applications.
+
+However, for both the proxy and for `nlz(1)`,
+__you must install each underlying library yourself__.
+If all libraries were included,
+then `nlz(1)` will quickly grow to `100mb+` as well as have a very long install time
+due to all the C/C++ addons these libraries use.
+For example, to use the Jade transform, you must also install Jade globally:
+
+```bash
+# Install Normalize
+npm i -g nlz
+# Install Jade as well
+npm i -g jade
+```
 
 PRs for additional transforms are welcomed as long as there's a valid use-case and people would actually use it.
 Feel free to create feature requests and pull requests in the [transform.js](https://github.com/normalize/transforms.js) repository.

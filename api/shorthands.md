@@ -8,7 +8,7 @@ shorthands require a certain degree of specificity.
 However, shorthands can only be used if either:
 
 1. You use a build process, `nlz build`
-2. You use a custom ES6 module loader
+2. You use a custom client-side ES6 module loader
 
 Thus, shorthands are second-class citizens.
 Normalize will eventually provide a custom module loader for these shorthands.
@@ -16,10 +16,11 @@ Normalize will eventually provide a custom module loader for these shorthands.
 ### The Law of Shorthands
 
 1. Shorthands only apply to JavaScript files.
-  There are no shorthands for CSS and HTML files as they do not have custom loaders.
+  There are no shorthands for CSS and HTML files as they do not allow custom loaders.
 2. Do not use shorthands in libraries,
   only applications where you can expect a custom module loader to be used.
   Creating libraries with shorthands is too vendor-specific.
+  URLs should always work in any environment!
 3. `@` is used for versions and commits.
   Do __not__ use `#`.
 
@@ -95,8 +96,7 @@ All other remotes can be abbreviated to:
 Where:
 
 - `remote` is the remote name or alias.
-- `user` is optional if the remote allows namespaces,
-  otherwise must be omitted
+- `user` is optional if the remote has a global namespace (i.e. `npm`)
 - `project` - the name of the project/module/package
 - `version` - is optional, defaulting to `*`
 - `file` - can be completely empty, defaulting to `/index.js`

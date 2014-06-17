@@ -444,6 +444,12 @@ th {
   -webkit-font-smoothing: antialiased;
 }
 
+img {
+  display: inline-block;
+  max-width: 100%;
+  max-height: 280px;
+}
+
 /* end: "./client/reset.css" */
 
 /* begin: "./client/type.css" */

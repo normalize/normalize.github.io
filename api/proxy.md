@@ -1,14 +1,14 @@
 
 This is the public HTTP API for https://nlz.io as well as any [normalize-proxy][proxy].
 If you're interested in setting up your own proxy,
-consult the [normalize-proxy repository][proxy].
+consult the [normalize-proxy repository][proxy] itself.
 
 ### URL Structure
 
-URLs generally have the form:
+All URLs have the form:
 
 ```
-https://nlz.io/<remote>/<user>/<project>/<version>/<file>
+https://nlz.io/<remote>/<user>/<project>/<version>/<file>...
 ```
 
 Obviously, different proxies will have different hostnames.
@@ -18,6 +18,7 @@ The `version` and `file` may not be included in some end points.
 
 Every proxy __must__ serve via HTTPS and SPDY/HTTPv2,
 even with a self-signed certificate.
+The primary reason is that some browsers intend to not support SPDY without SSL.
 
 #### Remote
 
@@ -31,13 +32,13 @@ For example, `github.com` and `raw.githubusercontent.com` would redirect to `git
 The owner of a repository.
 If the remote does not have a namespace, the user should simply be `-`.
 
-```bash
+```
 https://nlz.io/npm/-/escape-regexp/*/index.js
 ```
 
 #### Project
 
-The name of the project or module.
+The name of the project/module/component.
 
 #### Version
 
@@ -70,7 +71,7 @@ Each file will have an `ETag` header which is the `sha256` sum of the __source__
 Thus, the only real way to verify whether this header is correct is to check the `?source` file.
 The ETag will remain the same between query strings and differences in transforms
 
-Note that the ETag header is subject to change as this is obviously less than ideal.
+> Note: the ETag header is subject to change as this is obviously less than ideal.
 
 #### GET pull
 
@@ -96,8 +97,8 @@ If you pushed a new version of a package,
 but the proxy has not installed it yet,
 simply install it by hitting the `pull` entry point or `GET` any file.
 
-The semantics of this endpoint is subject to change.
-In particular, it should return all available versions on the remote.
+> Note: he semantics of this endpoint is subject to change.
+> In particular, it should return all available versions on the remote.
 
 #### GET metadata.json
 
