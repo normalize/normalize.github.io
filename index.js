@@ -511,7 +511,7 @@ require.register("yuzujs/setimmediate@1.0.2", function (exports, module) {
 module.exports = require("yuzujs/setimmediate@1.0.2/setImmediate")
 })
 
-require.register("./client/permalinks.js", function (exports, module) {
+require.register("./client/permalinks", function (exports, module) {
 
 document.queryAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').forEach(function (h) {
   var a = document.createElement('a')
@@ -1384,7 +1384,7 @@ module.exports = function (e) {
 }
 })
 
-require.register("component/emitter@1.1.2", function (exports, module) {
+require.register("component/emitter@1.1.3", function (exports, module) {
 
 /**
  * Expose `Emitter`.
@@ -1563,7 +1563,7 @@ var classes = require("component/classes@1.2.1")
 var closest = require("discore/closest@0.1.3")
 var clickable = require("component/clickable@0.0.4")
 var matches = require("component/matches-selector@0.1.4")
-var Emitter = require("component/emitter@1.1.2")
+var Emitter = require("component/emitter@1.1.3")
 
 exports = module.exports = new Emitter()
 exports.position = positionDropdown
@@ -1698,12 +1698,12 @@ require.register("jonathanong/delegated-dropdown@0.0.7", function (exports, modu
 module.exports = require("jonathanong/delegated-dropdown@0.0.7/lib/")
 })
 
-require.register("./client/toc.js", function (exports, module) {
+require.register("./client/toc", function (exports, module) {
 
 var throttle = require("component/per-frame@1.0.0");
 require("jonathanong/delegated-dropdown@0.0.7");
 
-require("./client/permalinks.js");
+require("./client/permalinks");
 
 var html = document.documentElement
 var toc = document.querySelector('#toc')
@@ -1750,15 +1750,15 @@ function setMaxHeight() {
 
 })
 
-require.register("./client/index.js", function (exports, module) {
+require.register("./client/", function (exports, module) {
 
 require("barberboy/dom-elements@0.1.0");
 require("webreflection/dom4@1.0.1");
 require("yuzujs/setimmediate@1.0.2");
 
-require("./client/permalinks.js");
-require("./client/toc.js");
+require("./client/permalinks");
+require("./client/toc");
 
 })
 
-require("./client/index.js");
+require("./client/");
