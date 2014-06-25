@@ -6,26 +6,53 @@ block header
     h1 normalize.io
       small  &alpha;lpha
     p
-      small <code>@import</code> the future, <code>nlz build</code> the present, normalize the past.
+      small <code>@import</code> the future, <code>nlz-build(1)</code> the present, <code>normalize</code> the past.
 
 block main
   section: .container
-    h2(id='what-is-this') What is this? Another package manager?
+    h2(id='normalizing-web-development') Normalizing Web Development
     :markdown
+      Web development is a mess right now. There are a vast number
+      of package managers and build systems and an endless number of combinations
+      thereof, many of which are promoted as the "ideal" stack.
+      But all these package managers and build systems are,
+      for the most part, unnecessary with the dawn of
+      ES6 modules, Web Components, and SPDY.
+
+      Normalize.IO aims to create a web development environment where:
+
+      - There are no `install` commands for package managers.
+        Just depend `import jquery from 'jquery@~2.1.0'` and you're good to go.
+      - There are no mandatory JSON files, either to publish your component
+        or to build your app, nor are there any publish steps.
+      - There are no build processes as they are now unnecessary with SPDY push.
+      - There are no configurations required to build your component or app.
+        Just `npm i jade` and `import template from 'template.jade'`,
+        and Normalize.IO's got the rest.
+
+  section: .container
+    h2(id='perfect-web-development') The Perfect Web Development Workflow
+    :markdown
+      ### Integrated SPDY Push File Server
+
+      An intelligent file server for your apps that crawls your CSS and JavaScript
+      files' dependencies, installs them seamlessly, and SPDY pushes them to the client.
+      There's no more package managers and build systems to use.
+
+      - [koa-normalize](https://github.com/normalize/koa.js) for [koa](https://koajs.com)
+
       ### https://nlz.io - an ephemeral normalizing and caching proxy
 
-      A proxy that caches packages from various sources such as GitHub and npm,
+      A proxy that caches packages from various remotes such as GitHub and npm,
       normalizes various aspects to create standards-compliant packages,
       and serves its individual files as browser-compatible assets.
+      It's used as a registry for all `nlz(1)` clients.
 
-      This is not a CDN (yet) and should not be used in production.
-      Instead, you should just setup your own proxy(s).
+      ### `nlz(1)` - a stopgap CLI builder and dependency inspector
 
-      ### `nlz(1)` - a stopgap CLI package manager and builder
-
-      Since browsers have not yet implemented ES6 modules and Web Components,
-      a server-side build tool is necessary.
-      It installs, caches, and builds files just like a browser,
+      A ES6 and CommonJS builder to let us build apps until all browsers
+      support ES6 modules and Web Components.
+      It installs, caches, and builds files just like a browser would,
       making migration to a buildless development workflow seamless.
       Once browsers support ES6 modules and Web Components,
       `nlz(1)` will be completely optional.

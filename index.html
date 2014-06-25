@@ -1,13 +1,36 @@
-<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">nlz.io</a><a href="https://github.com/normalize/discussions" class="top-bar-link">discuss</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="guide.html" class="top-bar-link">guide</a><a href="api.html" class="top-bar-link">api</a></div></div><header><div class="container"><h1>normalize.io<small> &alpha;lpha</small></h1><p><small><code>@import</code> the future, <code>nlz build</code> the present, normalize the past.</small></p></div></header><main><section><div class="container"><h2 id="what-is-this">What is this? Another package manager?</h2><h3 id="https-nlz-io-an-ephemeral-normalizing-and-caching-proxy"><a href="https://nlz.io">https://nlz.io</a> - an ephemeral normalizing and caching proxy</h3>
-<p>A proxy that caches packages from various sources such as GitHub and npm,
+<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">nlz.io</a><a href="https://github.com/normalize/discussions" class="top-bar-link">discuss</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="guide.html" class="top-bar-link">guide</a><a href="api.html" class="top-bar-link">api</a><a href="about.html" class="top-bar-link">about</a></div></div><header><div class="container"><h1>normalize.io<small> &alpha;lpha</small></h1><p><small><code>@import</code> the future, <code>nlz-build(1)</code> the present, <code>normalize</code> the past.</small></p></div></header><main><section><div class="container"><h2 id="normalizing-web-development">Normalizing Web Development</h2><p>Web development is a mess right now. There are a vast number
+of package managers and build systems and an endless number of combinations
+thereof, many of which are promoted as the &quot;ideal&quot; stack.
+But all these package managers and build systems are,
+for the most part, unnecessary with the dawn of
+ES6 modules, Web Components, and SPDY.</p>
+<p>Normalize.IO aims to create a web development environment where:</p>
+<ul>
+<li>There are no <code>install</code> commands for package managers.
+Just depend <code>import jquery from &#39;jquery@~2.1.0&#39;</code> and you&#39;re good to go.</li>
+<li>There are no mandatory JSON files, either to publish your component
+or to build your app, nor are there any publish steps.</li>
+<li>There are no build processes as they are now unnecessary with SPDY push.</li>
+<li>There are no configurations required to build your component or app.
+Just <code>npm i jade</code> and <code>import template from &#39;template.jade&#39;</code>,
+and Normalize.IO&#39;s got the rest.</li>
+</ul>
+</div></section><section><div class="container"><h2 id="perfect-web-development">The Perfect Web Development Workflow</h2><h3 id="integrated-spdy-push-file-server">Integrated SPDY Push File Server</h3>
+<p>An intelligent file server for your apps that crawls your CSS and JavaScript
+files&#39; dependencies, installs them seamlessly, and SPDY pushes them to the client.
+There&#39;s no more package managers and build systems to use.</p>
+<ul>
+<li><a href="https://github.com/normalize/koa.js">koa-normalize</a> for <a href="https://koajs.com">koa</a></li>
+</ul>
+<h3 id="https-nlz-io-an-ephemeral-normalizing-and-caching-proxy"><a href="https://nlz.io">https://nlz.io</a> - an ephemeral normalizing and caching proxy</h3>
+<p>A proxy that caches packages from various remotes such as GitHub and npm,
 normalizes various aspects to create standards-compliant packages,
-and serves its individual files as browser-compatible assets.</p>
-<p>This is not a CDN (yet) and should not be used in production.
-Instead, you should just setup your own proxy(s).</p>
-<h3 id="-nlz-1-a-stopgap-cli-package-manager-and-builder"><code>nlz(1)</code> - a stopgap CLI package manager and builder</h3>
-<p>Since browsers have not yet implemented ES6 modules and Web Components,
-a server-side build tool is necessary.
-It installs, caches, and builds files just like a browser,
+and serves its individual files as browser-compatible assets.
+It&#39;s used as a registry for all <code>nlz(1)</code> clients.</p>
+<h3 id="-nlz-1-a-stopgap-cli-builder-and-dependency-inspector"><code>nlz(1)</code> - a stopgap CLI builder and dependency inspector</h3>
+<p>A ES6 and CommonJS builder to let us build apps until all browsers
+support ES6 modules and Web Components.
+It installs, caches, and builds files just like a browser would,
 making migration to a buildless development workflow seamless.
 Once browsers support ES6 modules and Web Components,
 <code>nlz(1)</code> will be completely optional.</p>

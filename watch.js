@@ -12,7 +12,7 @@ marked.setOptions({
 })
 
 var dirs = [
-  'home',
+  'index',
   'api',
   'guide',
   'about',
