@@ -10,6 +10,37 @@ block header
 
 block main
   section: .container
+    :markdown
+      Import dependencies as URLs or shorthands (with a build process or custom module loader) with versions.
+      Dependencies will be installed automatically; there's no `install` step!
+
+      ```js
+      // import as URLs
+      import Ember from 'https://nlz.io/github/components/ember/^1.0.0/ember.js';
+
+      // import as shorthands
+      // requires a custom module loader or a build process
+      import $ from 'jquery@^2.0.0'; // from npm
+      import Emitter from 'component/emitter@^1.0.0'; // from GitHub
+
+      // automatically compile and import a React JSX template
+      // requires a build process
+      import 'template.jsx';
+      ```
+
+      ```css
+      @import 'https://nlz.io/github/necolas/normalize.css/^3.0.0/index.css';
+      @import 'necolas/normalize@^3.0.0'; /* requires a build process */
+      ```
+
+      ```html
+      <link rel="import" href="https://nlz.io/github/webcomponents/hello-world-elements/*/index.html">
+      <link rel="import" href="webcomponents/hello-world-elements@*"> <!-- requires a build process -->
+      ```
+
+    a#to-source.m-btn.green(href='https://github.com/normalize/normalize.github.io') Show Me an Example!
+
+  section: .container
     h2(id='normalizing-web-development') Normalizing Web Development
     :markdown
       Web development is a mess. There are a vast number
@@ -20,85 +51,91 @@ block main
       for the most part, unnecessary with the dawn of
       ES6 modules, Web Components, and SPDY.
 
-      Normalize.IO aims to rid web development of this confusing by
-      promoting a workflow without configurations, plugins, or package managers.
+      Normalize.IO aims to rid web development of this confusing by promoting
+      a frictionless workflow with minimal configurations, plugins, and CLI steps.
 
       #### No package managers
 
-      There are no `install` steps. Dependencies are automatically fetched
-      from GitHub, npm, or whichever remote you wish to support.
-      Just write `import jquery from 'jquery@~2.1.0'` and you're good to go!
+      There is no explicitly `install` step. Dependencies are automatically fetched
+      through a proxy from GitHub, npm, or whichever remote you wish to support.
+      Inline your dependencies' versions within each `import`!
 
       #### No manifest files
 
-      There's no mandatory `package.json` or `bower.json` file to publish your component.
+      There's no mandatory `package.json` or `bower.json` file or any registry
+      to publish your component. You don't need to explicitly list files
+      in a package or files to ignore. Publish anywhere, use anything.
 
       #### No build step
 
       Normalize.IO aims to remove explicit build steps in a workflow.
-      There's no need for concatenating and inlining assets
+      There's no longer a need for concatenating and inlining assets
       with SPDY push and new loading mechanisms such as ES6 modules and HTML imports.
-      Until these transports are natively supported on all browsers,
-      some sort of build process is required to work.
+      Let the browser do all the work for you.
 
       #### No plugins or configurations
 
       There are no configuration files like `gruntfile.js` to build your component or app.
-      If Normalize.IO has an adapter for a specific library,
-      just install that library and Normalize.IO will handle the rest.
-      Just `npm i -g jade` and you can `import template from 'template.jade'` with ease!
+      Normalize.IO contains all the adapters; you simply install each library manually.
 
-      #### Minimal client-side complexity
+      #### Minimal client-side overhead
 
-      No loaders like [requirejs](http://requirejs.org) or
-      polyfills like [es6-module-loader](https://github.com/ModuleLoader/es6-module-loader)
-      are used during runtime, keeping assets slim.
+      No large loaders like [RequireJS](http://requirejs.org) or
+      complex polyfills like [es6-module-loader](https://github.com/ModuleLoader/es6-module-loader)
+      are used or required during runtime.
 
   section: .container
     h2(id='perfect-web-development') The Tools
     :markdown
 
-      Normalize.IO is not a single library but a suite of tools
-      based on the Normalize philosophy.
+      Normalize.IO is a suite of tools based on the Normalize philosophy.
       Use whichever is suitable for your project.
 
-      ### Integrated SPDY Push File Server
+      ### The Integrated Asset Pipeline
 
-      An intelligent file server for your apps that crawls your CSS and JavaScript
+      An intelligent SPDY push file server for your apps that crawls your HTML, CSS, and JavaScript
       files' dependencies, installs them seamlessly, and SPDY pushes them to the client.
+      Configurations and build steps are at a minimum.
 
-      - [koa-normalize](https://github.com/normalize/koa.js) for [koa](https://koajs.com)
+      - [koa-normalize][koa-normalize] middleware for [koa][koa]
+      - [koala](https://github.com/koajs/koala) - higher level [koa][koa]
+        framework with [koa-normalize][koa-normalize] integrated
 
-      ### Normalizing Proxy
+      ### [`nlz(1)`](https://github.com/normalize/nlz)
+
+      An ES6 and CommonJS builder to let us build apps until all browsers
+      support ES6 modules and Web Components.
+      It installs, caches, and builds files just like a browser would,
+      making migration to a buildless development workflow seamless.
+      Think of it as browserify that supports CSS and HTML and
+      automatically installs all the dependencies.
+
+      Once browsers support ES6 modules and Web Components,
+      `nlz(1)` will be completely optional,
+      and its main purpose will be dependency inspection.
+
+      ### [Normalizing Proxy](https://github.com/normalize/proxy.js)
 
       An ephemeral proxy that caches packages from various remotes such as GitHub and npm,
       normalizes various aspects of packages, handles semantic versioning,
       and serves its individual files as browser-compatible assets.
-      It's used as a registry for all clients.
+      It's also used as a "registry" for all Normalize.IO clients.
 
       You may use the public proxy at https://nlz.io,
-      but you should [setup your own proxy](https://github.com/normalize/proxy.js)
-      to your custom remotes.
+      but you __should setup your own proxy__ for many reasons including:
 
-      ### `nlz(1)`
+      - Private repositories
+      - Faster installations
+      - Minimal downtime
 
-      A ES6 and CommonJS builder to let us build apps until all browsers
-      support ES6 modules and Web Components.
-      It installs, caches, and builds files just like a browser would,
-      making migration to a buildless development workflow seamless.
-
-      Once browsers support ES6 modules and Web Components,
-      `nlz(1)` will be completely optional,
-      and it's main purpose will be dependency inspection
-
-    a#to-source.m-btn.green(href='https://github.com/normalize/normalize.github.io') Show Me an Example!
+      [koa]: https://github.com/koajs/koa
+      [koa-normalize]: https://github.com/normalize/koa.js
 
   section: .container
     h2(id='defining-dependencies') Defining Dependencies
     :markdown
-      Instead of defining a manifest file, like `package.json` or `bower.json`,
-      to define your dependencies and their versions, you can just define them
-      in your files.
+      Instead of defining dependencies' versions in a manifest file like `package.json` or `bower.json`,
+      you simply define your dependencies versions as you `import` them!
       There are two ways to define them: using URLs and using shorthands.
 
       For example, here are multiple ways to depend on `jQuery` using
@@ -106,9 +143,11 @@ block main
 
       ```js
       // using URLs
-      import $ from 'https://github.com/components/jquery/~2.1.0/jquery.js'
       import $ from 'https://nlz.io/github/components/jquery/~2.1.0/jquery.js'
       import $ from 'https://nlz.io/npm/-/jquery/~2.1.0/jquery.js'
+      // note: rawgit does not support versioning,
+      // but Normalize can parse their URLs with a build process
+      import $ from 'https://cdn.rawgit.com/components/jquery/2.1.0/jquery.js'
 
       // using shorthands
       import $ from 'jquery@~2.1.0' // from npm
@@ -116,56 +155,81 @@ block main
       ```
 
       ```css
-      // using URLs
+      /* using URLs */
       @import "https://nlz.io/github/necolas/normalize.css/^3.0.0/normalize.css";
-      // please don't use shorthands in CSS :)
+      /* please don't use shorthands in CSS */
       ```
 
-      When using shorthands, some sort of build process or custom loader is required.
+      When using shorthands, either a custom module loader or a build process is required.
+
+      ### Relative Dependencies
+
+      Local dependencies are defined like CSS `@import`s and HTML
+      `src` and `href` attributes. In other words, dependencies that are not
+      absolute URLs and are not shorthands are considered relative dependencies.
+
+      ```js
+      import 'file'; // looks for './file.js', not a module name `file`
+      ```
+
+      ### Expansions
+
+      JavaScript dependencies are "expanded" to allow for easier typing.
+
+      ```js
+      import 'folder/' // => import 'folder/index.js'
+      import 'file' // => import 'file.js'
+      ```
 
   section: .container
-    h2(id='transformations') URL-based Transformations
+    h2(id='transformations') Transformations
     :markdown
       Normalize uses URLs to specify transformations in an HTTP-compliant manner.
+      To use these transformations, you either need a build process
+      or you must let a proxy apply the transforms for you.
+
       For example, suppose you have `template.jade` that you want to use in multiple ways.
 
       ```js
       // use the template as a function
-      import render from 'template.jade.js'
+      import render from 'template.jade';
 
       var html = render({
         name: 'jong'
-      })
+      });
       ```
 
       ```js
       // use the template as an HTML string
-      import html from 'template.jade.html.js'
+      import html from 'template.jade.html';
 
-      document.body.insertAdjacentHTML('beforeend', html)
+      document.body.insertAdjacentHTML('beforeend', html);
       ```
 
       ```js
       // use the template as a DOM element via domify
       // https://github.com/component/domify
-      import el from 'template.jade.html.domify.js'
+      import el from 'template.jade.html.domify';
 
-      document.body.appendChild(el.cloneNode(true))
+      document.body.appendChild(el.cloneNode(true));
       ```
 
-      No plugins or configuration required!
-      And all transformations are explicitly shown and used instead of being hidden behind a complex build system.
+      All transformations are explicitly shown and used instead of being hidden behind a complex build system.
       For more details on transformations, read the [docs on transforms](api.html#transforms).
 
-      > Note: if you use transformations on local files,
-      > you will always need some sort of build system.
-      > Push these transformations to separate modules.
+      The only stipulation is that you must install `jade` yourself -
+      Normalize already includes the adapters to use `jade` transforms:
+
+      ```bash
+      npm i -g nlz jade
+      ```
 
   section: .container
     h2(id='cdn') Use https://nlz.io as a CDN
     :markdown
-      https://nlz.io is essentially a CDN, but no CDN supports SPDY Push yet!
-      Unlike other CDNs such as http://cdnjs.com, http://wzrd.in, http://jspm.io, http://www.jsdelivr.com, normalization proxies:
+      You may use https://nlz.io to bootstrap your components or apps,
+      but do not use it in production as no CDN supports SPDY push yet.
+      Unlike other CDNs, normalization proxies:
 
       - SPDY push dependencies
       - Support CSS, Web Components, and well as any arbitrary file
@@ -175,20 +239,3 @@ block main
 
       If https://nlz.io is ever down or begins tracking your clients,
       just create your own proxy and point your URLs to it!
-
-      > Note: __Do not__ use https://nlz.io in production.
-
-  section: .container
-    h2(id='ecosystem') The Normalized Ecosystem
-    :markdown
-      With Normalize.IO also comes an ecosystem of small, reusable web components.
-      Repositories within these GitHub organizations are all maintained by the same team and are completely compatible:
-
-      - [component](https://github.com/component) - tiny web components
-      - [detects](https://github.com/detects) - feature detection as tiny ES6 modules
-      - [polyfills](https://github.com/polyfills) - polyfills as tiny ES6 modules
-
-      You may also be interested in these other organizations:
-
-      - [components](https://github.com/components) - shim organization for popular packages
-      - [suitcss](https://github.com/suitcss) - CSS UI components

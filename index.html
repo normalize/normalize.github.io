@@ -1,108 +1,148 @@
-<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">nlz.io</a><a href="https://github.com/normalize/discussions" class="top-bar-link">discuss</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="guide.html" class="top-bar-link">guide</a><a href="api.html" class="top-bar-link">api</a><a href="about.html" class="top-bar-link">about</a></div></div><header><div class="container"><h1>normalize.io<small> &alpha;lpha</small></h1><p><small><code>@import</code> the future, <code>nlz-build(1)</code> the present, <code>normalize</code> the past.</small></p></div></header><main><section><div class="container"><h2 id="normalizing-web-development">Normalizing Web Development</h2><p>Web development is a mess. There are a vast number
+<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">nlz.io</a><a href="https://github.com/normalize/discussions" class="top-bar-link">discuss</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="guide.html" class="top-bar-link">guide</a><a href="api.html" class="top-bar-link">api</a><a href="about.html" class="top-bar-link">about</a></div></div><header><div class="container"><h1>normalize.io<small> &alpha;lpha</small></h1><p><small><code>@import</code> the future, <code>nlz-build(1)</code> the present, <code>normalize</code> the past.</small></p></div></header><main><section><div class="container"><p>Import dependencies as URLs or shorthands (with a build process or custom module loader) with versions.
+Dependencies will be installed automatically; there&#39;s no <code>install</code> step!</p>
+<pre><code class="lang-js">// <span class="hljs-keyword">import</span> <span class="hljs-keyword">as</span> URLs
+<span class="hljs-keyword">import</span> Ember <span class="hljs-keyword">from</span> <span class="hljs-string">'https://nlz.io/github/components/ember/^1.0.0/ember.js'</span>;
+
+// <span class="hljs-keyword">import</span> <span class="hljs-keyword">as</span> shorthands
+// requires a custom module loader <span class="hljs-keyword">or</span> a build process
+<span class="hljs-keyword">import</span> $ <span class="hljs-keyword">from</span> <span class="hljs-string">'jquery@^2.0.0'</span>; // <span class="hljs-keyword">from</span> npm
+<span class="hljs-keyword">import</span> Emitter <span class="hljs-keyword">from</span> <span class="hljs-string">'component/emitter@^1.0.0'</span>; // <span class="hljs-keyword">from</span> GitHub
+
+// automatically compile <span class="hljs-keyword">and</span> <span class="hljs-keyword">import</span> a React JSX template
+// requires a build process
+<span class="hljs-keyword">import</span> <span class="hljs-string">'template.jsx'</span>;
+</code></pre>
+<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'https://nlz.io/github/necolas/normalize.css/^3.0.0/index.css'</span></span>;
+<span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'necolas/normalize@^3.0.0'</span></span>; <span class="hljs-comment">/* requires a build process */</span>
+</code></pre>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"import"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"https://nlz.io/github/webcomponents/hello-world-elements/*/index.html"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"import"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"webcomponents/hello-world-elements@*"</span>&gt;</span> <span class="hljs-comment">&lt;!-- requires a build process --&gt;</span>
+</code></pre>
+<a id="to-source" href="https://github.com/normalize/normalize.github.io" class="m-btn green">Show Me an Example!</a></div></section><section><div class="container"><h2 id="normalizing-web-development">Normalizing Web Development</h2><p>Web development is a mess. There are a vast number
 of package managers and build systems, each with their own set of
 plugins, transforms, and configurations,
 and an endless number of combinations thereof.
 But all these package managers and build systems are,
 for the most part, unnecessary with the dawn of
 ES6 modules, Web Components, and SPDY.</p>
-<p>Normalize.IO aims to rid web development of this confusing by
-promoting a workflow without configurations, plugins, or package managers.</p>
+<p>Normalize.IO aims to rid web development of this confusing by promoting
+a frictionless workflow with minimal configurations, plugins, and CLI steps.</p>
 <h4 id="no-package-managers">No package managers</h4>
-<p>There are no <code>install</code> steps. Dependencies are automatically fetched
-from GitHub, npm, or whichever remote you wish to support.
-Just write <code>import jquery from &#39;jquery@~2.1.0&#39;</code> and you&#39;re good to go!</p>
+<p>There is no explicitly <code>install</code> step. Dependencies are automatically fetched
+through a proxy from GitHub, npm, or whichever remote you wish to support.
+Inline your dependencies&#39; versions within each <code>import</code>!</p>
 <h4 id="no-manifest-files">No manifest files</h4>
-<p>There&#39;s no mandatory <code>package.json</code> or <code>bower.json</code> file to publish your component.</p>
+<p>There&#39;s no mandatory <code>package.json</code> or <code>bower.json</code> file or any registry
+to publish your component. You don&#39;t need to explicitly list files
+in a package or files to ignore. Publish anywhere, use anything.</p>
 <h4 id="no-build-step">No build step</h4>
 <p>Normalize.IO aims to remove explicit build steps in a workflow.
-There&#39;s no need for concatenating and inlining assets
+There&#39;s no longer a need for concatenating and inlining assets
 with SPDY push and new loading mechanisms such as ES6 modules and HTML imports.
-Until these transports are natively supported on all browsers,
-some sort of build process is required to work.</p>
+Let the browser do all the work for you.</p>
 <h4 id="no-plugins-or-configurations">No plugins or configurations</h4>
 <p>There are no configuration files like <code>gruntfile.js</code> to build your component or app.
-If Normalize.IO has an adapter for a specific library,
-just install that library and Normalize.IO will handle the rest.
-Just <code>npm i -g jade</code> and you can <code>import template from &#39;template.jade&#39;</code> with ease!</p>
-<h4 id="minimal-client-side-complexity">Minimal client-side complexity</h4>
-<p>No loaders like <a href="http://requirejs.org">requirejs</a> or
-polyfills like <a href="https://github.com/ModuleLoader/es6-module-loader">es6-module-loader</a>
-are used during runtime, keeping assets slim.</p>
-</div></section><section><div class="container"><h2 id="perfect-web-development">The Tools</h2><p>Normalize.IO is not a single library but a suite of tools
-based on the Normalize philosophy.
+Normalize.IO contains all the adapters; you simply install each library manually.</p>
+<h4 id="minimal-client-side-overhead">Minimal client-side overhead</h4>
+<p>No large loaders like <a href="http://requirejs.org">RequireJS</a> or
+complex polyfills like <a href="https://github.com/ModuleLoader/es6-module-loader">es6-module-loader</a>
+are used or required during runtime.</p>
+</div></section><section><div class="container"><h2 id="perfect-web-development">The Tools</h2><p>Normalize.IO is a suite of tools based on the Normalize philosophy.
 Use whichever is suitable for your project.</p>
-<h3 id="integrated-spdy-push-file-server">Integrated SPDY Push File Server</h3>
-<p>An intelligent file server for your apps that crawls your CSS and JavaScript
-files&#39; dependencies, installs them seamlessly, and SPDY pushes them to the client.</p>
+<h3 id="the-integrated-asset-pipeline">The Integrated Asset Pipeline</h3>
+<p>An intelligent SPDY push file server for your apps that crawls your HTML, CSS, and JavaScript
+files&#39; dependencies, installs them seamlessly, and SPDY pushes them to the client.
+Configurations and build steps are at a minimum.</p>
 <ul>
-<li><a href="https://github.com/normalize/koa.js">koa-normalize</a> for <a href="https://koajs.com">koa</a></li>
+<li><a href="https://github.com/normalize/koa.js">koa-normalize</a> middleware for <a href="https://github.com/koajs/koa">koa</a></li>
+<li><a href="https://github.com/koajs/koala">koala</a> - higher level <a href="https://github.com/koajs/koa">koa</a>
+framework with <a href="https://github.com/normalize/koa.js">koa-normalize</a> integrated</li>
 </ul>
-<h3 id="normalizing-proxy">Normalizing Proxy</h3>
+<h3 id="-nlz-1-https-github-com-normalize-nlz-"><a href="https://github.com/normalize/nlz"><code>nlz(1)</code></a></h3>
+<p>An ES6 and CommonJS builder to let us build apps until all browsers
+support ES6 modules and Web Components.
+It installs, caches, and builds files just like a browser would,
+making migration to a buildless development workflow seamless.
+Think of it as browserify that supports CSS and HTML and
+automatically installs all the dependencies.</p>
+<p>Once browsers support ES6 modules and Web Components,
+<code>nlz(1)</code> will be completely optional,
+and its main purpose will be dependency inspection.</p>
+<h3 id="-normalizing-proxy-https-github-com-normalize-proxy-js-"><a href="https://github.com/normalize/proxy.js">Normalizing Proxy</a></h3>
 <p>An ephemeral proxy that caches packages from various remotes such as GitHub and npm,
 normalizes various aspects of packages, handles semantic versioning,
 and serves its individual files as browser-compatible assets.
-It&#39;s used as a registry for all clients.</p>
+It&#39;s also used as a &quot;registry&quot; for all Normalize.IO clients.</p>
 <p>You may use the public proxy at <a href="https://nlz.io">https://nlz.io</a>,
-but you should <a href="https://github.com/normalize/proxy.js">setup your own proxy</a>
-to your custom remotes.</p>
-<h3 id="-nlz-1-"><code>nlz(1)</code></h3>
-<p>A ES6 and CommonJS builder to let us build apps until all browsers
-support ES6 modules and Web Components.
-It installs, caches, and builds files just like a browser would,
-making migration to a buildless development workflow seamless.</p>
-<p>Once browsers support ES6 modules and Web Components,
-<code>nlz(1)</code> will be completely optional,
-and it&#39;s main purpose will be dependency inspection</p>
-<a id="to-source" href="https://github.com/normalize/normalize.github.io" class="m-btn green">Show Me an Example!</a></div></section><section><div class="container"><h2 id="defining-dependencies">Defining Dependencies</h2><p>Instead of defining a manifest file, like <code>package.json</code> or <code>bower.json</code>,
-to define your dependencies and their versions, you can just define them
-in your files.
+but you <strong>should setup your own proxy</strong> for many reasons including:</p>
+<ul>
+<li>Private repositories</li>
+<li>Faster installations</li>
+<li>Minimal downtime</li>
+</ul>
+</div></section><section><div class="container"><h2 id="defining-dependencies">Defining Dependencies</h2><p>Instead of defining dependencies&#39; versions in a manifest file like <code>package.json</code> or <code>bower.json</code>,
+you simply define your dependencies versions as you <code>import</code> them!
 There are two ways to define them: using URLs and using shorthands.</p>
 <p>For example, here are multiple ways to depend on <code>jQuery</code> using
 ES6 module syntax:</p>
 <pre><code class="lang-js">// using URLs
-<span class="hljs-keyword">import</span> $ <span class="hljs-keyword">from</span> <span class="hljs-string">'https://github.com/components/jquery/~2.1.0/jquery.js'</span>
 <span class="hljs-keyword">import</span> $ <span class="hljs-keyword">from</span> <span class="hljs-string">'https://nlz.io/github/components/jquery/~2.1.0/jquery.js'</span>
 <span class="hljs-keyword">import</span> $ <span class="hljs-keyword">from</span> <span class="hljs-string">'https://nlz.io/npm/-/jquery/~2.1.0/jquery.js'</span>
+// note: rawgit does <span class="hljs-keyword">not</span> support versioning,
+// but Normalize can parse their URLs <span class="hljs-keyword">with</span> a build process
+<span class="hljs-keyword">import</span> $ <span class="hljs-keyword">from</span> <span class="hljs-string">'https://cdn.rawgit.com/components/jquery/2.1.0/jquery.js'</span>
 
 // using shorthands
 <span class="hljs-keyword">import</span> $ <span class="hljs-keyword">from</span> <span class="hljs-string">'jquery@~2.1.0'</span> // <span class="hljs-keyword">from</span> npm
 <span class="hljs-keyword">import</span> $ <span class="hljs-keyword">from</span> <span class="hljs-string">'components/jquery@~2.1.0'</span> // <span class="hljs-keyword">from</span> github
 </code></pre>
-<pre><code class="lang-css"><span class="hljs-comment">// using URLs</span>
-<span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"https://nlz.io/github/necolas/normalize.css/^3.0.0/normalize.css"</span>;</span>
-<span class="hljs-comment">// please don't use shorthands in CSS :)</span>
+<pre><code class="lang-css"><span class="hljs-comment">/* using URLs */</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"https://nlz.io/github/necolas/normalize.css/^3.0.0/normalize.css"</span></span>;
+<span class="hljs-comment">/* please don't use shorthands in CSS */</span>
 </code></pre>
-<p>When using shorthands, some sort of build process or custom loader is required.</p>
-</div></section><section><div class="container"><h2 id="transformations">URL-based Transformations</h2><p>Normalize uses URLs to specify transformations in an HTTP-compliant manner.
-For example, suppose you have <code>template.jade</code> that you want to use in multiple ways.</p>
-<pre><code class="lang-js">// use <span class="hljs-operator">the</span> template <span class="hljs-keyword">as</span> <span class="hljs-operator">a</span> <span class="hljs-function"><span class="hljs-keyword">function</span></span>
-import render <span class="hljs-built_in">from</span> <span class="hljs-string">'template.jade.js'</span>
+<p>When using shorthands, either a custom module loader or a build process is required.</p>
+<h3 id="relative-dependencies">Relative Dependencies</h3>
+<p>Local dependencies are defined like CSS <code>@import</code>s and HTML
+<code>src</code> and <code>href</code> attributes. In other words, dependencies that are not
+absolute URLs and are not shorthands are considered relative dependencies.</p>
+<pre><code class="lang-js">import <span class="hljs-string">'file'</span>; <span class="hljs-regexp">//</span> looks <span class="hljs-keyword">for</span> <span class="hljs-string">'./file.js'</span>, <span class="hljs-keyword">not</span> a <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">name</span> `<span class="hljs-title">file</span>`</span>
+</code></pre>
+<h3 id="expansions">Expansions</h3>
+<p>JavaScript dependencies are &quot;expanded&quot; to allow for easier typing.</p>
+<pre><code class="lang-js"><span class="hljs-reserved">import</span> <span class="hljs-string">'folder/'</span> <span class="hljs-regexp">//</span><span class="hljs-function"> =&gt;</span> <span class="hljs-reserved">import</span> <span class="hljs-string">'folder/index.js'</span>
+<span class="hljs-reserved">import</span> <span class="hljs-string">'file'</span> <span class="hljs-regexp">//</span><span class="hljs-function"> =&gt;</span> <span class="hljs-reserved">import</span> <span class="hljs-string">'file.js'</span>
+</code></pre>
+</div></section><section><div class="container"><h2 id="transformations">Transformations</h2><p>Normalize uses URLs to specify transformations in an HTTP-compliant manner.
+To use these transformations, you either need a build process
+or you must let a proxy apply the transforms for you.</p>
+<p>For example, suppose you have <code>template.jade</code> that you want to use in multiple ways.</p>
+<pre><code class="lang-js"><span class="hljs-comment">// use the template as a function</span>
+import render <span class="hljs-keyword">from</span> <span class="hljs-string">'template.jade'</span>;
 
-var html = render({
+<span class="hljs-keyword">var</span> html = render({
   name: <span class="hljs-string">'jong'</span>
-})
+});
 </code></pre>
-<pre><code class="lang-js">// use <span class="hljs-operator">the</span> template <span class="hljs-keyword">as</span> <span class="hljs-operator">an</span> HTML <span class="hljs-keyword">string</span>
-import html <span class="hljs-built_in">from</span> <span class="hljs-string">'template.jade.html.js'</span>
+<pre><code class="lang-js">// use the template <span class="hljs-keyword">as</span> an HTML string
+<span class="hljs-keyword">import</span> html <span class="hljs-keyword">from</span> <span class="hljs-string">'template.jade.html'</span>;
 
-document.body.insertAdjacentHTML(<span class="hljs-string">'beforeend'</span>, html)
+document.body.insertAdjacentHTML(<span class="hljs-string">'beforeend'</span>, html);
 </code></pre>
-<pre><code class="lang-js">// use <span class="hljs-operator">the</span> template <span class="hljs-keyword">as</span> <span class="hljs-operator">a</span> DOM <span class="hljs-keyword">element</span> via domify<span class="hljs-comment">
-// https://github.com/component/domify</span>
-import el <span class="hljs-built_in">from</span> <span class="hljs-string">'template.jade.html.domify.js'</span>
+<pre><code class="lang-js"><span class="hljs-comment">// use the template as a DOM element via domify</span>
+<span class="hljs-comment">// https://github.com/component/domify</span>
+import el <span class="hljs-keyword">from</span> <span class="hljs-string">'template.jade.html.domify'</span>;
 
-document.body.appendChild(el.cloneNode(<span class="hljs-constant">true</span>))
+document.body.appendChild(el.cloneNode(<span class="hljs-keyword">true</span>));
 </code></pre>
-<p>No plugins or configuration required!
-And all transformations are explicitly shown and used instead of being hidden behind a complex build system.
+<p>All transformations are explicitly shown and used instead of being hidden behind a complex build system.
 For more details on transformations, read the <a href="api.html#transforms">docs on transforms</a>.</p>
-<blockquote>
-<p>Note: if you use transformations on local files,
-you will always need some sort of build system.
-Push these transformations to separate modules.</p>
-</blockquote>
-</div></section><section><div class="container"><h2 id="cdn">Use https://nlz.io as a CDN</h2><p><a href="https://nlz.io">https://nlz.io</a> is essentially a CDN, but no CDN supports SPDY Push yet!
-Unlike other CDNs such as <a href="http://cdnjs.com">http://cdnjs.com</a>, <a href="http://wzrd.in">http://wzrd.in</a>, <a href="http://jspm.io">http://jspm.io</a>, <a href="http://www.jsdelivr.com">http://www.jsdelivr.com</a>, normalization proxies:</p>
+<p>The only stipulation is that you must install <code>jade</code> yourself -
+Normalize already includes the adapters to use <code>jade</code> transforms:</p>
+<pre><code class="lang-bash"><span class="hljs-built_in">npm</span> i -g nlz jade
+</code></pre>
+</div></section><section><div class="container"><h2 id="cdn">Use https://nlz.io as a CDN</h2><p>You may use <a href="https://nlz.io">https://nlz.io</a> to bootstrap your components or apps,
+but do not use it in production as no CDN supports SPDY push yet.
+Unlike other CDNs, normalization proxies:</p>
 <ul>
 <li>SPDY push dependencies</li>
 <li>Support CSS, Web Components, and well as any arbitrary file</li>
@@ -112,21 +152,6 @@ Unlike other CDNs such as <a href="http://cdnjs.com">http://cdnjs.com</a>, <a hr
 </ul>
 <p>If <a href="https://nlz.io">https://nlz.io</a> is ever down or begins tracking your clients,
 just create your own proxy and point your URLs to it!</p>
-<blockquote>
-<p>Note: <strong>Do not</strong> use <a href="https://nlz.io">https://nlz.io</a> in production.</p>
-</blockquote>
-</div></section><section><div class="container"><h2 id="ecosystem">The Normalized Ecosystem</h2><p>With Normalize.IO also comes an ecosystem of small, reusable web components.
-Repositories within these GitHub organizations are all maintained by the same team and are completely compatible:</p>
-<ul>
-<li><a href="https://github.com/component">component</a> - tiny web components</li>
-<li><a href="https://github.com/detects">detects</a> - feature detection as tiny ES6 modules</li>
-<li><a href="https://github.com/polyfills">polyfills</a> - polyfills as tiny ES6 modules</li>
-</ul>
-<p>You may also be interested in these other organizations:</p>
-<ul>
-<li><a href="https://github.com/components">components</a> - shim organization for popular packages</li>
-<li><a href="https://github.com/suitcss">suitcss</a> - CSS UI components</li>
-</ul>
 </div></section></main><footer><div class="container"><div id="footer-badges"><script data-gittip-username="jonathanong" src="https://gttp.co/v1.js" async></script></div><ul id="footer-links"><li>Jonathan Ong &copy; 2014</li><li><a href="http://jongleberry.com">jongleberry.com</a></li><li><a href="https://github.com/jonathanong">@jonathanong</a></li><li><a href="https://twitter.com/jongleberry">@jongleberry</a></li><li><a href="mailto:me@jongleberry.com">me@jongleberry.com</a></li></ul></div></footer><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
