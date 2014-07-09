@@ -1,5 +1,5 @@
 
-@import 'https://nlz.io/github/necolas/normalize.css/*/normalize.css';
+@import 'necolas/normalize.css@3/normalize.css';
 
 * {
   box-sizing: border-box;

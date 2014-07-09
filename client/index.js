@@ -1,7 +1,7 @@
 
-import 'barberboy/dom-elements@*'
-import 'webreflection/dom4@*'
-import 'yuzujs/setimmediate@*'
+import 'barberboy/dom-elements@0'
+import 'webreflection/dom4@1'
+import 'yuzujs/setimmediate@1'
 
-import 'permalinks.js'
-import 'toc.js'
+import 'permalinks'
+import 'toc'

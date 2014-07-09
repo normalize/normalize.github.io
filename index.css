@@ -432,7 +432,7 @@ th {
 
 /* begin: "./client/reset.css" */
 
-/* @import 'https://nlz.io/github/necolas/normalize.css/-/normalize.css'; */
+/* @import 'necolas/normalize.css@3/normalize.css'; */
 
 * {
   -webkit-box-sizing: border-box;
@@ -988,7 +988,7 @@ footer {
 
 /* begin: "./client/buttons.css" */
 
-/* @import 'https://nlz.io/github/discore/css3-microsoft-metro-buttons/-/css/m-buttons.css'; */
+/* @import 'discore/css3-microsoft-metro-buttons@1/css/m-buttons.css'; */
 
 #to-source {
   font-size: 24px;
@@ -1081,7 +1081,7 @@ table tbody tr:nth-child(odd) {
 
 /* begin: "./client/toc.css" */
 
-/* @import 'https://nlz.io/github/jonathanong/delegated-dropdown/0/index.css'; */
+/* @import 'jonathanong/delegated-dropdown@0'; */
 
 #toc {
   position: absolute;

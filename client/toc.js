@@ -2,7 +2,7 @@
 import throttle from 'component/per-frame@1'
 import 'jonathanong/delegated-dropdown@0'
 
-import 'permalinks.js'
+import 'permalinks'
 
 var html = document.documentElement
 var toc = document.querySelector('#toc')

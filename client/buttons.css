@@ -1,5 +1,5 @@
 
-@import 'https://nlz.io/github/discore/css3-microsoft-metro-buttons/*/css/m-buttons.css';
+@import 'discore/css3-microsoft-metro-buttons@1/css/m-buttons.css';
 
 #to-source {
   font-size: 24px;
