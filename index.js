@@ -44,7 +44,7 @@ module.exports = function(selector){
   return selector.split(/\s*,\s*/);
 };
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0/src/scope/", function (exports, module) {
 var separateSelector = require("barberboy/dom-elements@0.1.0/src/utils/separate-selector");
@@ -58,7 +58,7 @@ module.exports = function(selector, method){
 // normalize:common:info: rewriting dependency "../utils/separate-selector" to "../utils/separate-selector.js"
 
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0/src/scope/support", function (exports, module) {
 try {
@@ -68,7 +68,7 @@ try {
   module.exports = false;
 }
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0/src/elements/", function (exports, module) {
 // as it is a circular dependency, we need to keep `module.exports` on top.
@@ -97,12 +97,12 @@ elementsPrototype.query = function (selector) {
 // normalize:common:info: rewriting dependency "../methods" to "../methods/index.js"
 
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0/src/utils/expando", function (exports, module) {
 module.exports = String(Math.random()).replace(/\D/g, '');
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0/src/utils/pushuniq", function (exports, module) {
 var Elements = require("barberboy/dom-elements@0.1.0/src/elements/");
@@ -152,7 +152,7 @@ module.exports = function (original) {
 // normalize:common:info: rewriting dependency "./expando" to "./expando.js"
 
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0/src/methods/", function (exports, module) {
 var scope = require("barberboy/dom-elements@0.1.0/src/scope/");
@@ -209,7 +209,7 @@ methods.queryWrapper = function(selector){
 // normalize:common:info: rewriting dependency "./absolutize-selector" to "./absolutize-selector.js"
 
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0/src/utils/to-array", function (exports, module) {
 module.exports = function(nodeList){
@@ -222,7 +222,7 @@ module.exports = function(nodeList){
   return array;
 };
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0/src/methods/attribute-name", function (exports, module) {
 module.exports = 'data-dom-elements-id-' + require("barberboy/dom-elements@0.1.0/src/utils/expando");
@@ -230,14 +230,14 @@ module.exports = 'data-dom-elements-id-' + require("barberboy/dom-elements@0.1.0
 // normalize:common:info: rewriting dependency "../utils/expando" to "../utils/expando.js"
 
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0/src/methods/scope-selector", function (exports, module) {
 module.exports = function (item) {
   return ':scoped ' + item;
 };
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0/src/methods/absolutize-selector", function (exports, module) {
 var attributeName = require("barberboy/dom-elements@0.1.0/src/methods/attribute-name");
@@ -251,7 +251,7 @@ module.exports = function (attributeValue) {
 // normalize:common:info: rewriting dependency "./attribute-name" to "./attribute-name.js"
 
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0/src/utils/is-native", function (exports, module) {
 var nativeToString = Function.prototype.toString;
@@ -268,7 +268,7 @@ module.exports = function(context, name){
   );
 };
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0/src/", function (exports, module) {
 var methods = require("barberboy/dom-elements@0.1.0/src/methods/");
@@ -313,20 +313,20 @@ if('Element' in window) {
 // normalize:common:info: rewriting dependency "./utils/is-native" to "./utils/is-native.js"
 
 
-})
+});
 
 require.register("barberboy/dom-elements@0.1.0", function (exports, module) {
 module.exports = require("barberboy/dom-elements@0.1.0/src/")
-})
+});
 
 require.register("webreflection/dom4@1.0.1/build/dom4", function (exports, module) {
 /*! (C) WebReflection Mit Style License */
-(function(e){"use strict";function t(t){return typeof t=="string"?e.document.createTextNode(t):t}function n(n){if(n.length===1)return t(n[0]);for(var r=e.document.createDocumentFragment(),i=v.call(n),s=0;s<n.length;s++)r.appendChild(t(i[s]));return r}for(var r=Object.defineProperty||function(e,t,n){e.__defineGetter__(t,n.get)},i=[].indexOf||function(t){var n=this.length;while(n--)if(this[n]===t)break;return n},s,o,u,a,f=/^\s+|\s+$/g,l=/\s+/,c=" ",h=function(t,n){if(this.contains(t))n||this.remove(t);else if(n===undefined||n)n=!0,this.add(t);return!!n},p=(e.Element||e.Node||e.HTMLElement).prototype,d=["matches",p.matchesSelector||p.webkitMatchesSelector||p.khtmlMatchesSelector||p.mozMatchesSelector||p.msMatchesSelector||p.oMatchesSelector||function(t){var n=this.parentNode;return!!n&&-1<i.call(n.querySelectorAll(t),this)},"prepend",function(){var t=this.firstChild,r=n(arguments);t?this.insertBefore(r,t):this.appendChild(r)},"append",function(){this.appendChild(n(arguments))},"before",function(){var t=this.parentNode;t&&t.insertBefore(n(arguments),this)},"after",function(){var t=this.parentNode,r=this.nextSibling,i=n(arguments);t&&(r?t.insertBefore(i,r):t.appendChild(i))},"replace",function(){var t=this.parentNode;t&&t.replaceChild(n(arguments),this)},"remove",function(){var t=this.parentNode;t&&t.removeChild(this)}],v=d.slice,m=d.length;m;m-=2)o=d[m-2],o in p||(p[o]=d[m-1]);"classList"in document.documentElement?(a=document.createElement("div").classList,a.add("a","b","a"),"a b"!=a&&(p=a.constructor.prototype,"add"in p||(p=e.DOMTokenList.prototype),u=function(e){return function(){var t=0;while(t<arguments.length)e.call(this,arguments[t++])}},p.add=u(p.add),p.remove=u(p.remove),p.toggle=h)):(u=function(e){if(!e)throw"SyntaxError";if(l.test(e))throw"InvalidCharacterError";return e},a=function(e){var t=e.className.replace(f,"");t.length&&d.push.apply(this,t.split(l)),this._=e},a.prototype={length:0,add:function(){for(var t=0,n;t<arguments.length;t++)n=arguments[t],this.contains(n)||d.push.call(this,o);this._.className=""+this},contains:function(e){return function(n){return m=e.call(this,o=u(n)),-1<m}}([].indexOf||function(e){m=this.length;while(m--&&this[m]!==e);return m}),item:function(t){return this[t]||null},remove:function(){for(var t=0,n;t<arguments.length;t++)n=arguments[t],this.contains(n)&&d.splice.call(this,m,1);this._.className=""+this},toggle:h,toString:function y(){return d.join.call(this,c)}},r(p,"classList",{get:function(){return new a(this)},set:function(){}})),"head"in document||r(document,"head",{get:function(){return s||(s=document.getElementsByTagName("head")[0])}});try{new e.CustomEvent("?")}catch(g){e.CustomEvent=function(e,t){function n(n,i){var s=document.createEvent(e);if(typeof n!="string")throw new Error("An event name must be provided");return e=="Event"&&(s.initCustomEvent=r),i==null&&(i=t),s.initCustomEvent(n,i.bubbles,i.cancelable,i.detail),s}function r(e,t,n,r){this.initEvent(e,t,n),this.detail=r}return n}(e.CustomEvent?"CustomEvent":"Event",{bubbles:!1,cancelable:!1,detail:null})}})(window);
-})
+(function(e){"use strict";function t(t){return typeof t=="string"?e.document.createTextNode(t):t}function n(n){if(n.length===1)return t(n[0]);for(var r=e.document.createDocumentFragment(),i=v.call(n),s=0;s<n.length;s++)r.appendChild(t(i[s]));return r}for(var r=Object.defineProperty||function(e,t,n){e.__defineGetter__(t,n.get)},i=[].indexOf||function(t){var n=this.length;while(n--)if(this[n]===t)break;return n},s,o,u,a,f=/^\s+|\s+$/g,l=/\s+/,c=" ",h=function(t,n){if(this.contains(t))n||this.remove(t);else if(n===undefined||n)n=!0,this.add(t);return!!n},p=(e.Element||e.Node||e.HTMLElement).prototype,d=["matches",p.matchesSelector||p.webkitMatchesSelector||p.khtmlMatchesSelector||p.mozMatchesSelector||p.msMatchesSelector||p.oMatchesSelector||function(t){var n=this.parentNode;return!!n&&-1<i.call(n.querySelectorAll(t),this)},"prepend",function(){var t=this.firstChild,r=n(arguments);t?this.insertBefore(r,t):this.appendChild(r)},"append",function(){this.appendChild(n(arguments))},"before",function(){var t=this.parentNode;t&&t.insertBefore(n(arguments),this)},"after",function(){var t=this.parentNode,r=this.nextSibling,i=n(arguments);t&&(r?t.insertBefore(i,r):t.appendChild(i))},"replace",function(){var t=this.parentNode;t&&t.replaceChild(n(arguments),this)},"remove",function(){var t=this.parentNode;t&&t.removeChild(this)}],v=d.slice,m=d.length;m;m-=2)o=d[m-2],o in p||(p[o]=d[m-1]);"classList"in document.documentElement?(a=document.createElement("div").classList,a.add("a","b","a"),"a b"!=a&&(p=a.constructor.prototype,"add"in p||(p=e.DOMTokenList.prototype),u=function(e){return function(){var t=0;while(t<arguments.length)e.call(this,arguments[t++])}},p.add=u(p.add),p.remove=u(p.remove),p.toggle=h)):(u=function(e){if(!e)throw"SyntaxError";if(l.test(e))throw"InvalidCharacterError";return e},a=function(e){var t=e.className.replace(f,"");t.length&&d.push.apply(this,t.split(l)),this._=e},a.prototype={length:0,add:function(){for(var t=0,n;t<arguments.length;t++)n=arguments[t],this.contains(n)||d.push.call(this,o);this._.className=""+this},contains:function(e){return function(n){return (m=e.call(this,o=u(n)), -1<m)}}([].indexOf||function(e){m=this.length;while(m--&&this[m]!==e);return m}),item:function(t){return this[t]||null},remove:function(){for(var t=0,n;t<arguments.length;t++)n=arguments[t],this.contains(n)&&d.splice.call(this,m,1);this._.className=""+this},toggle:h,toString:function y(){return d.join.call(this,c)}},r(p,"classList",{get:function(){return new a(this)},set:function(){}})),"head"in document||r(document,"head",{get:function(){return s||(s=document.getElementsByTagName("head")[0])}});try{new e.CustomEvent("?")}catch(g){e.CustomEvent=function(e,t){function n(n,i){var s=document.createEvent(e);if(typeof n!="string")throw new Error("An event name must be provided");return (e == "Event" && (s.initCustomEvent = r), i == null && (i = t), s.initCustomEvent(n, i.bubbles, i.cancelable, i.detail), s)}function r(e,t,n,r){this.initEvent(e,t,n),this.detail=r}return n}(e.CustomEvent?"CustomEvent":"Event",{bubbles:!1,cancelable:!1,detail:null})}})(window);
+});
 
 require.register("webreflection/dom4@1.0.1", function (exports, module) {
 module.exports = require("webreflection/dom4@1.0.1/build/dom4")
-})
+});
 
 require.register("yuzujs/setimmediate@1.0.2/setImmediate", function (exports, module) {
 (function (global, undefined) {
@@ -505,11 +505,11 @@ require.register("yuzujs/setimmediate@1.0.2/setImmediate", function (exports, mo
     attachTo.clearImmediate = clearImmediate;
 }(new Function("return this")()));
 
-})
+});
 
 require.register("yuzujs/setimmediate@1.0.2", function (exports, module) {
 module.exports = require("yuzujs/setimmediate@1.0.2/setImmediate")
-})
+});
 
 require.register("./client/permalinks", function (exports, module) {
 
@@ -521,7 +521,7 @@ document.queryAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').forEach(func
   h.appendChild(a)
 })
 
-})
+});
 
 require.register("component/raf@1.1.3", function (exports, module) {
 /**
@@ -563,7 +563,7 @@ exports.cancel = function(id){
   cancel.call(window, id);
 };
 
-})
+});
 
 require.register("component/per-frame@1.0.0", function (exports, module) {
 var raf = require("component/raf@1.1.3")
@@ -591,7 +591,7 @@ module.exports = function (fn, immediate) {
 // normalize:common:info: rewriting dependency "raf" to "https://nlz.io/github/component/raf/*/index.js"
 
 
-})
+});
 
 require.register("component/query@0.0.3", function (exports, module) {
 function one(selector, el) {
@@ -616,7 +616,7 @@ exports.engine = function(obj){
   return exports;
 };
 
-})
+});
 
 require.register("component/matches-selector@0.1.4", function (exports, module) {
 /**
@@ -668,7 +668,7 @@ function match(el, selector) {
 // normalize:common:info: rewriting dependency "query" to "https://nlz.io/github/component/query/*/index.js"
 
 
-})
+});
 
 require.register("component/contextual-selector@0.0.2", function (exports, module) {
 module.exports = function (selector, childSelector, sep) {
@@ -679,7 +679,7 @@ module.exports = function (selector, childSelector, sep) {
     return x + sep + childSelector
   }).join(',')
 }
-})
+});
 
 require.register("discore/closest@0.1.3", function (exports, module) {
 var matches = require("component/matches-selector@0.1.4")
@@ -704,7 +704,7 @@ module.exports = function (element, selector, checkYoSelf, root) {
 // normalize:common:info: rewriting dependency "matches-selector" to "https://nlz.io/github/component/matches-selector/*/index.js"
 
 
-})
+});
 
 require.register("component/tap-event@0.0.7", function (exports, module) {
 var cancelEvents = [
@@ -787,7 +787,7 @@ function Tap(callback) {
     }
   }
 }
-})
+});
 
 require.register("jonathanong/eevee@0.0.4", function (exports, module) {
 var matches = require("component/matches-selector@0.1.4")
@@ -1119,7 +1119,7 @@ function getEvents(events) {
 // normalize:common:info: rewriting dependency "tap-event" to "https://nlz.io/github/component/tap-event/*/index.js"
 
 
-})
+});
 
 require.register("component/keyname@0.0.1", function (exports, module) {
 
@@ -1163,7 +1163,7 @@ var map = {
 module.exports = function(n){
   return map[n];
 };
-})
+});
 
 require.register("component/indexof@0.0.3", function (exports, module) {
 module.exports = function(arr, obj){
@@ -1173,7 +1173,7 @@ module.exports = function(arr, obj){
   }
   return -1;
 };
-})
+});
 
 require.register("component/classes@1.2.1", function (exports, module) {
 /**
@@ -1364,7 +1364,7 @@ ClassList.prototype.contains = function(name){
 // normalize:common:info: rewriting dependency "indexof" to "https://nlz.io/github/component/indexof/*/index.js"
 
 
-})
+});
 
 require.register("component/clickable@0.0.4", function (exports, module) {
 module.exports = function (e) {
@@ -1382,7 +1382,7 @@ module.exports = function (e) {
     || e.metaKey
   )
 }
-})
+});
 
 require.register("component/emitter@1.1.3", function (exports, module) {
 
@@ -1550,7 +1550,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-})
+});
 
 require.register("jonathanong/delegated-dropdown@0.0.7/lib/", function (exports, module) {
 /* jshint browser: true */
@@ -1692,22 +1692,21 @@ function closeDropdown(dropdown) {
 // normalize:common:info: rewriting dependency "emitter" to "https://nlz.io/github/component/emitter/*/index.js"
 
 
-})
+});
 
 require.register("jonathanong/delegated-dropdown@0.0.7", function (exports, module) {
 module.exports = require("jonathanong/delegated-dropdown@0.0.7/lib/")
-})
+});
 
 require.register("./client/toc", function (exports, module) {
 
 var throttle = require("component/per-frame@1.0.0");
 require("jonathanong/delegated-dropdown@0.0.7");
-
 require("./client/permalinks");
 
-var html = document.documentElement
-var toc = document.querySelector('#toc')
-var menu = document.querySelector('#toc .Dropdown-menu')
+var html = document.documentElement;
+var toc = document.querySelector('#toc');
+var menu = document.querySelector('#toc .Dropdown-menu');
 if (toc) {
   // create the #toc
   var frag = document.createDocumentFragment()
@@ -1748,17 +1747,16 @@ function setMaxHeight() {
   menu.style['max-height'] = maxHeight + 'px'
 }
 
-})
+});
 
 require.register("./client/", function (exports, module) {
 
 require("barberboy/dom-elements@0.1.0");
 require("webreflection/dom4@1.0.1");
 require("yuzujs/setimmediate@1.0.2");
-
 require("./client/permalinks");
 require("./client/toc");
 
-})
+});
 
 require("./client/");

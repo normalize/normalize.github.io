@@ -1,4 +1,3 @@
-/* begin: "https://nlz.io/github/necolas/normalize.css/3.0.1/normalize.css" */
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 
 /**
@@ -209,8 +208,7 @@ figure {
 
 hr {
   -moz-box-sizing: content-box;
-  -webkit-box-sizing: content-box;
-          box-sizing: content-box;
+  box-sizing: content-box;
   height: 0;
 }
 
@@ -333,9 +331,8 @@ input {
 
 input[type="checkbox"],
 input[type="radio"] {
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box; /* 1 */
+  -moz-box-sizing: border-box;
+       box-sizing: border-box; /* 1 */
   padding: 0; /* 2 */
 }
 
@@ -358,8 +355,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input[type="search"] {
   -webkit-appearance: textfield; /* 1 */
-  -moz-box-sizing: content-box;
-  -webkit-box-sizing: content-box; /* 2 */
+  -moz-box-sizing: content-box; /* 2 */
   box-sizing: content-box;
 }
 
@@ -428,16 +424,15 @@ th {
   padding: 0;
 }
 
-/* end: "https://nlz.io/github/necolas/normalize.css/3.0.1/normalize.css" */
 
-/* begin: "./client/reset.css" */
 
-/* @import 'necolas/normalize.css@3/normalize.css'; */
+
+/* 
+@import 'necolas/normalize.css@3/normalize.css'; */
 
 * {
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+       box-sizing: border-box;
   margin: 0;
   padding: 0;
   /* otherwise stuff flashes during transitions */
@@ -450,9 +445,8 @@ img {
   max-height: 280px;
 }
 
-/* end: "./client/reset.css" */
 
-/* begin: "./client/type.css" */
+
 
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -534,9 +528,8 @@ blockquote {
   border-left: 5px solid #eee;
 }
 
-/* end: "./client/type.css" */
 
-/* begin: "./client/layout.css" */
+
 
 .container {
   display: block;
@@ -562,17 +555,15 @@ main {
   position: relative;
 }
 
-/* end: "./client/layout.css" */
 
-/* begin: "./client/top-bar.css" */
+
 
 #top-bar {
   position: relative;
   height: 50px;
   padding: 0 20px;
   background-color: #fffff;
-  -webkit-box-shadow: 1px 0px 2px 1px rgba(0, 0, 0, 0.15);
-          box-shadow: 1px 0px 2px 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 1px 0px 2px 1px rgba(0, 0, 0, 0.15);
   z-index: 1000;
 }
 
@@ -603,9 +594,8 @@ main {
   padding-left: 10px;
 }
 
-/* end: "./client/top-bar.css" */
 
-/* begin: "./client/header.css" */
+
 
 header {
   display: block;
@@ -628,9 +618,8 @@ header pre {
   display: inline-block;
 }
 
-/* end: "./client/header.css" */
 
-/* begin: "./client/footer.css" */
+
 
 footer {
   padding: 20px;
@@ -659,9 +648,8 @@ footer {
           transition: color 0.1s linear;
 }
 
-/* end: "./client/footer.css" */
 
-/* begin: "https://nlz.io/github/discore/css3-microsoft-metro-buttons/1.2.0/css/m-buttons.css" */
+
 .m-btn {
   position: relative;
   display: inline-block;
@@ -674,10 +662,8 @@ footer {
   background-color: #eeeeee;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eeeeee), to(#eeeeee));
   background-image: -webkit-linear-gradient(top, #eeeeee, #eeeeee);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#eeeeee));
   background-image: linear-gradient(top, #eeeeee, #eeeeee);
   background-repeat: repeat-x;
-  -webkit-background-clip: padding;
   background-clip: padding;
   /* IE hacks */
 
@@ -704,7 +690,6 @@ footer {
   background-color: #dcdcdc;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dcdcdc), to(#dcdcdc));
   background-image: -webkit-linear-gradient(top, #dcdcdc, #dcdcdc);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#dcdcdc), to(#dcdcdc));
   background-image: linear-gradient(top, #dcdcdc, #dcdcdc);
   background-repeat: repeat-x;
   z-index: 100;
@@ -714,10 +699,8 @@ footer {
   background-color: #eeeeee;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eeeeee), to(#dcdcdc));
   background-image: -webkit-linear-gradient(top, #eeeeee, #dcdcdc);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#dcdcdc));
   background-image: linear-gradient(top, #eeeeee, #dcdcdc);
   background-repeat: repeat-x;
-   -webkit-box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.25);
 }
 .m-btn:focus {
@@ -747,7 +730,6 @@ footer {
 .m-btn.black.disabled,
 .m-btn.black[disabled]
 {
-  -webkit-box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.25);
   color: white !important;
 }
@@ -776,7 +758,6 @@ footer {
   background-color: #d84a38;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dd4b39), to(#d14836));
   background-image: -webkit-linear-gradient(top, #dd4b39, #d14836);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#dd4b39), to(#d14836));
   background-image: linear-gradient(top, #dd4b39, #d14836);
   background-repeat: repeat-x;
 }
@@ -789,7 +770,6 @@ footer {
   background-color: #c53727;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#c53727), to(#c53727));
   background-image: -webkit-linear-gradient(top, #c53727, #c53727);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#c53727), to(#c53727));
   background-image: linear-gradient(top, #c53727, #c53727);
   background-repeat: repeat-x;
 }
@@ -802,7 +782,6 @@ footer {
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dd4b39), to(#c53727));
   background-image: -webkit-linear-gradient(top, #dd4b39, #c53727);
   background-image: -o-lineark-gradient(top, #dd4b39, #c53727);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#dd4b39), to(#c53727));
   background-image: linear-gradient(top, #dd4b39, #c53727);
   background-repeat: repeat-x;
 
@@ -816,7 +795,6 @@ footer {
   background-color: #4d90fe;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#4d90fe), to(#4787ed));
   background-image: -webkit-linear-gradient(top, #4d90fe, #4787ed);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#4d90fe), to(#4787ed));
   background-image: linear-gradient(top, #4d90fe, #4787ed);
   background-repeat: repeat-x;
 }
@@ -829,7 +807,6 @@ footer {
   background-color: #0072bb;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0072bb), to(#0072bb));
   background-image: -webkit-linear-gradient(top, #0072bb, #0072bb);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#0072bb), to(#0072bb));
   background-image: linear-gradient(top, #0072bb, #0072bb);
   background-repeat: repeat-x;
 }
@@ -840,7 +817,6 @@ footer {
   background-color: #4d90fe;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#4d90fe), to(#0072bb));
   background-image: -webkit-linear-gradient(top, #4d90fe, #0072bb);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#4d90fe), to(#0072bb));
   background-image: linear-gradient(top, #4d90fe, #0072bb);
   background-repeat: repeat-x;
 
@@ -852,7 +828,6 @@ footer {
   background-color: #35aa47;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#35aa47), to(#35aa47));
   background-image: -webkit-linear-gradient(top, #35aa47, #35aa47);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#35aa47), to(#35aa47));
   background-image: linear-gradient(top, #35aa47, #35aa47);
   background-repeat: repeat-x;
 }
@@ -865,7 +840,6 @@ footer {
   background-color: #1d943b;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1d943b), to(#1d943b));
   background-image: -webkit-linear-gradient(top, #1d943b, #1d943b);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#1d943b), to(#1d943b));
   background-image: linear-gradient(top, #1d943b, #1d943b);
   background-repeat: repeat-x;
 }
@@ -876,7 +850,6 @@ footer {
   background-color: #35aa47;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#35aa47), to(#1d943b));
   background-image: -webkit-linear-gradient(top, #35aa47, #1d943b);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#35aa47), to(#1d943b));
   background-image: linear-gradient(top, #35aa47, #1d943b);
   background-repeat: repeat-x;
 
@@ -888,7 +861,6 @@ footer {
   background-color: #852b99;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#852b99), to(#852b99));
   background-image: -webkit-linear-gradient(top, #852b99, #852b99);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#852b99), to(#852b99));
   background-image: linear-gradient(top, #852b99, #852b99);
   background-repeat: repeat-x;
 }
@@ -901,7 +873,6 @@ footer {
   background-color: #6d1b81;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6d1b81), to(#6d1b81));
   background-image: -webkit-linear-gradient(top, #6d1b81, #6d1b81);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#6d1b81), to(#6d1b81));
   background-image: linear-gradient(top, #6d1b81, #6d1b81);
   background-repeat: repeat-x;
 }
@@ -912,7 +883,6 @@ footer {
   background-color: #35aa47;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#852b99), to(#6d1b81));
   background-image: -webkit-linear-gradient(top, #852b99, #6d1b81);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#852b99), to(#6d1b81));
   background-image: linear-gradient(top, #852b99, #6d1b81);
   background-repeat: repeat-x;
 
@@ -925,7 +895,6 @@ footer {
   background-color: #555555;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#555555), to(#555555));
   background-image: -webkit-linear-gradient(top, #555555, #555555);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#555555), to(#555555));
   background-image: linear-gradient(top, #555555, #555555);
   background-repeat: repeat-x;
 }
@@ -938,7 +907,6 @@ footer {
   background-color: #222222;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#222222), to(#222222));
   background-image: -webkit-linear-gradient(top, #222222, #222222);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#222222), to(#222222));
   background-image: linear-gradient(top, #222222, #222222);
   background-repeat: repeat-x;
 }
@@ -949,7 +917,6 @@ footer {
   background-color: #222222;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#222222), to(#222222));
   background-image: -webkit-linear-gradient(top, #444444, #222222);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#444444), to(#222222));
   background-image: linear-gradient(top, #444444, #222222);
   background-repeat: repeat-x;
 
@@ -961,11 +928,9 @@ footer {
   background-color: #f5f5f5;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eeeeee), to(#dddddd));
   background-image: -webkit-linear-gradient(top, #eeeeee, #dddddd);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#dddddd));
   background-image: linear-gradient(top, #eeeeee, #dddddd);
   background-repeat: repeat-x;
   cursor: default;
-  -webkit-box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.25);
   box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.25);
 }
 
@@ -984,21 +949,24 @@ footer {
   margin-left: 0;
 }
 
-/* end: "https://nlz.io/github/discore/css3-microsoft-metro-buttons/1.2.0/css/m-buttons.css" */
 
-/* begin: "./client/buttons.css" */
 
-/* @import 'discore/css3-microsoft-metro-buttons@1/css/m-buttons.css'; */
+
+/* 
+@import 'discore/css3-microsoft-metro-buttons@1/css/m-buttons.css'; */
 
 #to-source {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 10px;
   font-size: 24px;
   line-height: 1;
   height: auto;
+  width: auto;
 }
 
-/* end: "./client/buttons.css" */
 
-/* begin: "./client/tables.css" */
+
 
 table {
   margin: 10px 10px 20px;
@@ -1019,9 +987,8 @@ table tbody tr:nth-child(odd) {
   background-color: #fafafa;
 }
 
-/* end: "./client/tables.css" */
 
-/* begin: "https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/lib/index.css" */
+
 /**
  * .Dropdown(.open)(.up)(.down)(.left)(.right)
  *   .Dropdown-toggle
@@ -1067,21 +1034,21 @@ table tbody tr:nth-child(odd) {
 .Dropdown.right .Dropdown-menu {
   right: 0;
 }
-/* end: "https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/lib/index.css" */
 
-/* begin: "https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/index.css" */
+
 
 /* normalized component.json styles */
-/* @import "lib/index.css"; */
+/* 
+@import "lib/index.css"; */
 
 /* end normalized component.json styles */
 
 
-/* end: "https://nlz.io/github/jonathanong/delegated-dropdown/0.0.7/index.css" */
 
-/* begin: "./client/toc.css" */
 
-/* @import 'jonathanong/delegated-dropdown@0'; */
+
+/* 
+@import 'jonathanong/delegated-dropdown@0'; */
 
 #toc {
   position: absolute;
@@ -1127,8 +1094,7 @@ html.toc-fixed #toc {
 #toc .Dropdown-menu {
   position: relative;
   background-color: #fff;
-  -webkit-box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1);
-          box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.1);
 }
 
 #toc .Dropdown-menu {
@@ -1144,9 +1110,8 @@ html.toc-fixed #toc {
   border-bottom: 1px solid #eee;
 }
 
-/* end: "./client/toc.css" */
 
-/* begin: "./client/permalinks.css" */
+
 
 .header-permalink {
   margin-left: 10px;
@@ -1162,20 +1127,29 @@ html.toc-fixed #toc {
   opacity: 1;
 }
 
-/* end: "./client/permalinks.css" */
 
-/* begin: "./client/index.css" */
 
-/* @import 'reset.css'; */
-/* @import 'type.css'; */
-/* @import 'layout.css'; */
-/* @import 'top-bar.css'; */
-/* @import 'header.css'; */
-/* @import 'footer.css'; */
-/* @import 'buttons.css'; */
-/* @import 'tables.css'; */
 
-/* @import 'toc.css'; */
-/* @import 'permalinks.css'; */
+/* 
+@import 'reset.css'; */
+/* 
+@import 'type.css'; */
+/* 
+@import 'layout.css'; */
+/* 
+@import 'top-bar.css'; */
+/* 
+@import 'header.css'; */
+/* 
+@import 'footer.css'; */
+/* 
+@import 'buttons.css'; */
+/* 
+@import 'tables.css'; */
 
-/* end: "./client/index.css" */
+/* 
+
+@import 'toc.css'; */
+/* 
+@import 'permalinks.css'; */
+
