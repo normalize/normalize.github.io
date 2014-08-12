@@ -12,3 +12,4 @@ please try to open an issue in the correct repository.
 - [proxy.js](https://github.com/normalize/proxy.js) - the normalization proxy
 - [nlz](https://github.com/normalize/nlz) - the command line `nlz(1)` utility
 - [transforms.js](https://github.com/normalize/transforms.js) - all the transforms supported by both the proxy and `nlz(1)`
+- [The Polyfills Organization](https://github.com/polyfills) - for anything having to do with browser support, polyfills, and transpilation

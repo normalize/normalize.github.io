@@ -8,10 +8,10 @@ consult the [normalize-proxy repository][proxy] itself.
 All URLs have the form:
 
 ```
-https://nlz.io/<remote>/<user>/<project>/<version>/<file>...
+https://nlz.io/<remote>/<user>/<project>/<version>/<file...>
 ```
 
-Obviously, different proxies will have different hostnames.
+Different proxies will have different hostnames.
 The `version` and `file` may not be included in some end points.
 
 #### Protocol
@@ -44,9 +44,7 @@ The name of the project/module/component.
 
 Any version as defined by http://semver.org v2.0.0.
 You should not include leading `v`s and `=` in single versions
-
-Eventually, commit SHAs for `git` remotes will be supported.
-However, branches will never be supported.
+Versions can also be git branches and commit SHAs if the remote is accessed via git.
 
 ### API End Points
 
@@ -62,16 +60,9 @@ These are only valid when __exact__, so don't include a trailing `=`.
 Only one query string can be used at a time:
 
 - `?source` - return/redirect the source file and its dependencies all without any transformations applied. Useful for building server-side.
-- `?min` - minify the transformation. Only applies to JS, CSS, and HTML assets.
 
 If any of these query strings are included,
 then all the pushed dependencies will also include the same query string.
-
-Each file will have an `ETag` header which is the `sha256` sum of the __source__ file.
-Thus, the only real way to verify whether this header is correct is to check the `?source` file.
-The ETag will remain the same between query strings and differences in transforms
-
-> Note: the ETag header is subject to change as this is obviously less than ideal.
 
 #### GET pull
 
@@ -79,8 +70,12 @@ The ETag will remain the same between query strings and differences in transform
 GET https://nlz.io/<remote>/<user>/<project>/pull
 ```
 
-This will `pull` a specific version from the remote if it has not be installed already.
-If successful, a `204` status code will be returned.
+For git remotes, this will `git fetch -f` the entire repository to the proxy,
+updating all the versions.
+
+For non-git remotes, this will check for the latest version of the project
+and install it locally.
+
 You may consider this the optional "publish" step of Normalize.IO.
 
 #### GET versions.json
@@ -99,34 +94,6 @@ simply install it by hitting the `pull` entry point or `GET` any file.
 
 > Note: he semantics of this endpoint is subject to change.
 > In particular, it should return all available versions on the remote.
-
-#### GET metadata.json
-
-```
-GET https://nlz.io/<remote>/<user>/<project>/metadata.json
-```
-
-Per-repository metadata that is not version-specific.
-This is where you'll find metadata such as author, keywords, etc.
-
-> Note: not yet implemented.
-
-#### GET search.json
-
-```
-GET https://nlz.io/search.json?...
-```
-
-Search the proxy's installed files and projects.
-All search parameters should be passed as query string parameters.
-These may include:
-
-- `remote`
-- `user`/`owner`/`organization`
-- `project`/`repository`
-- `keywords`
-
-> Note: not yet implemented.
 
 #### GET proxy.json
 
@@ -147,7 +114,6 @@ Packages are "normalized" based on these JSON files in descending priority.
 
 1. `component.json`
 2. `package.json`
-3. `bower.json`
 
 This is particularly important if you compile your module for one package manager but not the others.
 Thus, if you have to compile your module for a package manager,
@@ -165,20 +131,5 @@ Modules that must be normalized and have circular dependencies are not supported
 In fact, these modules may actually mess up the proxy.
 Please don't create circular dependencies!
 Use `devDependencies` or something instead.
-
-### Module Classification
-
-The normalization proxy is currently designed primarily for web components and modules.
-Thus, it needs a way to classify whether a module is web-compatible.
-Currently, classification is defined by the following criteria:
-
-- `index.html` exists
-- `index.css` exists
-- `component.json` exists
-- `bower.json` exists
-- `package.json`:
-
-  - `.browser` exists
-  - `.style` exists
 
 [proxy]: https://github.com/normalize/proxy.js

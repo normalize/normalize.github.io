@@ -35,16 +35,6 @@ You may optionally set this directory to a global directory like `~/.repositorie
 so that every app or component you work on share the same files.
 It will also make installations a little faster.
 
-### .transforms
-
-Options for transforms.
-__All__ transforms are enabled by default.
-If you set any `.transforms` options,
-all transforms will now be opt-in.
-
-You shouldn't need to touch this as transforms' libraries are lazily loaded.
-You won't get much performance benefit from disabling transforms.
-
 ### .entrypoints
 
 The entry points for the build.

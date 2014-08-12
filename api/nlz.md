@@ -24,18 +24,20 @@ npm install -g jade marked
 
 When running `nlz-build(1)` or `nlz-manifest(1)`,
 a `normalize-manifest.json` file is created.
-You can use this to inspect all the files in the build as well as its
-dependency tree.
-`nlz(1)` uses this file in other commands, such as `nlz-dependencies(1)`,
-to help inspect the files and the dependency tree.
 Be sure to add this file to your `.gitignore`!
+This JSON file is used for various purposes:
 
-### nlz build
+- You can use this to inspect all the files in the build as well as its
+  dependency tree. `nlz(1)` uses this file in other commands,
+  such as `nlz-dependencies(1)`, to help inspect the files and the dependency tree.
+- You may use this file to create your own SPDY push server or middleware.
+
+### nlz build, nlz watch
 
 This is the primary build command.
 You may think of it as [browserify](http://browserify.org)'s build command,
 but multiple entry points are supported,
-as well as CSS and (eventually) HTML files.
+as well as CSS and HTML files.
 
 Most of these parameters and options can be set via `.nlzrc`,
 allowing developers to simply run `nlz build --watch`.
@@ -48,6 +50,17 @@ nlz build [entrypoints...]
 // will build to build/index.js and build/index.css, respectively
 nlz build client/index.js client/index.css
 ```
+
+#### -
+
+If you are only building a single entry point, you can
+stream the result through `stdout` with the `-` option:
+
+```bash
+nlz build index.js - > index.built.js
+```
+
+Stdin is not supported.
 
 #### --out, -o
 
@@ -68,6 +81,12 @@ especially if you use a lot of transformations.
 ```bash
 nlz build client/index.js --watch
 ```
+
+This is aliased as `nlz watch`.
+
+### --standalone, -s
+
+Create a standalone, UMD-wrapped JS bundle.
 
 ### nlz manifest
 

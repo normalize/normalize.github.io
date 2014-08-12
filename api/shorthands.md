@@ -8,21 +8,20 @@ shorthands require a certain degree of specificity.
 However, shorthands can only be used if either:
 
 1. You use a build process, `nlz build`
-2. You use a custom client-side ES6 module loader
+2. You use a Normalizer server such as `koa-normalize`
+3. You use a custom client-side ES6 module loader
 
 Thus, shorthands are second-class citizens.
 Normalize will eventually provide a custom module loader for these shorthands.
 
 ### The Law of Shorthands
 
-1. Shorthands only apply to JavaScript files.
-  There are no shorthands for CSS and HTML files as they do not allow custom loaders.
+1. Do not use shorthands in CSS and HTML as they do not allow custom loaders.
 2. Do not use shorthands in libraries,
   only applications where you can expect a custom module loader to be used.
   Creating libraries with shorthands is too vendor-specific.
   URLs should always work in any environment!
-3. `@` is used for versions and commits.
-  Do __not__ use `#`.
+3. `@` is used for versions and commits. Do __not__ use `#`.
 
 ### Shorthands
 
@@ -42,7 +41,7 @@ emitter@1/index => /npm/-/emitter/1/index.js
 
 #### npm
 
-`<module>@<version>/<file>...` resolves to `https://nlz.io/npm/-/<module>/<version>/<file>...`:
+`<module>@<version>/<file...>` resolves to `https://nlz.io/npm/-/<module>/<version>/<file...>`:
 
 ```
 emitter@1 => /npm/-/emitter/1/index.js
@@ -51,7 +50,7 @@ emitter@1/something => /npm/-/emitter/1/something.js
 ```
 
 Namespaces are prefixed with `@<org>`,
-i.e. `@<org>/<module>@<version>/<file>...`:
+i.e. `@<org>/<module>@<version>/<file...>`:
 
 ```
 @nlz/emitter@1 => /npm/nlz/emitter/1/index.js
@@ -75,7 +74,7 @@ npm:emitter@1 => /npm/-/emitter/1/index.js
 
 #### GitHub
 
-`<user>/<project>@<version>/<file>...` resolves to `https://nlz.io/<user>/<project>/<version>/<file>...`:
+`<user>/<project>@<version>/<file...>` resolves to `https://nlz.io/<user>/<project>/<version>/<file...>`:
 
 ```
 component/emitter@1 => /component/emitter/1/index.js
@@ -90,7 +89,7 @@ otherwise it could be a file.
 All other remotes can be abbreviated to:
 
 ```
-<remote>:<user>/<project>@<version>/<file>...
+<remote>:<user>/<project>@<version>/<file...>
 ```
 
 Where:
