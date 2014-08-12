@@ -45,5 +45,5 @@ Now `homepage.js` will include all of `boot.js`.
 This will work with JS as well as CSS.
 
 > Notes:
->   - Common bundles are not yet supported.
+>   - Common bundles are not supported.
 >   - All entry points must be defined with their all their dependencies defined prior.

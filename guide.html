@@ -1,35 +1,6 @@
-<!DOCTYPE html><html><head><title>normalize.io - an ES6 module, Web Component, and SPDY/HTTP2 Push frontend development worfklow</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">nlz.io</a><a href="https://github.com/normalize/discussions" class="top-bar-link">discuss</a><a href="faq.html" class="top-bar-link">faq</a><a href="guide.html" class="top-bar-link">guide</a><a href="api.html" class="top-bar-link">api</a></div></div><header><div class="container"><h1>Guide</h1></div></header><main><div id="toc" class="Dropdown right down"><a href="#" class="Dropdown-toggle">#</a><div class="Dropdown-menu"></div></div><section><div class="container"><h2 id="authoring-javascript">Authoring JavaScript</h2><h3 id="supported-module-systems">Supported Module Systems</h3>
-<p>Normalize currently compiles ES6 modules to CommonJS and will do so until all modern browsers support ES6 modules natively.
-Thus, Normalize is also able to use CommonJS dependencies.</p>
-<p>Normalize does not currently support AMD modules.</p>
-<h3 id="differences-with-node-s-commonjs">Differences with Node&#39;s CommonJS</h3>
-<p><code>nlz-build(1)</code>&#39;s compiled CommonJS format is a little different than other CommonJS formats such as node, browserify, and component.</p>
-<h4 id="you-must-always-specify-the-extension">You must always specify the extension</h4>
-<p>In particular, all <code>js</code> files must end with a <code>.js</code> extension.
-There are no more magical <code>/index.js</code> or <code>.json</code> look ups.
-Imagine, how would this work in the browser?
-Multiple HTTP requests would be required, and CSS <code>@import</code>s don&#39;t work this way.</p>
-<p>Note that node.js and friends are compatible with <code>.js</code> dependencies,
-but it&#39;s a little different with <code>.json</code> files and transforms.</p>
-<h4 id="dependencies-use-absolute-urls">Dependencies use absolute URLs</h4>
-<p>The purpose of <code>nlz</code> is to use absolute URLs to avoid using <code>.json</code> files and a package manager.
-Thus, something like <code>require(&#39;events&#39;)</code> will be rewritten during normalization to <code>require(&#39;https://npmjs.org/-/events/*/index.js&#39;)</code>.
-If this is annoying for you, just use browserify.</p>
-<h4 id="dependencies-match-html-semantics">Dependencies match HTML semantics</h4>
-<p>In Node, <code>require(&#39;file&#39;)</code> means a dependency.
-In <code>nlz</code>, if you do <code>require(&#39;file&#39;)</code>,
-<code>nlz</code> will actually look for <code>./file</code>,
-which is probably nonexistent.
-This matches <code>@import</code>, <code>href</code>, and <code>src</code> semantics, so extensions must be included.</p>
-<p>However, <code>nlz</code> will simply ignore these as they could be custom modules defined outside the build.</p>
-<h3 id="best-practices">Best Practices</h3>
+<!DOCTYPE html><html><head><title>normalize.io - an ES6 module, Web Component, and SPDY/HTTP2 Push frontend development worfklow</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">nlz.io</a><a href="https://github.com/normalize/discussions" class="top-bar-link">discuss</a><a href="faq.html" class="top-bar-link">faq</a><a href="guide.html" class="top-bar-link">guide</a><a href="api.html" class="top-bar-link">api</a></div></div><header><div class="container"><h1>Guide</h1></div></header><main><div id="toc" class="Dropdown right down"><a href="#" class="Dropdown-toggle">#</a><div class="Dropdown-menu"></div></div><section><div class="container"><h2 id="authoring-javascript">Authoring JavaScript</h2><h3 id="best-practices">Best Practices</h3>
 <h4 id="use-index-js-for-browsers-node-js-for-node-js">Use index.js for browsers, node.js for node.js</h4>
 <p>Give browsers filename priority and specify <code>.main = &#39;node.js&#39;</code> in your <code>package.json</code>s.</p>
-<h4 id="don-t-use-import-or-import-">Don&#39;t use <code>import *</code> or <code>import {}</code></h4>
-<p>Stick with <code>import X from &#39;name&#39;</code> and <code>import &#39;name&#39;</code>.
-These two methods are the most compatible with CommonJS modules.
-ES6 modules are not finalized yet,
-so many of these features are subject to change.</p>
 </div></section><section><div class="container"><h2 id="authoring-css">Authoring CSS</h2><h3 id="best-practices">Best Practices</h3>
 <h4 id="don-t-do-crazy-imports">Don&#39;t do crazy @imports</h4>
 <p>Stick with simple <code>@import</code> statements.
@@ -41,16 +12,42 @@ just use each as separate entry points and use <code>&lt;link&gt;</code> tags wi
 nor does it create multiple HTTP requests.
 What it does do, however, is guarantee ordering.
 All CSS files <code>@import</code>ed within a CSS file will be included before the the rest of the CSS file&#39;s rules.</p>
-</div></section><section><div class="container"><h2 id="authoring-components">Authoring Components</h2><h3 id="best-practices">Best Practices</h3>
-<h4 id="keep-your-license-file-separate">Keep your LICENSE file separate</h4>
-<p>This will make it easier for the proxy to normalize licenses.
-Otherwise, it would have to parse the readme or the JSON files for the correct license.
-Plus, it declutters your readme!</p>
+</div></section><section><div class="container"><h2 id="bundling">Bundling</h2><p>As shown via <code>nlz build(1)</code>,
+you can build multiple entry points, whether <code>.js</code> or <code>.css</code>,
+all at the same time.</p>
+<pre><code class="lang-bash">nlz build index<span class="hljs-preprocessor">.js</span> something<span class="hljs-preprocessor">.js</span> else<span class="hljs-preprocessor">.js</span>
+</code></pre>
+<p>However, you probably want a couple of partial bundles,
+one for the initial page load and the others for specific pages.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"boot.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"homepage.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</code></pre>
+<p>To do is very simple: have <code>boot.js</code> and <code>homepage.js</code> as entry points
+and have <code>homepage.js</code> depend on <code>boot.js</code> directly:</p>
+<pre><code class="lang-js"><span class="hljs-comment">// homepage.js:</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'boot.js'</span>
+</code></pre>
+<p>Then create a build with both entry points:</p>
+<pre><code class="lang-bash">nlz build boot<span class="hljs-preprocessor">.js</span> homepage<span class="hljs-preprocessor">.js</span>
+</code></pre>
+<p>Now you will have to entry points, <code>boot.js</code> and <code>homepage.js</code>.
+<code>boot.js</code> will be required to use <code>homepage.js</code>,
+and none of <code>boot.js</code>&#39;s dependencies will be included in <code>homepage.js</code>.</p>
+<p>If you want to create a single <code>homepage.js</code> bundle,
+just build it independently:</p>
+<pre><code class="lang-bash">nlz build homepage<span class="hljs-preprocessor">.js</span>
+</code></pre>
+<p>Now <code>homepage.js</code> will include all of <code>boot.js</code>.</p>
+<p>This will work with JS as well as CSS.</p>
+<blockquote>
+<p>Notes:</p>
+<ul>
+<li>Common bundles are not supported.</li>
+<li>All entry points must be defined with their all their dependencies defined prior.</li>
+</ul>
+</blockquote>
 </div></section><section><div class="container"><h2 id="authoring-tests">Authoring Tests</h2><p>One of the goals of Normalize is to make testing easier.
 Currently, a lot of CLI tools and integrations with various services are required to test web components well.</p>
-<blockquote>
-<p>Note: This is not currently implemented and is merely a brainstorm. This is open for discussion.</p>
-</blockquote>
 <h3 id="tests-will-simply-be-another-entry-point">Tests will simply be another entry point</h3>
 <p>Currently, tests are run through CLI utilities such as <code>mocha</code> with many options passed:</p>
 <pre><code class="lang-bash"><span class="hljs-comment">mocha</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">reporter</span> <span class="hljs-comment">spec</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">require</span> <span class="hljs-comment">should</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">bail</span> <span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">timeout</span> <span class="hljs-comment">10s</span> <span class="hljs-comment">test/*</span><span class="hljs-string">.</span><span class="hljs-comment">js</span>
@@ -107,54 +104,6 @@ For now, we&#39;re going to need a build process to run the tests locally:</p>
 <pre><code class="lang-bash">nlz build test<span class="hljs-preprocessor">.html</span>
 open build/test<span class="hljs-preprocessor">.html</span>
 </code></pre>
-<h3 id="running-tests-from-https-nlz-io">Running tests from <a href="https://nlz.io">https://nlz.io</a></h3>
-<p>As a build process is required to build the tests locally,
-Normalize will automatically <code>nlz build test.js test.html</code> on the server for maximum browser support.
-This will make testing browser components easier as you can simply open the <code>test.html</code> file in any browser you&#39;d like:</p>
-<pre><code class="lang-bash">open <span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/nlz.io/github</span><span class="hljs-regexp">/me/my</span>-component/<span class="hljs-number">1.0</span>.<span class="hljs-number">5</span>/test.html
-</code></pre>
-<p>When Normalize supports commit SHAs, adding CI support will much simpler.
-There won&#39;t be a need to create custom build processes to test your components.
-Just create git hooks to open the commit SHA&#39;s tests in different browsers.</p>
-<h3 id="scaffolding">Scaffolding</h3>
-<p>It would be really annoying to create <code>test.html</code> in every component.
-Thus, one of the goals of <a href="https://nlz.io">https://nlz.io</a> is to automatically generate <code>test.html</code> if there&#39;s a <code>test.js</code>.
-For example, if <code>mocha</code> is detected as the test runner,
-an HTML document with <code>&lt;div id=&quot;mocha&quot;&gt;&lt;/div&gt;</code> and the mocha stylesheet would be created automatically at the proxy.</p>
-</div></section><section><div class="container"><h2 id="bundling">Bundling</h2><p>As shown via <code>nlz build(1)</code>,
-you can build multiple entry points, whether <code>.js</code> or <code>.css</code>,
-all at the same time.</p>
-<pre><code class="lang-bash">nlz build index<span class="hljs-preprocessor">.js</span> something<span class="hljs-preprocessor">.js</span> else<span class="hljs-preprocessor">.js</span>
-</code></pre>
-<p>However, you probably want a couple of partial bundles,
-one for the initial page load and the others for specific pages.</p>
-<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"boot.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"homepage.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
-</code></pre>
-<p>To do is very simple: have <code>boot.js</code> and <code>homepage.js</code> as entry points
-and have <code>homepage.js</code> depend on <code>boot.js</code> directly:</p>
-<pre><code class="lang-js"><span class="hljs-comment">// homepage.js:</span>
-<span class="hljs-keyword">import</span> <span class="hljs-string">'boot.js'</span>
-</code></pre>
-<p>Then create a build with both entry points:</p>
-<pre><code class="lang-bash">nlz build boot<span class="hljs-preprocessor">.js</span> homepage<span class="hljs-preprocessor">.js</span>
-</code></pre>
-<p>Now you will have to entry points, <code>boot.js</code> and <code>homepage.js</code>.
-<code>boot.js</code> will be required to use <code>homepage.js</code>,
-and none of <code>boot.js</code>&#39;s dependencies will be included in <code>homepage.js</code>.</p>
-<p>If you want to create a single <code>homepage.js</code> bundle,
-just build it independently:</p>
-<pre><code class="lang-bash">nlz build homepage<span class="hljs-preprocessor">.js</span>
-</code></pre>
-<p>Now <code>homepage.js</code> will include all of <code>boot.js</code>.</p>
-<p>This will work with JS as well as CSS.</p>
-<blockquote>
-<p>Notes:</p>
-<ul>
-<li>Common bundles are not yet supported.</li>
-<li>All entry points must be defined with their all their dependencies defined prior.</li>
-</ul>
-</blockquote>
 </div></section><section><div class="container"><h2 id="troubleshooting">Troubleshooting</h2><h3 id="normalization-logs">Normalization Logs</h3>
 <p>The normalization proxy will add logs to two places: <code>normalize-debug.log</code> and each file themselves.</p>
 <h4 id="normalize-debug-log">normalize-debug.log</h4>
