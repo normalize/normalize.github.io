@@ -20,7 +20,7 @@ and have `homepage.js` depend on `boot.js` directly:
 
 ```js
 // homepage.js:
-import 'boot.js'
+import 'boot'
 ```
 
 Then create a build with both entry points:

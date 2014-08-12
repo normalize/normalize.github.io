@@ -24,15 +24,15 @@ mocha.reporter('spec')
 mocha.timeout('10s')
 
 // include tests within this file
-import Component from 'index.js'
+import Component from 'index'
 
 describe('My Component', function () {
   // ... tests
 })
 
 // or simply import other tests
-import 'test/this.js'
-import 'test/that.js'
+import 'test/this'
+import 'test/that'
 ```
 
 Locally, in node.js environments, running `node test.js` should be sufficient.

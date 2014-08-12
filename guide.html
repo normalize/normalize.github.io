@@ -12,6 +12,14 @@ just use each as separate entry points and use <code>&lt;link&gt;</code> tags wi
 nor does it create multiple HTTP requests.
 What it does do, however, is guarantee ordering.
 All CSS files <code>@import</code>ed within a CSS file will be included before the the rest of the CSS file&#39;s rules.</p>
+<h4 id="prepend-relative-urls-with-if-it-contains-a-">Prepend relative URLs with ./ if it contains a <code>@</code></h4>
+<p>For example, if you have:</p>
+<pre><code class="lang-css"><span class="hljs-attribute">background-image</span>: <span class="hljs-string">url('images/logo@2x.png')</span>
+</code></pre>
+<p>Normalize might think that this is a remote dependency.
+To avoid this confusion, just prepend it with a <code>./</code>:</p>
+<pre><code class="lang-css"><span class="hljs-attribute">background-image</span>: <span class="hljs-string">url('./images/logo@2x.png')</span>
+</code></pre>
 </div></section><section><div class="container"><h2 id="bundling">Bundling</h2><p>As shown via <code>nlz build(1)</code>,
 you can build multiple entry points, whether <code>.js</code> or <code>.css</code>,
 all at the same time.</p>
@@ -25,7 +33,7 @@ one for the initial page load and the others for specific pages.</p>
 <p>To do is very simple: have <code>boot.js</code> and <code>homepage.js</code> as entry points
 and have <code>homepage.js</code> depend on <code>boot.js</code> directly:</p>
 <pre><code class="lang-js"><span class="hljs-comment">// homepage.js:</span>
-<span class="hljs-keyword">import</span> <span class="hljs-string">'boot.js'</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">'boot'</span>
 </code></pre>
 <p>Then create a build with both entry points:</p>
 <pre><code class="lang-bash">nlz build boot<span class="hljs-preprocessor">.js</span> homepage<span class="hljs-preprocessor">.js</span>
@@ -64,15 +72,15 @@ mocha.reporter(<span class="hljs-string">'spec'</span>)
 mocha.timeout(<span class="hljs-string">'10s'</span>)
 
 // include tests within this file
-import Component from <span class="hljs-string">'index.js'</span>
+import Component from <span class="hljs-string">'index'</span>
 
 describe(<span class="hljs-string">'My Component'</span>, <span class="hljs-keyword">function</span> () {
   // <span class="hljs-keyword">...</span> tests
 })
 
 // or simply import other tests
-import <span class="hljs-string">'test/this.js'</span>
-import <span class="hljs-string">'test/that.js'</span>
+import <span class="hljs-string">'test/this'</span>
+import <span class="hljs-string">'test/that'</span>
 </code></pre>
 <p>Locally, in node.js environments, running <code>node test.js</code> should be sufficient.
 However, some build process might be necessary, so for the near future, it&#39;ll look like:</p>
