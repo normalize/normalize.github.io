@@ -13,96 +13,12 @@ Open an issue here.</li>
 <li><a href="https://github.com/normalize/transforms.js">transforms.js</a> - all the transforms supported by both the proxy and <code>nlz(1)</code></li>
 <li><a href="https://github.com/polyfills">The Polyfills Organization</a> - for anything having to do with browser support, polyfills, and transpilation</li>
 </ul>
-</div></section><section><div class="container"><h2 id="proxy">Normalization Proxy</h2><p>This is the public HTTP API for <a href="https://nlz.io">https://nlz.io</a> as well as any <a href="https://github.com/normalize/proxy.js">normalize-proxy</a>.
-If you&#39;re interested in setting up your own proxy,
-consult the <a href="https://github.com/normalize/proxy.js">normalize-proxy repository</a> itself.</p>
-<h3 id="url-structure">URL Structure</h3>
-<p>All URLs have the form:</p>
-<pre><code>https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">version</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">file...</span>&gt;</span>
-</code></pre><p>Different proxies will have different hostnames.
-The <code>version</code> and <code>file</code> may not be included in some end points.</p>
-<h4 id="protocol">Protocol</h4>
-<p>Every proxy <strong>must</strong> serve via HTTPS and SPDY/HTTPv2,
-even with a self-signed certificate.
-The primary reason is that some browsers intend to not support SPDY without SSL.</p>
-<h4 id="remote">Remote</h4>
-<p>A supported remote&#39;s name, for example <code>github/</code>.</p>
-<p>Aliases will also be supported and will simply redirect to the canonical short name.
-For example, <code>github.com</code> and <code>raw.githubusercontent.com</code> would redirect to <code>github</code>.</p>
-<h4 id="user">User</h4>
-<p>The owner of a repository.
-If the remote does not have a namespace, the user should simply be <code>-</code>.</p>
-<pre><code><span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/nlz.io/npm</span><span class="hljs-regexp">/-/escape</span>-regexp/*<span class="hljs-regexp">/index.js</span>
-</code></pre><h4 id="project">Project</h4>
-<p>The name of the project/module/component.</p>
-<h4 id="version">Version</h4>
-<p>Any version as defined by <a href="http://semver.org">http://semver.org</a> v2.0.0.
-You should not include leading <code>v</code>s and <code>=</code> in single versions
-Versions can also be git branches and commit SHAs if the remote is accessed via git.</p>
-<h3 id="api-end-points">API End Points</h3>
-<h4 id="get-file">GET File</h4>
-<p>You may still <code>GET</code> files directly, even with transforms.
-All of the files&#39; dependencies will be SPDY pushed to the client.
-A redirect may be returned as a response.
-If this is the case, the redirect location will be SPDY pushed as well.</p>
-<p>Each file can have the following query strings.
-These are only valid when <strong>exact</strong>, so don&#39;t include a trailing <code>=</code>.
-Only one query string can be used at a time:</p>
-<ul>
-<li><code>?source</code> - return/redirect the source file and its dependencies all without any transformations applied. Useful for building server-side.</li>
-</ul>
-<p>If any of these query strings are included,
-then all the pushed dependencies will also include the same query string.</p>
-<h4 id="get-pull">GET pull</h4>
-<pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/pull
-</code></pre><p>For git remotes, this will <code>git fetch -f</code> the entire repository to the proxy,
-updating all the versions.</p>
-<p>For non-git remotes, this will check for the latest version of the project
-and install it locally.</p>
-<p>You may consider this the optional &quot;publish&quot; step of Normalize.IO.</p>
-<h4 id="get-versions-json">GET versions.json</h4>
-<pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/versions.json
-</code></pre><p>Will return an array of versions that are currently available on the proxy.
-If no versions are installed,
-a <code>404</code> and an empty array will be returned.</p>
-<p>If you pushed a new version of a package,
-but the proxy has not installed it yet,
-simply install it by hitting the <code>pull</code> entry point or <code>GET</code> any file.</p>
-<blockquote>
-<p>Note: he semantics of this endpoint is subject to change.
-In particular, it should return all available versions on the remote.</p>
-</blockquote>
-<h4 id="get-proxy-json">GET proxy.json</h4>
-<pre><code class="lang-js">GET https://nlz<span class="hljs-preprocessor">.io</span>/proxy<span class="hljs-preprocessor">.json</span>
-</code></pre>
-<p>Returns relevant information about the proxy including hostname, version, and supported remotes.</p>
-<h4 id="get-polyfill-js">GET polyfill.js</h4>
-<p>Creates a polyfill bundle based on the client&#39;s user agent.
-See <a href="https://github.com/polyfills/polyfills">polyfills/polyfills</a> for more details.</p>
-<h3 id="normalization">Normalization</h3>
-<p>Packages are &quot;normalized&quot; based on these JSON files in descending priority.</p>
-<ol>
-<li><code>component.json</code></li>
-<li><code>package.json</code></li>
-</ol>
-<p>This is particularly important if you compile your module for one package manager but not the others.
-Thus, if you have to compile your module for a package manager,
-compile it for <code>bower</code>.</p>
-<h4 id="package-json">package.json</h4>
-<p>Only <code>npm</code> and <code>github</code>-style dependencies are supported.
-Only semantic versions are supported - versions that have weird suffixes will be ignored.
-Other types of dependencies such as tarballs will be ignored.</p>
-<h4 id="circular-dependencies">Circular Dependencies</h4>
-<p>Modules that must be normalized and have circular dependencies are not supported.
-In fact, these modules may actually mess up the proxy.
-Please don&#39;t create circular dependencies!
-Use <code>devDependencies</code> or something instead.</p>
 </div></section><section><div class="container"><h2 id="url-shorthands">URL Shorthands</h2><p>Typing <code>https://nlz.io/</code> everywhere becomes tedious quickly,
 so Normalize allows you to use shorthands for dependencies.
 Shorthands simply expand to the long Normalize URLs.
 However, due to the wide remote support Normalize provides,
 shorthands require a certain degree of specificity.</p>
-<p>However, shorthands can only be used if either:</p>
+<p>However, shorthands can only be used if:</p>
 <ol>
 <li>You use a build process, <code>nlz build</code></li>
 <li>You use a Normalizer server such as <code>koa-normalize</code></li>
@@ -112,8 +28,8 @@ shorthands require a certain degree of specificity.</p>
 Normalize will eventually provide a custom module loader for these shorthands.</p>
 <h3 id="the-law-of-shorthands">The Law of Shorthands</h3>
 <ol>
-<li>Do not use shorthands in CSS and HTML as they do not allow custom loaders.</li>
-<li>Do not use shorthands in libraries,
+<li>You shan&#39;t use shorthands in CSS and HTML as they do not allow custom loaders.</li>
+<li>You shan&#39;t use shorthands in libraries,
 only applications where you can expect a custom module loader to be used.
 Creating libraries with shorthands is too vendor-specific.
 URLs should always work in any environment!</li>
@@ -122,9 +38,9 @@ URLs should always work in any environment!</li>
 <h3 id="shorthands">Shorthands</h3>
 <h4 id="extensions">Extensions</h4>
 <p>Files that end with <code>/</code> expand to <code>/index.js</code>:</p>
-<pre><code>emitter<span class="hljs-variable">@1</span>/lib/ =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/lib/index.js
+<pre><code>./<span class="hljs-keyword">lib</span>/ =&gt; ./<span class="hljs-keyword">lib</span>/index.js
 </code></pre><p>Files that do not end with <code>.js</code> simply have <code>.js</code> appended:</p>
-<pre><code>emitter<span class="hljs-variable">@1</span>/index =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
+<pre><code>./<span class="hljs-keyword">index</span> =&gt; ./<span class="hljs-keyword">index</span>.js
 </code></pre><h4 id="npm">npm</h4>
 <p><code>&lt;module&gt;@&lt;version&gt;/&lt;file...&gt;</code> resolves to <code>https://nlz.io/npm/-/&lt;module&gt;/&lt;version&gt;/&lt;file...&gt;</code>:</p>
 <pre><code>emitter<span class="hljs-variable">@1</span> =&gt; <span class="hljs-regexp">/npm/</span>-<span class="hljs-regexp">/emitter/</span><span class="hljs-number">1</span>/index.js
@@ -168,14 +84,14 @@ and <code>nlz(1)</code> will primarily be a CLI tool for inspecting your app/com
 <p>Currently, you must install <code>nlz(1)</code> with <code>npm(1)</code>:</p>
 <pre><code class="lang-bash">npm <span class="hljs-keyword">install</span> -g nlz
 </code></pre>
-<p><code>nlz(1)</code> only supports node v0.10,
-but you should use node v0.11+ for better performance as generators are extensively used in the source code.</p>
+<p><code>nlz(1)</code> supports node v0.10+,
+but you should use node v0.11+ for better performance
+as generators are extensively used in the source code.</p>
 <p>Be sure to globally install any transforms you&#39;d like to use as well.</p>
 <pre><code class="lang-bash">npm <span class="hljs-keyword">install</span> -g jade marked
 </code></pre>
 <h3 id="normalize-manifest-json">normalize-manifest.json</h3>
-<p>When running <code>nlz-build(1)</code> or <code>nlz-manifest(1)</code>,
-a <code>normalize-manifest.json</code> file is created.
+<p>When building, a <code>normalize-manifest.json</code> file is created.
 Be sure to add this file to your <code>.gitignore</code>!
 This JSON file is used for various purposes:</p>
 <ul>
@@ -185,10 +101,10 @@ such as <code>nlz-dependencies(1)</code>, to help inspect the files and the depe
 <li>You may use this file to create your own SPDY push server or middleware.</li>
 </ul>
 <h3 id="nlz-build-nlz-watch">nlz build, nlz watch</h3>
-<p>This is the primary build command.
-You may think of it as <a href="http://browserify.org">browserify</a>&#39;s build command,
-but multiple entry points are supported,
-as well as CSS and HTML files.</p>
+<p>These are the primary build command.
+You may think of it as <a href="http://browserify.org">browserify</a>&#39;s build command
+with multiple entry point support
+as well as CSS and HTML file support.</p>
 <p>Most of these parameters and options can be set via <code>.nlzrc</code>,
 allowing developers to simply run <code>nlz build --watch</code>.</p>
 <h4 id="entry-points">Entry Points</h4>
@@ -290,32 +206,12 @@ For example:</p>
 For example, only list files larger than <code>1kb</code>:</p>
 <pre><code class="lang-bash">nlz size -t <span class="hljs-number">1</span>kb test/<span class="hljs-keyword">index</span>.js
 </code></pre>
+<h3 id="nlz-graph">nlz graph</h3>
+<p>Create a graph of your dependency tree. Run <code>nlz graph -h</code> for more details.</p>
 </div></section><section><div class="container"><h2 id="nlzrc">.nlzrc</h2><p><code>.nlzrc</code> is an optional JSON configuration file for local environments.
 It&#39;s completely optional.
 You may have a global, <code>.nlzrc</code> configuration for your computer as well as local <code>.nlzrc</code> configuration for each app.
 For example, you might want to point all your requests to a proxy on your network instead of <a href="https://nlz.io">https://nlz.io</a>.</p>
-<h3 id="-proxy-and-self-signed">.proxy and .self-signed</h3>
-<pre><code class="lang-json">{
-  "<span class="hljs-attribute">proxy</span>": <span class="hljs-value"><span class="hljs-string">"localhost:8888"</span></span>,
-  "<span class="hljs-attribute">self-signed</span>": <span class="hljs-value"><span class="hljs-literal">true</span>
-</span>}
-</code></pre>
-<p>This is to set a custom proxy other than <a href="https://nlz.io">https://nlz.io</a>.
-<code>proxy</code> should be the full host, including the port.
-Set <code>self-signed</code> to <code>true</code> if the proxy is using a self-signed certification,
-otherwise an error will be thrown.
-Remember, proxies must always use SSL.</p>
-<h3 id="-directory-repositories-">.directory = &quot;repositories&quot;</h3>
-<pre><code class="lang-json">{
-  "<span class="hljs-attribute">directory</span>": <span class="hljs-value"><span class="hljs-string">"/User/jong/.repositories"</span>
-</span>}
-</code></pre>
-<p>By default, all files are stored to <code>process.cwd() + &#39;/repositories&#39;</code>.
-Thus, every app or component you work on will have its own <code>directory</code> folder.
-This may be less than ideal for you as you&#39;ll have multiple copies.</p>
-<p>You may optionally set this directory to a global directory like <code>~/.repositories</code>
-so that every app or component you work on share the same files.
-It will also make installations a little faster.</p>
 <h3 id="-entrypoints">.entrypoints</h3>
 <p>The entry points for the build.
 This allows you to not specify the entry points every time you run <code>nlz build(1)</code>.</p>
@@ -335,13 +231,35 @@ This allows you to not specify the entry points every time you run <code>nlz bui
   </span>}
 </span>}
 </code></pre>
-<h3 id="-manifest-normalize-manifest-json-">.manifest = &quot;normalize-manifest.json&quot;</h3>
-<p>This allows you to use a custom <code>normalize-manifest.json</code> file name.</p>
+<h3 id="-proxy-and-self-signed">.proxy and .self-signed</h3>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">proxy</span>": <span class="hljs-value"><span class="hljs-string">"localhost:8888"</span></span>,
+  "<span class="hljs-attribute">self-signed</span>": <span class="hljs-value"><span class="hljs-literal">true</span>
+</span>}
+</code></pre>
+<p>This is to set a custom proxy other than <a href="https://nlz.io">https://nlz.io</a>.
+<code>proxy</code> should be the full host, including the port.
+Set <code>self-signed</code> to <code>true</code> if the proxy is using a self-signed certification,
+otherwise an error will be thrown.
+Remember, proxies must always use SSL.</p>
 <h3 id="-minifiedlength-true">.minifiedLength = true</h3>
 <p>Option whether to include each file&#39;s minified length in the manifest.
 This takes a long time to calculate,
 so is only recommended when you do <code>--watch</code>.
 Set to <code>false</code> if you never want to calculate this.</p>
+<h3 id="-directory-repositories-">.directory = &quot;repositories&quot;</h3>
+<pre><code class="lang-json">{
+  "<span class="hljs-attribute">directory</span>": <span class="hljs-value"><span class="hljs-string">"/User/jong/.repositories"</span>
+</span>}
+</code></pre>
+<p>By default, all files are stored to <code>process.cwd() + &#39;/repositories&#39;</code>.
+Thus, every app or component you work on will have its own <code>directory</code> folder.
+This may be less than ideal for you as you&#39;ll have multiple copies.</p>
+<p>You may optionally set this directory to a global directory like <code>~/.repositories</code>
+so that every app or component you work on share the same files.
+It will also make installations a little faster.</p>
+<h3 id="-manifest-normalize-manifest-json-">.manifest = &quot;normalize-manifest.json&quot;</h3>
+<p>This allows you to use a custom <code>normalize-manifest.json</code> file name.</p>
 </div></section><section><div class="container"><h2 id="transforms">Transforms</h2><p>These are all the transforms available for both the normalization proxy and <code>nlz-build(1)</code>.</p>
 <p>Unlike other bundlers and build systems,
 adapters transforms are included automatically.
@@ -459,6 +377,91 @@ This is useful for web components and templates.</p>
 
 <span class="hljs-built_in">document</span>.body.appendChild(template.cloneNode(<span class="hljs-literal">true</span>))
 </code></pre>
+</div></section><section><div class="container"><h2 id="proxy">Normalization Proxy</h2><p>This is the public HTTP API for <a href="https://nlz.io">https://nlz.io</a> as well as any <a href="https://github.com/normalize/proxy.js">normalize-proxy</a>.
+If you&#39;re interested in setting up your own proxy,
+consult the <a href="https://github.com/normalize/proxy.js">normalize-proxy repository</a> itself.</p>
+<h3 id="url-structure">URL Structure</h3>
+<p>All URLs have the form:</p>
+<pre><code>https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">version</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">file...</span>&gt;</span>
+</code></pre><p>Different proxies will have different hostnames.
+The <code>version</code> and <code>file</code> may not be included in some end points.</p>
+<h4 id="protocol">Protocol</h4>
+<p>Every proxy <strong>must</strong> serve via HTTPS and SPDY/HTTPv2,
+even with a self-signed certificate.
+The primary reason is that some browsers intend to not support SPDY without SSL.</p>
+<h4 id="remote">Remote</h4>
+<p>A supported remote&#39;s name, for example <code>github/</code>.</p>
+<p>Aliases will also be supported and will simply redirect to the canonical short name.
+For example, <code>github.com</code> and <code>raw.githubusercontent.com</code> would redirect to <code>github</code>.</p>
+<h4 id="user">User</h4>
+<p>The owner of a repository.
+If the remote does not have a namespace, the user should simply be <code>-</code>.</p>
+<pre><code><span class="hljs-symbol">https:</span>/<span class="hljs-regexp">/nlz.io/npm</span><span class="hljs-regexp">/-/escape</span>-regexp/*<span class="hljs-regexp">/index.js</span>
+</code></pre><h4 id="project">Project</h4>
+<p>The name of the project/module/component.</p>
+<h4 id="version">Version</h4>
+<p>Any version as defined by <a href="http://semver.org">http://semver.org</a>.
+You should not include leading <code>v</code>s and <code>=</code> in single versions otherwise a redirect will occur.</p>
+<p>Versions can also be git branches and commit SHAs if the remote is accessed via git
+and will redirect to the full commit sha.</p>
+<h3 id="api-end-points">API End Points</h3>
+<h4 id="get-file">GET File</h4>
+<p>You may still <code>GET</code> files directly, even with transforms.
+All of the files&#39; dependencies will be SPDY pushed to the client.
+A redirect may be returned as a response.
+If this is the case, the redirect location will be SPDY pushed as well.</p>
+<p>Each file can have the following query strings.
+These are only valid when <strong>exact</strong>, so don&#39;t include a trailing <code>=</code>.
+Only one query string can be used at a time:</p>
+<ul>
+<li><code>?source</code> - return/redirect the source file and its dependencies all without any transformations applied. Useful for building server-side.</li>
+</ul>
+<p>If any of these query strings are included,
+then all the pushed dependencies will also include the same query string.</p>
+<h4 id="get-pull">GET pull</h4>
+<pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/pull
+</code></pre><p>For git remotes, this will <code>git fetch -f</code> the entire repository to the proxy,
+updating all the versions.</p>
+<p>For non-git remotes, this will check for the latest version of the project
+and install it locally.</p>
+<p>You may consider this the optional &quot;publish&quot; step of Normalize.IO.</p>
+<h4 id="get-versions-json">GET versions.json</h4>
+<pre><code>GET https://nlz.io/<span class="hljs-tag">&lt;<span class="hljs-title">remote</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">user</span>&gt;</span>/<span class="hljs-tag">&lt;<span class="hljs-title">project</span>&gt;</span>/versions.json
+</code></pre><p>Will return an array of versions that are currently available on the proxy.
+If no versions are installed,
+a <code>404</code> and an empty array will be returned.</p>
+<p>If you pushed a new version of a package,
+but the proxy has not installed it yet,
+simply install it by hitting the <code>pull</code> entry point or <code>GET</code> any file.</p>
+<blockquote>
+<p>Note: he semantics of this endpoint is subject to change.
+In particular, it should return all available versions on the remote.</p>
+</blockquote>
+<h4 id="get-proxy-json">GET proxy.json</h4>
+<pre><code class="lang-js">GET https://nlz<span class="hljs-preprocessor">.io</span>/proxy<span class="hljs-preprocessor">.json</span>
+</code></pre>
+<p>Returns relevant information about the proxy including hostname, version, and supported remotes.</p>
+<h4 id="get-polyfill-js">GET polyfill.js</h4>
+<p>Creates a polyfill bundle based on the client&#39;s user agent.
+See <a href="https://github.com/polyfills/polyfills">polyfills/polyfills</a> for more details.</p>
+<h3 id="normalization">Normalization</h3>
+<p>Packages are &quot;normalized&quot; based on these JSON files in descending priority.</p>
+<ol>
+<li><code>component.json</code></li>
+<li><code>package.json</code></li>
+</ol>
+<p>This is particularly important if you compile your module for one package manager but not the others.
+Thus, if you have to compile your module for a package manager,
+compile it for <code>bower</code>.</p>
+<h4 id="package-json">package.json</h4>
+<p>Only <code>npm</code> and <code>github</code>-style dependencies are supported.
+Only semantic versions are supported - versions that have weird suffixes will be ignored.
+Other types of dependencies such as tarballs will be ignored.</p>
+<h4 id="circular-dependencies">Circular Dependencies</h4>
+<p>Modules that must be normalized and have circular dependencies are not supported.
+In fact, these modules may actually mess up the proxy.
+Please don&#39;t create circular dependencies!
+Use <code>devDependencies</code> or something instead.</p>
 </div></section></main><footer><div class="container"><div id="footer-badges"><script data-gittip-username="jonathanong" src="https://gttp.co/v1.js" async></script></div><ul id="footer-links"><li>Jonathan Ong &copy; 2014</li><li><a href="http://jongleberry.com">jongleberry.com</a></li><li><a href="https://github.com/jonathanong">@jonathanong</a></li><li><a href="https://twitter.com/jongleberry">@jongleberry</a></li><li><a href="mailto:me@jongleberry.com">me@jongleberry.com</a></li></ul></div></footer><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)

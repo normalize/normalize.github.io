@@ -12,14 +12,14 @@ block header
     a#to-source.m-btn.green(href='https://github.com/normalize/normalize.github.io') Show Me an Example!
     p.
       The frontend development workflow has fundamentally changed with the advent of ES6 modules, HTML imports, and SPDY/HTTP2 push.
-      Normalize advocates this much simpler workflow with tools as well as "normalizes" (polyfilling/transpiling/etc.) for older browsers so that you can still build today.
+      Normalize provides tools for this much simpler workflow as well as "normalizes" (polyfilling/transpiling/etc.) for older browsers so that you can still build today.
 
 block main
   section: .container
     h3(id='no-installation-step') No Installation Step with ES6 Modules and HTML Imports
     :markdown
       With ES6 modules and HTML imports, you can define dependencies just like CSS `@import` statements.
-      When creating static pages or libraries, you could use URLs so that no build process is required.
+      When creating static pages or libraries, simply use URLs and open your browser:
 
       ```js
       import Ember from 'https://nlz.io/github/components/ember/^1.0.0/ember.js';
@@ -42,8 +42,9 @@ block main
       <link rel="import" href="webcomponents/hello-world-elements@*">
       ```
 
-      Package management is performed through the [proxies](https://github.com/normalize/proxy.js), such as https://nlz.io, as URLs.
-      There are no more JSON files to declare dependencies in - just inline them in your code and open your browser.
+      Package management (i.e. versioning) is performed through [normalization proxies](https://github.com/normalize/proxy.js),
+      such as https://nlz.io, as URLs.
+      There are no more JSON files to declare dependencies in - just inline them in your code.
       If you wish to use private modules, simply setup your own proxy!
 
     h3(id='no-concatenation-step') No Concatenation Step with SPDY Push
@@ -54,10 +55,10 @@ block main
       - [koa-normalize](https://github.com/normalize/koa.js) - a SPDY push server for [koa](https://koajs.com)
       - [koala](https://github.com/koajs/koala) - a [koa](https://koajs.com) framework that includes [koa-normalize](https://github.com/normalize/koa.js)
 
-    h3(id='automatic-polyfilling') Automatic User-Agent-based Polyfilling and Transpilation
+    h3(id='future-syntax-everywhere') Future Syntax, Everywhere
     :markdown
-      Normalize allows you to use the latest syntaxes, such as ES6 modules and generators,
-      and features, such as `requestAnimationSupport`, while still supporting
+      Normalize allows you to use the latest language features, such as ES6 modules,
+      generators, or `requestAnimationSupport`, while still supporting
       almost all browsers with minimal effort. It does so in two ways:
 
       Normalize servers include [polyfills/polyfills](https://github.com/polyfills/polyfills),
@@ -69,9 +70,8 @@ block main
 
     h3(id='no-transpilation-step') No Transpilation Step!
     :markdown
-      Normalize automatically supports your favorite transpiled languages to help
-      you avoid those crazy gruntfiles or any boilerplate configurations.
-      These [transforms](https://github.com/normalize/transforms.js) are URL-based,
+      Normalize automatically supports your favorite transpiled languages.
+      These [transforms](api.html#transforms) are URL-based,
       allowing them to be HTTP-compliant as well as more declarative.
       All adapters are included - you simply need to install the underlying library yourself.
 
@@ -105,110 +105,7 @@ block main
 
     h3(id='minimal-runtime-overhead') Minimal Runtime Overhead
     :markdown
-      Unlike other ES6 module tools, Normalize never needs large client-side
+      Unlike other ES6 module tools, Normalize does not require large client-side
       loaders like [RequireJS](http://requirejs.org) or large polyfills
       like [es6-module-loader](https://github.com/ModuleLoader/es6-module-loader).
       Writing modules with boilerplate nesting defeats the purpose of ES6 modules.
-
-  section: .container
-    h2(id='defining-dependencies') Defining Dependencies
-    :markdown
-      Instead of defining dependencies' versions in a manifest file like `package.json` or `bower.json`,
-      you simply define your dependencies versions as you `import` them!
-      There are two ways to define them: using URLs and using shorthands.
-
-      For example, here are multiple ways to depend on `jQuery` using
-      ES6 module syntax. Using URLs:
-
-      ```js
-      import $ from 'https://nlz.io/github/components/jquery/~2.1.0/jquery.js'
-      import $ from 'https://nlz.io/npm/-/jquery/~2.1.0/jquery.js'
-      ```
-
-      Note that `rawgit` does not support versioning,
-      but Normalize can parse their URLs with a build process:
-
-      ```js
-      import $ from 'https://cdn.rawgit.com/components/jquery/2.1.0/jquery.js'
-      ```
-
-      Using shorthands:
-
-      ```
-      import $ from 'jquery@~2.1.0' // from npm
-      import $ from 'components/jquery@~2.1.0' // from github
-      ```
-
-      Using URLs:
-
-      ```css
-      @import "https://nlz.io/github/necolas/normalize.css/^3.0.0/normalize.css";
-      ```
-
-      When using shorthands, either a custom module loader or a build process is required.
-
-      ### Relative Dependencies
-
-      Local dependencies are defined like CSS `@import`s and HTML
-      `src` and `href` attributes. In other words, dependencies that are not
-      absolute URLs and are not shorthands are considered relative dependencies.
-
-      For example, the following looks for `./file.js`, not a module name `file`:
-
-      ```js
-      import 'file';
-      ```
-
-      ### Expansions
-
-      JavaScript dependencies are "expanded" to allow for easier typing.
-
-      ```js
-      import 'folder/' // => import 'folder/index.js'
-      import 'file' // => import 'file.js'
-      ```
-
-  section: .container
-    h2(id='transformations') Transformations
-    :markdown
-      Normalize uses URLs to specify transformations in an HTTP-compliant manner.
-      To use these transformations, you either need a build process
-      or you must let a proxy apply the transforms for you.
-
-      For example, suppose you have `template.jade` that you want to use in multiple ways.
-
-      Use the template as a function:
-
-      ```js
-      import render from 'template.jade';
-
-      var html = render({
-        name: 'jong'
-      });
-      ```
-
-      Use the template as an HTML string:
-
-      ```js
-      import html from 'template.jade.html';
-
-      document.body.insertAdjacentHTML('beforeend', html);
-      ```
-
-      Use the template as a DOM element via [domify](https://github.com/component/domify):
-
-      ```js
-      import el from 'template.jade.html.domify';
-
-      document.body.appendChild(el.cloneNode(true));
-      ```
-
-      All transformations are explicitly shown and used instead of being hidden behind a complex build system.
-      For more details on transformations, read the [docs on transforms](api.html#transforms).
-
-      The only stipulation is that you must install `jade` yourself -
-      Normalize already includes the adapters to use `jade` transforms:
-
-      ```bash
-      npm i -g nlz jade
-      ```

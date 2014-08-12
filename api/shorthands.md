@@ -5,7 +5,7 @@ Shorthands simply expand to the long Normalize URLs.
 However, due to the wide remote support Normalize provides,
 shorthands require a certain degree of specificity.
 
-However, shorthands can only be used if either:
+However, shorthands can only be used if:
 
 1. You use a build process, `nlz build`
 2. You use a Normalizer server such as `koa-normalize`
@@ -16,8 +16,8 @@ Normalize will eventually provide a custom module loader for these shorthands.
 
 ### The Law of Shorthands
 
-1. Do not use shorthands in CSS and HTML as they do not allow custom loaders.
-2. Do not use shorthands in libraries,
+1. You shan't use shorthands in CSS and HTML as they do not allow custom loaders.
+2. You shan't use shorthands in libraries,
   only applications where you can expect a custom module loader to be used.
   Creating libraries with shorthands is too vendor-specific.
   URLs should always work in any environment!
@@ -30,13 +30,13 @@ Normalize will eventually provide a custom module loader for these shorthands.
 Files that end with `/` expand to `/index.js`:
 
 ```
-emitter@1/lib/ => /npm/-/emitter/1/lib/index.js
+./lib/ => ./lib/index.js
 ```
 
 Files that do not end with `.js` simply have `.js` appended:
 
 ```
-emitter@1/index => /npm/-/emitter/1/index.js
+./index => ./index.js
 ```
 
 #### npm

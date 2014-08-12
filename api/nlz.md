@@ -11,8 +11,9 @@ Currently, you must install `nlz(1)` with `npm(1)`:
 npm install -g nlz
 ```
 
-`nlz(1)` only supports node v0.10,
-but you should use node v0.11+ for better performance as generators are extensively used in the source code.
+`nlz(1)` supports node v0.10+,
+but you should use node v0.11+ for better performance
+as generators are extensively used in the source code.
 
 Be sure to globally install any transforms you'd like to use as well.
 
@@ -22,8 +23,7 @@ npm install -g jade marked
 
 ### normalize-manifest.json
 
-When running `nlz-build(1)` or `nlz-manifest(1)`,
-a `normalize-manifest.json` file is created.
+When building, a `normalize-manifest.json` file is created.
 Be sure to add this file to your `.gitignore`!
 This JSON file is used for various purposes:
 
@@ -34,10 +34,10 @@ This JSON file is used for various purposes:
 
 ### nlz build, nlz watch
 
-This is the primary build command.
-You may think of it as [browserify](http://browserify.org)'s build command,
-but multiple entry points are supported,
-as well as CSS and HTML files.
+These are the primary build command.
+You may think of it as [browserify](http://browserify.org)'s build command
+with multiple entry point support
+as well as CSS and HTML file support.
 
 Most of these parameters and options can be set via `.nlzrc`,
 allowing developers to simply run `nlz build --watch`.
@@ -193,3 +193,7 @@ For example, only list files larger than `1kb`:
 ```bash
 nlz size -t 1kb test/index.js
 ```
+
+### nlz graph
+
+Create a graph of your dependency tree. Run `nlz graph -h` for more details.

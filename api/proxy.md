@@ -42,9 +42,11 @@ The name of the project/module/component.
 
 #### Version
 
-Any version as defined by http://semver.org v2.0.0.
-You should not include leading `v`s and `=` in single versions
-Versions can also be git branches and commit SHAs if the remote is accessed via git.
+Any version as defined by http://semver.org.
+You should not include leading `v`s and `=` in single versions otherwise a redirect will occur.
+
+Versions can also be git branches and commit SHAs if the remote is accessed via git
+and will redirect to the full commit sha.
 
 ### API End Points
 
