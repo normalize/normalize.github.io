@@ -1,7 +1,8 @@
+### How does Normalize.IO compare to other similar client-side tools?
 
 Normalize's philosophy drastically differs from most client-side tools today, both ES6 and pre-ES6.
-Perhaps the biggest difference is that Normalize aims to solve __almost everything__
-about frontend web development, whereas most tools aim to solve a particular aspect of frontend development.
+Perhaps the biggest difference is that Normalize aims to solve the entire frontend web development via vertical integration,
+whereas most tools aim to solve only a particular aspect of frontend development.
 
 The two major ES6 client-side tools I know of are [jspm.io](http://jspm.io) and [stealjs](http://stealjs.com/docs/index.html).
 Normalize differs in that:
@@ -13,20 +14,21 @@ Normalize differs in that:
 - Normalize aims to rid the frontend development workflow from install and build steps.
   StealJS requires you to download packages from Bower as well as setup your own Grunt build process.
 
-Normalize is more similar to Component except it automatically infers the manifest and dependency tree
+Normalize is more similar to Component and Browserify except it automatically infers the manifest and dependency tree
 via static analysis. With CommonJS, this was more difficult as `require()`s are just functions and
-not precisely static. Also like both Component and Bower, Normalize supports CSS and HTML as first class citizens.
+not precisely static. Like both Component and Bower, Normalize supports CSS and HTML as first class citizens.
 
-Other bundlers such as Browserify and Webpack are focused on JS and require other assets
+Bundlers such as Browserify and Webpack are focused on JS and require other assets
 to be loaded via JS. This is more suitable for JS-heavy sites such as games,
 but is not suitable for design-heavy apps.
 
-A feature of many bundlers such as browserify and webpack are the ability to create multiple bundles.
-However, Normalize does not and will not bother with such features as they are irrelevant with SPDY.
-If the client doesn't need a particular file, then it won't request it, or it will cancel the SPDY push stream.
+A feature of many bundlers such as Browserify and Webpack is the ability to create multiple bundles.
+However, Normalize does not and will not bother with bundling as it will become irrelevant with SPDY/HTTP2.
+
+### When shouldn't I use Normalize.IO?
 
 As Normalize aims to rid your workflow of custom build processes,
-there must be some cases where Normalize fails to meet your app's needs.
+there must be some cases where Normalize fails to meet your needs.
 In particular, anything that requires concatenation won't be suitable for Normalize.
 This includes:
 
@@ -36,5 +38,20 @@ This includes:
   Variables can be replaced by CSS variables, but mixins and inheritance can not be replaced with vanilla CSS.
   Instead, point Normalize to the "final" output instead of the source files.
 - AMD environments as Normalize will not attempt to support such modules.
-- Locale support, particularly translations and RTL. We intend to support these, but we're not
-  sure what the best course of action is, so if your company needs these now, you might want to wait on Normalize.
+
+### Will Normalize.IO support node.js?
+
+Normalize.IO is specifically tailored for frontend development.
+In particular, node modules are refactored to work for the browser,
+sacrificing node compatibility in the process.
+
+Instead, we will most likely make a similar tool for node.js,
+but it may not be the same name or in the same utility.
+
+### Can I omit `http:` or `https://` from the URLs?
+
+If browsers support protocol-less URLs, then so will we.
+However, there are a couple potential issues with omitting protocols.
+
+1. It's more difficult to differentiate between URLs and local/relative assets.
+2. Some browsers plan to not support non-SSL SPDY, so this might not even work in development.

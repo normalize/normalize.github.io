@@ -1,7 +1,7 @@
-<!DOCTYPE html><html><head><title>normalize.io - the end of package management for the web</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">nlz.io</a><a href="https://github.com/normalize/discussions" class="top-bar-link">discuss</a><a href="https://github.com/normalize" class="top-bar-link">source</a><a href="guide.html" class="top-bar-link">guide</a><a href="api.html" class="top-bar-link">api</a><a href="about.html" class="top-bar-link">about</a></div></div><header><div class="container"><h1>About</h1></div></header><main><div id="toc" class="Dropdown right down"><a href="#" class="Dropdown-toggle">#</a><div class="Dropdown-menu"></div></div><section><div class="container"><h2 id="philosophy">FAQ</h2><h3 id="how-does-normalize-io-compare-to-other-similar-tools-">How does Normalize.IO compare to other similar tools?</h3>
+<!DOCTYPE html><html><head><title>normalize.io - an ES6 module, Web Component, and SPDY/HTTP2 Push frontend development worfklow</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">nlz.io</a><a href="https://github.com/normalize/discussions" class="top-bar-link">discuss</a><a href="faq.html" class="top-bar-link">faq</a><a href="guide.html" class="top-bar-link">guide</a><a href="api.html" class="top-bar-link">api</a></div></div><header><div class="container"><h1>FAQ</h1></div></header><main><section><div class="container"><h3 id="how-does-normalize-io-compare-to-other-similar-client-side-tools-">How does Normalize.IO compare to other similar client-side tools?</h3>
 <p>Normalize&#39;s philosophy drastically differs from most client-side tools today, both ES6 and pre-ES6.
-Perhaps the biggest difference is that Normalize aims to solve <strong>almost everything</strong>
-about frontend web development, whereas most tools aim to solve a particular aspect of frontend development.</p>
+Perhaps the biggest difference is that Normalize aims to solve the entire frontend web development via vertical integration,
+whereas most tools aim to solve only a particular aspect of frontend development.</p>
 <p>The two major ES6 client-side tools I know of are <a href="http://jspm.io">jspm.io</a> and <a href="http://stealjs.com/docs/index.html">stealjs</a>.
 Normalize differs in that:</p>
 <ul>
@@ -19,10 +19,10 @@ not precisely static. Like both Component and Bower, Normalize supports CSS and 
 to be loaded via JS. This is more suitable for JS-heavy sites such as games,
 but is not suitable for design-heavy apps.</p>
 <p>A feature of many bundlers such as Browserify and Webpack is the ability to create multiple bundles.
-However, Normalize does not and will not bother with such features as they are irrelevant with SPDY.
-If the client doesn&#39;t need a particular file, then it won&#39;t request it, or it will cancel the SPDY push stream.</p>
+However, Normalize does not and will not bother with bundling as it will become irrelevant with SPDY/HTTP2.</p>
+<h3 id="when-shouldn-t-i-use-normalize-io-">When shouldn&#39;t I use Normalize.IO?</h3>
 <p>As Normalize aims to rid your workflow of custom build processes,
-there must be some cases where Normalize fails to meet your app&#39;s needs.
+there must be some cases where Normalize fails to meet your needs.
 In particular, anything that requires concatenation won&#39;t be suitable for Normalize.
 This includes:</p>
 <ul>
@@ -32,8 +32,6 @@ which requires concatenation.
 Variables can be replaced by CSS variables, but mixins and inheritance can not be replaced with vanilla CSS.
 Instead, point Normalize to the &quot;final&quot; output instead of the source files.</li>
 <li>AMD environments as Normalize will not attempt to support such modules.</li>
-<li>Locale support, particularly translations and RTL. We intend to support these, but we&#39;re not
-sure what the best course of action is, so if your company needs these now, you might want to wait on Normalize.</li>
 </ul>
 <h3 id="will-normalize-io-support-node-js-">Will Normalize.IO support node.js?</h3>
 <p>Normalize.IO is specifically tailored for frontend development.

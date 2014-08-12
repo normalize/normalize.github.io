@@ -15,7 +15,7 @@ var dirs = [
   'index',
   'api',
   'guide',
-  'about',
+  'faq',
 ]
 
 var fns = dirs.map(function (dir) {

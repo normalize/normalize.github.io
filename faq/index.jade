@@ -1,0 +1,14 @@
+
+extends ../layout
+
+block header
+  .container
+    h1 FAQ
+
+block main
+  //- #toc.Dropdown.right.down
+  //-   a.Dropdown-toggle(href='#') #
+  //-   .Dropdown-menu
+
+  section: .container
+    include:markdown faq.md
