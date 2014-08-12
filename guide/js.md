@@ -3,4 +3,4 @@
 
 #### Use index.js for browsers, node.js for node.js
 
-Give browsers filename priority and specify `.main = 'node.js'` in your `package.json`s.
+Give browsers filename priority. Specify `.main = 'node.js'` and `.browser = 'index.js'` in your `package.json`s.
