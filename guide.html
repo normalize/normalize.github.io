@@ -1,6 +1,22 @@
 <!DOCTYPE html><html><head><title>normalize.io - an ES6 module, Web Component, and SPDY/HTTP2 Push frontend development worfklow</title><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui"><link rel="stylesheet" href="index.css"><link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css"></head><body><div id="top-bar"><div class="container"><a id="top-bar-logo" href="./">nlz.io</a><a href="https://github.com/normalize/discussions" class="top-bar-link">discuss</a><a href="faq.html" class="top-bar-link">faq</a><a href="guide.html" class="top-bar-link">guide</a><a href="api.html" class="top-bar-link">api</a></div></div><header><div class="container"><h1>Guide</h1></div></header><main><div id="toc" class="Dropdown right down"><a href="#" class="Dropdown-toggle">#</a><div class="Dropdown-menu"></div></div><section><div class="container"><h2 id="authoring-javascript">Authoring JavaScript</h2><h3 id="best-practices">Best Practices</h3>
 <h4 id="use-index-js-for-browsers-node-js-for-node-js">Use index.js for browsers, node.js for node.js</h4>
 <p>Give browsers filename priority. Specify <code>.main = &#39;node.js&#39;</code> and <code>.browser = &#39;index.js&#39;</code> in your <code>package.json</code>s.</p>
+<h4 id="don-t-inline-dependencies-with-their-own-dependencies">Don&#39;t inline dependencies with their own dependencies</h4>
+<p>Specifically, don&#39;t do this:</p>
+<pre><code class="lang-js"><span class="hljs-reserved">import</span> css from <span class="hljs-string">'style.css'</span>;
+
+<span class="hljs-reserved">var</span> style = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'style'</span>);
+style.innerHTML = css;
+<span class="hljs-built_in">document</span>.head.appendChild(style);
+</code></pre>
+<p>Where <code>style.css</code> is:</p>
+<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'another-style.css'</span></span>;
+</code></pre>
+<p>This is relevant with all dependency types, including HTML and CSS.
+Normalize currently does not handle rewriting these URLs,
+mostly because it doesn&#39;t know how to change the dependency
+after it&#39;s already been converted to JS.
+If you have suggestions on how to solve this, please let us know!</p>
 </div></section><section><div class="container"><h2 id="authoring-css">Authoring CSS</h2><h3 id="best-practices">Best Practices</h3>
 <h4 id="don-t-do-crazy-imports">Don&#39;t do crazy @imports</h4>
 <p>Stick with simple <code>@import</code> statements.
