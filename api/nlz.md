@@ -42,6 +42,10 @@ as well as CSS and HTML file support.
 Most of these parameters and options can be set via `.nlzrc`,
 allowing developers to simply run `nlz build --watch`.
 
+Note that the builder __does not support buildilng web components!__
+This is essentially impossible to do.
+Only use web components in a SPDY environment.
+
 #### Entry Points
 
 ```bash

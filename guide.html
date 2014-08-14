@@ -36,6 +36,11 @@ All CSS files <code>@import</code>ed within a CSS file will be included before t
 To avoid this confusion, just prepend it with a <code>./</code>:</p>
 <pre><code class="lang-css"><span class="hljs-attribute">background-image</span>: <span class="hljs-string">url('./images/logo@2x.png')</span>
 </code></pre>
+</div></section><section><div class="container"><h2 id="authoring-html">Authoring Web Components</h2><h3 id="only-use-web-components-in-a-spdy-environment">Only use web components in a SPDY environment</h3>
+<p>Normalize does not support creating bundles with web components.
+Doing so in an unopinionated manner is very difficult.
+Instead, you should only use web components with a SPDY push server
+(or allow your users to suffer the latency).</p>
 </div></section><section><div class="container"><h2 id="bundling">Bundling</h2><p>As shown via <code>nlz build(1)</code>,
 you can build multiple entry points, whether <code>.js</code> or <code>.css</code>,
 all at the same time.</p>

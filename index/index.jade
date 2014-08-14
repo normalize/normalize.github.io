@@ -50,6 +50,8 @@ block main
     h3(id='no-concatenation-step') No Concatenation Step with SPDY Push
     :markdown
       SPDY push allows websites to avoid a concatenation step - just SPDY push all your assets!
+      Previously, concatenation steps were required to avoid unnecessary HTTP roundtrips,
+      but this latency is nonexistent with SPDY push!
       However, [`nlz(1)`](https://github.com/normalize/nlz) still includes a concatenation step if you still wish to create bundles.
 
       - [koa-normalize](https://github.com/normalize/koa.js) - a SPDY push server for [koa](https://koajs.com)
