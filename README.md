@@ -15,25 +15,10 @@ You can see how `nlz(1)` creates JS and CSS files by looking at `index.js` and `
 
 ## Installation and Setup
 
-Until https://nlz.io is launched, you need to setup the proxy locally:
+First, install `nlz`:
 
 ```bash
-git clone git://github.com/normalize/proxy.js
-cd proxy.js
-export PORT=8888
-npm start
-```
-
-Notice how this `.nlzrc` file has the port `8888` set as well.
-Feel free to change it in both places.
-
-Then install `nlz` with `npm i -g nlz`.
-Personally, I would just clone and link the repository because `nlz` is probably going to change a lot for now.
-
-```bash
-git clone git://github.com/normalize/nlz
-cd nlz
-npm link
+npm i -g nlz
 ```
 
 To build the JS and CSS, run the following:
