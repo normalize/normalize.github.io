@@ -69,6 +69,16 @@ You may optionally set this directory to a global directory like `~/.repositorie
 so that every app or component you work on share the same files.
 It will also make installations a little faster.
 
+### .transform = "normalize-transforms"
+
+Use a custom transform function instead of those supplied by Normalize.
+See [normalize-transforms](https://github.com/normalize/transforms.js) for more information.
+
+### .transforms = {}
+
+Pass options to the transform function mentioned above,
+which is [normalize-transforms](https://github.com/normalize/transforms.js).
+
 ### .manifest = "normalize-manifest.json"
 
 This allows you to use a custom `normalize-manifest.json` file name.
