@@ -618,7 +618,7 @@ exports.engine = function(obj){
 
 });
 
-require.register("component/matches-selector@0.1.4", function (exports, module) {
+require.register("component/matches-selector@0.1.5", function (exports, module) {
 /**
  * Module dependencies.
  */
@@ -657,6 +657,7 @@ module.exports = match;
  */
 
 function match(el, selector) {
+  if (!el || el.nodeType !== 1) return false;
   if (vendor) return vendor.call(el, selector);
   var nodes = query.all(selector, el.parentNode);
   for (var i = 0; i < nodes.length; ++i) {
@@ -682,7 +683,7 @@ module.exports = function (selector, childSelector, sep) {
 });
 
 require.register("discore/closest@0.1.3", function (exports, module) {
-var matches = require("component/matches-selector@0.1.4")
+var matches = require("component/matches-selector@0.1.5")
 
 module.exports = function (element, selector, checkYoSelf, root) {
   element = checkYoSelf ? {parentNode: element} : element
@@ -790,7 +791,7 @@ function Tap(callback) {
 });
 
 require.register("jonathanong/eevee@0.0.4", function (exports, module) {
-var matches = require("component/matches-selector@0.1.4")
+var matches = require("component/matches-selector@0.1.5")
 var context = require("component/contextual-selector@0.0.2")
 var closest = require("discore/closest@0.1.3")
 var query = require("component/query@0.0.3")
@@ -1562,7 +1563,7 @@ var keyname = require("component/keyname@0.0.1")
 var classes = require("component/classes@1.2.1")
 var closest = require("discore/closest@0.1.3")
 var clickable = require("component/clickable@0.0.4")
-var matches = require("component/matches-selector@0.1.4")
+var matches = require("component/matches-selector@0.1.5")
 var Emitter = require("component/emitter@1.1.3")
 
 exports = module.exports = new Emitter()
