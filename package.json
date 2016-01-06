@@ -14,6 +14,6 @@
     "sane": "0",
     "jade": "1",
     "marked": "0",
-    "highlight.js": "*"
+    "highlight.js": "9.1.0"
   }
 }
